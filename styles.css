@@ -1,0 +1,70 @@
+@import "@esri/calcite-colors/dist/colors.scss";
+@import "@esri/calcite-components/dist/calcite/calcite.css";
+
+:root{
+    --calcite-color-brand: #9225a0;
+    --calcite-color-brand-hover: #a02bb6;
+    --calcite-color-brand-press: #c84ce6;
+    --calcite-color-background: #212121;
+    --calcite-color-foreground-1: #212121;
+    --calcite-color-foreground-2: #2c2c2c;
+    --calcite-color-foreground-3: #3c3c3c;
+    --calcite-color-text-1: #ffffff;
+    --calcite-color-text-2: #bdbdbd;
+    --calcite-color-text-3: #9f9f9f;
+    --calcite-color-border-1: #212121;
+    --calcite-color-border-2: #2c2c2c;
+    --calcite-color-border-3: #3c3c3c;
+    --calcite-color-text-inverse: #3c3c3c;
+    --calcite-color-text-link: #9225a0;
+    --calcite-color-status-info: #9225a0;
+    --calcite-color-status-success: #36DA43;
+    --calcite-color-status-warning: #FFC900;
+    --calcite-color-status-danger: #FE583E;
+    --calcite-color-status-danger-hover: #FF0015;
+    --calcite-color-status-danger-press: #D90012;
+    --calcite-font-family: "Noto Sans", sans-serif;
+    --calcite-corner-radius-round: 15px;
+    font-family: "Noto Sans", sans-serif;
+}
+
+calcite-card{
+    width: 80%;
+    margin: auto;
+    --calcite-card-corner-radius: var(--calcite-corner-radius-round);
+    
+}
+
+body {
+  background-color: #212121;
+  color:#ffffff;
+}
+
+.noto-sans-heavy {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 75;
+}
+
+.noto-sans-regular {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.doc-header {
+    background-color: #151515
+}
+
+.header {
+    color: #ffffff;
+    background-color: #212121;
+    padding: 20px;
+    text-align: center;
+}
