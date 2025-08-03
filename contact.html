@@ -1,0 +1,79 @@
+<head>
+    <script type="module" src="https://js.arcgis.com/calcite-components/3.2.1/calcite.esm.js"></script>
+    <title>Lucius Creamers Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="header noto-sans-heavy">
+        <img src="KC1440p.jpg" alt="A styled topographic map background"/>
+        <h1>Portfolio: Lucius Creamer</h1>
+        <div class="action-bar">
+            <calcite-action-bar layout="horizontal" expand-disabled="true" expanded="true">
+                <calcite-button href="index.html" class="menu-button" round="true" kind="neutral" label="Open home Page"
+                    icon-start="home" scale="m" appearance="transparent" title="Home"></calcite-button>
+                <calcite-button href="about.html" class="menu-button" round="true" kind="neutral" label="Open about me"
+                    icon-start="information" scale="m" appearance="transparent" title="About me"></calcite-button>
+                <calcite-button href="contact.html" class="menu-button" round="true" kind="neutral"
+                    label="Open contact information" icon-start="address-book" scale="m" appearance="transparent"
+                    title="Contact"></calcite-button>
+            </calcite-action-bar>
+        </div>
+    </div>
+
+    <main>
+        <h2 class="sub-header">Contact me!</h2>
+        <p>
+            If one of my projects looks interesting, or you jsut want to yap about 
+            Geography, reach out with the contacts below.
+        </p>
+
+        <!-- Icons and Links Section -->
+        <div class="contact-links">
+
+            <!-- Phone Link -->
+            <a href="tel:+15733973520" class="contact-item">
+                <!-- Phone Icon SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="contact-icon">
+                    <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                    </path>
+                </svg>
+                <span class="contact-label">Phone</span>
+            </a>
+
+            <!-- Email Link -->
+            <a href="mailto:sunshineluke90@gmail.com" class="contact-item">
+                <!-- Email Icon SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="contact-icon">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+                <span class="contact-label">Email</span>
+            </a>
+
+            <!-- GitHub Link -->
+            <a href="https://github.com/sunshineluke90" target="_blank" rel="noopener noreferrer" class="contact-item">
+                <!-- GitHub Icon SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="contact-icon">
+                    <path
+                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                    </path>
+                </svg>
+                <span class="contact-label">GitHub</span>
+            </a>
+        </div>
+    </main>
+</body>

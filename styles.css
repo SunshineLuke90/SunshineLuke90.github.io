@@ -1,47 +1,94 @@
 @import "@esri/calcite-colors/dist/colors.scss";
 @import "@esri/calcite-components/dist/calcite/calcite.css";
 
-:root{
-    --calcite-color-brand: #9225a0;
-    --calcite-color-brand-hover: #a02bb6;
-    --calcite-color-brand-press: #c84ce6;
-    --calcite-color-background: #212121;
-    --calcite-color-foreground-1: #212121;
-    --calcite-color-foreground-2: #2c2c2c;
-    --calcite-color-foreground-3: #3c3c3c;
-    --calcite-color-text-1: #ffffff;
-    --calcite-color-text-2: #bdbdbd;
-    --calcite-color-text-3: #9f9f9f;
-    --calcite-color-border-1: #212121;
-    --calcite-color-border-2: #2c2c2c;
-    --calcite-color-border-3: #3c3c3c;
-    --calcite-color-text-inverse: #3c3c3c;
-    --calcite-color-text-link: #9225a0;
-    --calcite-color-status-info: #9225a0;
-    --calcite-color-status-success: #36DA43;
-    --calcite-color-status-warning: #FFC900;
-    --calcite-color-status-danger: #FE583E;
-    --calcite-color-status-danger-hover: #FF0015;
-    --calcite-color-status-danger-press: #D90012;
-    --calcite-font-family: "Noto Sans", sans-serif;
-    --calcite-corner-radius-round: 15px;
-    font-family: "Noto Sans", sans-serif;
+:root {
+  --calcite-color-brand: #9225a0;
+  --calcite-color-brand-hover: #a02bb6;
+  --calcite-color-brand-press: #c84ce6;
+  --calcite-color-background: #212121;
+  --calcite-color-foreground-1: #212121;
+  --calcite-color-foreground-2: #2c2c2c;
+  --calcite-color-foreground-3: #3c3c3c;
+  --calcite-color-text-1: #ffffff;
+  --calcite-color-text-2: #bdbdbd;
+  --calcite-color-text-3: #9f9f9f;
+  --calcite-color-border-1: #212121;
+  --calcite-color-border-2: #2c2c2c;
+  --calcite-color-border-3: #3c3c3c;
+  --calcite-color-text-inverse: #3c3c3c;
+  --calcite-color-text-link: #9225a0;
+  --calcite-color-status-info: #9225a0;
+  --calcite-color-status-success: #36DA43;
+  --calcite-color-status-warning: #FFC900;
+  --calcite-color-status-danger: #FE583E;
+  --calcite-color-status-danger-hover: #FF0015;
+  --calcite-color-status-danger-press: #D90012;
+  --calcite-font-family: "Noto Sans", sans-serif;
+  --calcite-corner-radius-round: 15px;
+  font-family: "Noto Sans", sans-serif;
 }
 
-calcite-card{
-    width: 80%;
-    margin: auto;
-    --calcite-card-corner-radius: var(--calcite-corner-radius-round);
-    
+calcite-card {
+  width: calc(400px + 20%);
+  margin: auto;
+  --calcite-card-corner-radius: var(--calcite-corner-radius-round);
+  --calcite-card-background-color: var(--calcite-color-foreground-2);
+  --calcite-card-border-color: var(--calcite-color-foreground-2);
+  box-shadow: 0 0 8px 0 rgba(15,15,15,0.5);
+  border-radius: var(--calcite-corner-radius-round);
+  --calcite-font-weight-medium: 650;
+}
+
+calcite-chip{
+  --calcite-font-weight-medium: 400;
+  --calcite-chip-background-color: var(--calcite-color-foreground-3)
+}
+
+calcite-action-bar {
+  --calcite-action-bar-items-space: 15px;
+}
+
+calcite-button{
+  --calcite-button-corner-radius: 5em;
 }
 
 body {
   background-color: #212121;
-  color:#ffffff;
+  color: #ffffff;
 }
 
-.noto-sans-heavy {
-  font-family: "Noto Sans", sans-serif;
+main {
+  width: calc(500px + 20%);
+  max-width: 90%;
+  margin: auto;
+  padding: 20px;
+}
+
+footer {
+  text-align: right;
+  font-size: smaller;
+}
+
+.about-content {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.sub-header {
+  color: #ffffff;
+  background-color: #212121;
+  padding: 10px;
+  text-align: center;
+
+}
+
+.header {
+  color: #ffffff;
+  background-color: #212121;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: -20;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
@@ -49,22 +96,72 @@ body {
     "wdth" 75;
 }
 
-.noto-sans-regular {
-  font-family: "Noto Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+.header img{
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+  width:100%;
+  max-height:10rem;
+  border-radius:15px;
+  object-fit:cover  
 }
 
-.doc-header {
-    background-color: #151515
+.header h1 {
+  position: relative;
+  top: -50px;
+  margin-bottom: -45px;
+  font-size: 40;
+
+  text-shadow: 0px -15px 30px rgba(0,0,0,0.5), 0px -7px 15px rgba(0,0,0,0.5);
+
 }
 
-.header {
-    color: #ffffff;
-    background-color: #212121;
-    padding: 20px;
-    text-align: center;
+/* Container for the list of links */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Creates space between link items */
+}
+
+/* Individual link items (phone, email, github) */
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  /* Equivalent to p-4 */
+  background-color: var(--calcite-color-foreground-2);
+  /* Equivalent to bg-gray-700 */
+  box-shadow: 0 0 8px 0 rgba(15,15,15,0.5);
+  border-radius: var(--calcite-corner-radius-round);
+  /* Equivalent to rounded-lg */
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.3s ease;
+  /* Smooth hover effect */
+}
+
+/* Hover state for the links */
+.contact-item:hover {
+  background-color: var(--calcite-color-foreground-3);
+  /* Equivalent to hover:bg-gray-600 */
+}
+
+.contact-item:active{
+  outline-color: var(--calcite-color-brand);
+  outline-offset: .15em;
+  outline-width: .15em;
+  outline-style: solid;
+}
+
+/* Styling for the SVG icons */
+.contact-icon {
+  color: var(--calcite-color-brand);
+  /* Equivalent to text-indigo-400 */
+  margin-right: 1rem;
+  /* Equivalent to mr-4 */
+}
+
+/* Styling for the text next to the icon */
+.contact-label {
+  font-weight: 500;
+  /* Equivalent to font-medium */
 }
