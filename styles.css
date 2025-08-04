@@ -1,6 +1,3 @@
-@import "@esri/calcite-colors/dist/colors.scss";
-@import "@esri/calcite-components/dist/calcite/calcite.css";
-
 :root {
   --calcite-color-brand: #9225a0;
   --calcite-color-brand-hover: #a02bb6;
@@ -55,6 +52,9 @@ calcite-button{
 body {
   background-color: #212121;
   color: #ffffff;
+  transform: scale(1.3); 
+  transform-origin: left top; 
+  width: calc(100% / 1.2); 
 }
 
 main {
@@ -67,6 +67,7 @@ main {
 footer {
   text-align: right;
   font-size: smaller;
+  padding: 15px;
 }
 
 .about-content {
