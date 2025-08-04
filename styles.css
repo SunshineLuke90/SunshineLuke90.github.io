@@ -99,7 +99,7 @@ footer {
 .header img{
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
   width:100%;
-  max-height:10rem;
+  max-height:10em;
   border-radius:15px;
   object-fit:cover  
 }
@@ -118,7 +118,7 @@ footer {
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1em;
   /* Creates space between link items */
 }
 
@@ -126,7 +126,7 @@ footer {
 .contact-item {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 1em;
   /* Equivalent to p-4 */
   background-color: var(--calcite-color-foreground-2);
   /* Equivalent to bg-gray-700 */
@@ -156,7 +156,7 @@ footer {
 .contact-icon {
   color: var(--calcite-color-brand);
   /* Equivalent to text-indigo-400 */
-  margin-right: 1rem;
+  margin-right: 1em;
   /* Equivalent to mr-4 */
 }
 
