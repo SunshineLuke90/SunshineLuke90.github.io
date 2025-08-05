@@ -6,12 +6,14 @@
   --calcite-color-foreground-1: #212121;
   --calcite-color-foreground-2: #2c2c2c;
   --calcite-color-foreground-3: #3c3c3c;
+  --calcite-color-foreground-current: #212121;
   --calcite-color-text-1: #ffffff;
   --calcite-color-text-2: #bdbdbd;
   --calcite-color-text-3: #9f9f9f;
   --calcite-color-border-1: #212121;
   --calcite-color-border-2: #2c2c2c;
   --calcite-color-border-3: #3c3c3c;
+  --calcite-color-border-input: #3c3c3c;
   --calcite-color-text-inverse: #3c3c3c;
   --calcite-color-text-link: #9225a0;
   --calcite-color-status-info: #9225a0;
@@ -22,39 +24,100 @@
   --calcite-color-status-danger-press: #D90012;
   --calcite-font-family: "Noto Sans", sans-serif;
   --calcite-corner-radius-round: 15px;
+  --calcite-corner-radius-sharp: 5px;
+  --calcite-corner-radius-pill: 10px;
+  --calcite-corner-radius-0: 10px;
+  --calcite-corner-radius-sm:10px;
+  --calcite-corner-radius-xs:8px;
+  --calcite-corner-radius-none: 5px;
   font-family: "Noto Sans", sans-serif;
 }
 
+.calcite-mode-dark {
+  --calcite-color-border-white: #f7f7f7;
+  --calcite-color-border-ghost: #7575754d;
+  --calcite-color-border-input: #757575;
+  --calcite-color-border-3: #404040;
+  --calcite-color-border-2: #4a4a4a;
+  --calcite-color-border-1: #545454;
+  --calcite-color-text-link: #9225a0;
+  --calcite-color-text-inverse: #3c3c3c;
+  --calcite-color-text-highlight: #c7eaff;
+  --calcite-color-text-1: #ffffff;
+  --calcite-color-text-2: #bdbdbd;
+  --calcite-color-text-3: #9f9f9f;
+  --calcite-color-inverse-press: #f2f2f2;
+  --calcite-color-inverse-hover: #fff;
+  --calcite-color-inverse: #f7f7f7;
+  --calcite-color-status-danger-press: #d90012;
+  --calcite-color-status-danger-hover: #ff0015;
+  --calcite-color-status-danger: #fe583e;
+  --calcite-color-status-warning-press: #ff9500;
+  --calcite-color-status-warning-hover: #ffb54d;
+  --calcite-color-status-warning: #f89927;
+  --calcite-color-status-success-press: #00b81b;
+  --calcite-color-status-success-hover: #3bed52;
+  --calcite-color-status-success: #36da43;
+  --calcite-color-status-info-press: #009af2;
+  --calcite-color-status-info-hover: #3db8ff;
+  --calcite-color-status-info: #00a0ff;
+  --calcite-color-brand-underline: #9225a0;
+  --calcite-color-brand: #9225a0;
+  --calcite-color-brand-hover: #a02bb6;
+  --calcite-color-brand-press: #c84ce6;
+  --calcite-color-transparent-tint: #2b2b2bcc;
+  --calcite-color-transparent-scrim: #000000d9;
+  --calcite-color-transparent-inverse-press: #00000014;
+  --calcite-color-transparent-inverse-hover: #0000000a;
+  --calcite-color-transparent-press: #ffffff00;
+  --calcite-color-transparent-hover: rgba(255, 255, 255, 0);
+  --calcite-color-transparent: #fff0;
+  --calcite-color-foreground-current: #212121;
+  --calcite-color-foreground-1: #212121;
+  --calcite-color-foreground-2: #2c2c2c;
+  --calcite-color-foreground-3: #3c3c3c;
+  --calcite-color-background-none: rgba(255, 255, 255, 0);
+  --calcite-color-background: #212121;
+  --calcite-button-background-color: #212121;
+  --calcite-border-color:#212121;
+}
+
+
+
 calcite-card {
-  width: calc(400px + 20%);
+  width: calc(500px + 20%);
   margin: auto;
   --calcite-card-corner-radius: var(--calcite-corner-radius-round);
   --calcite-card-background-color: var(--calcite-color-foreground-2);
   --calcite-card-border-color: var(--calcite-color-foreground-2);
-  box-shadow: 0 0 8px 0 rgba(15,15,15,0.5);
+  box-shadow: 0 0 8px 0 rgba(15, 15, 15, 0.5);
   border-radius: var(--calcite-corner-radius-round);
   --calcite-font-weight-medium: 650;
 }
 
-calcite-chip{
+calcite-chip {
   --calcite-font-weight-medium: 400;
-  --calcite-chip-background-color: var(--calcite-color-foreground-3)
+  --calcite-chip-background-color: var(--calcite-color-foreground-3);
+  scale: "small"
 }
 
 calcite-action-bar {
   --calcite-action-bar-items-space: 15px;
 }
 
-calcite-button{
+calcite-button {
   --calcite-button-corner-radius: 5em;
+}
+
+html {
+  font-size: 120%
+    /* Page scaling was too small */
 }
 
 body {
   background-color: #212121;
   color: #ffffff;
-  transform: scale(1.3); 
-  transform-origin: left top; 
-  width: calc(100% / 1.2); 
+
 }
 
 main {
@@ -62,12 +125,22 @@ main {
   max-width: 90%;
   margin: auto;
   padding: 20px;
+
 }
 
 footer {
   text-align: right;
   font-size: smaller;
   padding: 15px;
+}
+
+.arcgis-zoom {
+  box-shadow: none;
+  border: none;
+}
+
+div.arcgis-zoom>calcite-button {
+  border-inline-end-color: #212121;
 }
 
 .about-content {
@@ -81,7 +154,6 @@ footer {
   background-color: #212121;
   padding: 10px;
   text-align: center;
-
 }
 
 .header {
@@ -97,22 +169,20 @@ footer {
     "wdth" 75;
 }
 
-.header img{
+.header img {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-  width:100%;
-  max-height:10em;
-  border-radius:15px;
-  object-fit:cover  
+  width: 100%;
+  max-height: 10em;
+  border-radius: 15px;
+  object-fit: cover
 }
 
 .header h1 {
   position: relative;
-  top: -50px;
-  margin-bottom: -45px;
-  font-size: 40;
-
-  text-shadow: 0px -15px 30px rgba(0,0,0,0.5), 0px -7px 15px rgba(0,0,0,0.5);
-
+  top: -60px;
+  margin-bottom: -55px;
+  font-size: 50;
+  text-shadow: 0px -15px 30px rgba(0, 0, 0, 0.5), 0px -7px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Container for the list of links */
@@ -131,7 +201,7 @@ footer {
   /* Equivalent to p-4 */
   background-color: var(--calcite-color-foreground-2);
   /* Equivalent to bg-gray-700 */
-  box-shadow: 0 0 8px 0 rgba(15,15,15,0.5);
+  box-shadow: 0 0 8px 0 rgba(15, 15, 15, 0.5);
   border-radius: var(--calcite-corner-radius-round);
   /* Equivalent to rounded-lg */
   text-decoration: none;
@@ -146,7 +216,7 @@ footer {
   /* Equivalent to hover:bg-gray-600 */
 }
 
-.contact-item:active{
+.contact-item:active {
   outline-color: var(--calcite-color-brand);
   outline-offset: .15em;
   outline-width: .15em;
@@ -165,4 +235,14 @@ footer {
 .contact-label {
   font-weight: 500;
   /* Equivalent to font-medium */
+}
+
+.esri-widget{
+  background-color:#212121;
+  border-radius:15px;
+}
+
+.scrollable{
+  overflow-y:auto;
+  overflow-x:hidden;
 }
