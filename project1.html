@@ -6,37 +6,41 @@
 
     <!-- Load the JavaScript Maps SDK Map components or other component packages -->
     <script type="module" src="https://js.arcgis.com/4.33/map-components/"></script>
-    
+
     <title>Lucius Creamers Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
         rel="stylesheet">
-    
-    
+
+    <script type="module" src="main.jsx"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="calcite-mode-dark">
     <div class="header noto-sans-heavy">
-        <img src="KC1440p.jpg" alt="A styled topographic map background"/>
+        <img src="KC1440p.jpg" alt="A styled topographic map background" />
         <h1>Portfolio: Lucius Creamer</h1>
         <div class="action-bar">
             <calcite-action-bar layout="horizontal" expand-disabled="true" expanded="true">
-                <calcite-button href="index.html" class="menu-button" round="true" kind="neutral" label="Open home Page" icon-start="home" scale="m" appearance="transparent" title="Home"></calcite-button>
-                <calcite-button href="about.html" class="menu-button" round="true" kind="neutral" label="Open about me" icon-start="information" scale="m" appearance="transparent" title="About me"></calcite-button>
-                <calcite-button href="contact.html" class="menu-button" round="true" kind="neutral" label="Open contact information" icon-start="address-book" scale="m" appearance="transparent" title="Contact"></calcite-button>
+                <calcite-button href="index.html" class="menu-button" round="true" kind="neutral" label="Open home Page"
+                    icon-start="home" scale="m" appearance="transparent" title="Home"></calcite-button>
+                <calcite-button href="about.html" class="menu-button" round="true" kind="neutral" label="Open about me"
+                    icon-start="information" scale="m" appearance="transparent" title="About me"></calcite-button>
+                <calcite-button href="contact.html" class="menu-button" round="true" kind="neutral"
+                    label="Open contact information" icon-start="address-book" scale="m" appearance="transparent"
+                    title="Contact"></calcite-button>
             </calcite-action-bar>
         </div>
         <h3>Taking control over Calcite Design</h3>
     </div>
     <section class="row" style="align-items:center;justify-content:center;display:-ms-flexbox;position:relative;">
-    <arcgis-map id="map" item-id="02b37471d5d84cacbebcccd785460e94" style="width:80%;margin-left:5%;margin-right:auto;position:relative;">
-        <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
-    </arcgis-map>
-    <div
-         style="
+        <arcgis-map id="map" item-id="02b37471d5d84cacbebcccd785460e94"
+            style="width:80%;margin-left:5%;margin-right:auto;position:relative;">
+            <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
+        </arcgis-map>
+        <div id="legend" style="
             position:absolute;
             top:50%;
             right:3%;
@@ -49,8 +53,10 @@
             box-shadow:0 0px 15px rgba(0,0,0,0.4);
             max-height:70%;
             overflow-y:auto;
+            background-color: #212121;
          ">
-        <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
-    </div>
-</section>
+            <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
+        </div>
+    </section>
+
 </body>
