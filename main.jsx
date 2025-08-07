@@ -53,39 +53,34 @@ const root = createRoot(domNode);
 root.render(<AddMuteButtons />)
 
 async function getNWSAlerts() {
-  const events = []
-  fetch('https://api.weather.gov/alerts/active/area/MO', {
-    method: 'get',
-    headers: {
-      'accept': 'application/ld+json'
-    }
-  }
-  ).then(response => {
+  const events = [];
+  try {
+    const response = await fetch('https://api.weather.gov/alerts/active/area/MO', {
+      method: 'get',
+      headers: {
+        'accept': 'application/ld+json'
+      }
+    });
     if (!response.ok) {
-      throw new Error(`HTTP Request status: ${response.status}`)
+      throw new Error(`HTTP Request status: ${response.status}`);
     }
-    return response.json()
-  }).then(data => {
-    if (data['@graph'].length > 0) {
+    const data = await response.json();
+    if (data['@graph'] && data['@graph'].length > 0) {
       for (let event of data['@graph']) {
-        if (event.severity == "Severe" || event['severity'] == "Extreme") {
-          console.log('bar')
+        if (event.severity === "Severe" || event.severity === "Extreme") {
           events.push({
             "id": event.id,
             "area": event.areaDesc,
             "event": event.event,
             "headline": event.headline
-          })
+          });
         }
       }
     }
-    console.log(events)
-    console.log(data)
-
-  }).catch(error => {
-    console.error('Error fetching data', error)
-  })
-  return events
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+  return events;
 }
 
 // please pass an array of json objects... please
@@ -94,6 +89,9 @@ function NWSAlerts({ events }) {
     width: '100%'
   }
   console.log(events[0].id)
+  if (!events || events.length == 0) {
+    return <div id="alerts-list-box" style={fullWidth}>No alerts at this time.</div>
+  }
   return <div id="alerts-list-box" style={fullWidth}><ul>
     {events.map(event => (
       <li key={event.id}>
@@ -106,7 +104,7 @@ function NWSAlerts({ events }) {
 getNWSAlerts().then(events => {
   //const nwsDomNode = document.getElementById("legend")
   //const nwsRoot = createRoot(nwsDomNode)
-  console.log(events)
+  console.log(events[0])
   root.render(<NWSAlerts events={events} />)
 })
 
