@@ -4,6 +4,9 @@ import React from 'react';
 import "./styles.css";
 
 
+import Color from 'color';
+
+
 
 // Store previous severe event IDs to detect changes
 let previousSevereIds = [];
@@ -20,6 +23,9 @@ alertAudio.loop = true;
 let soundingAlertId = null;
 
 function AddMuteButtons() {
+  const centerBig = {
+    width: '100%'
+  }
   const center = {
     display: 'flex',
     margin: 'auto',
@@ -29,12 +35,14 @@ function AddMuteButtons() {
   const buttonStyle = {
     width: '50%',
     height: '50px',
-    padding: '5px'
+    padding: '5px',
+    color: '#2c2c2c',
+
   }
   const legendStyle = {
     width: '100%',
   }
-  return <div id="floating-box"><div id="mute-buttons" style={center}>
+  return <div id="floating-box" style={centerBig}><div id="mute-buttons" style={center}>
     <calcite-button id="Unmute" appearance="outline-fill" kind="brand" style={buttonStyle}>Unmute</calcite-button>
     <calcite-button id="Mute" appearance="outline-fill" kind="inverse" style={buttonStyle}>Mute</calcite-button>
   </div><arcgis-legend reference-element="map" style={legendStyle}></arcgis-legend></div>
@@ -43,6 +51,65 @@ function AddMuteButtons() {
 const domNode = document.getElementById("legend");
 const root = createRoot(domNode);
 root.render(<AddMuteButtons />)
+
+async function getNWSAlerts() {
+  const events = []
+  fetch('https://api.weather.gov/alerts/active/area/MO', {
+    method: 'get',
+    headers: {
+      'accept': 'application/ld+json'
+    }
+  }
+  ).then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP Request status: ${response.status}`)
+    }
+    return response.json()
+  }).then(data => {
+    if (data['@graph'].length > 0) {
+      for (let event of data['@graph']) {
+        if (event.severity == "Severe" || event['severity'] == "Extreme") {
+          console.log('bar')
+          events.push({
+            "id": event.id,
+            "area": event.areaDesc,
+            "event": event.event,
+            "headline": event.headline
+          })
+        }
+      }
+    }
+    console.log(events)
+    console.log(data)
+
+  }).catch(error => {
+    console.error('Error fetching data', error)
+  })
+  return events
+}
+
+// please pass an array of json objects... please
+function NWSAlerts({ events }) {
+  const fullWidth = {
+    width: '100%'
+  }
+  console.log(events[0].id)
+  return <div id="alerts-list-box" style={fullWidth}><ul>
+    {events.map(event => (
+      <li key={event.id}>
+        <b>{event.event} - {event.area}</b><br />{event.headline}
+      </li>
+    ))}
+  </ul></div>
+}
+
+getNWSAlerts().then(events => {
+  //const nwsDomNode = document.getElementById("legend")
+  //const nwsRoot = createRoot(nwsDomNode)
+  console.log(events)
+  root.render(<NWSAlerts events={events} />)
+})
+
 
 /*
 function fetchAndUpdateSevereAlerts() {
