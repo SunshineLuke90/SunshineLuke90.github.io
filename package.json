@@ -12,6 +12,8 @@
   "dependencies": {
     "@arcgis/core": "^4.33.12",
     "@arcgis/map-components": "^4.33.13",
+    "@types/node": "^24.2.0",
+    "path": "^0.12.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
