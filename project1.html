@@ -16,6 +16,16 @@
 
     <script type="module" src="main.jsx"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .mute-button {
+            --calcite-button-background-color: var(--calcite-color-foreground-3)
+        }
+
+        .unmute-button {
+            --calcite-button-background-color: var(--calcite-color-foreground-3);
+            --calcite-button-border-color: var(--calcite-color-brand)
+        }
+    </style>
 </head>
 
 <body class="calcite-mode-dark">
@@ -36,10 +46,6 @@
         <h3>Taking control over Calcite Design</h3>
     </div>
     <section class="row" style="align-items:center;justify-content:center;display:-ms-flexbox;position:relative;">
-        <arcgis-map id="map" item-id="02b37471d5d84cacbebcccd785460e94"
-            style="width:80%;margin-left:5%;margin-right:auto;position:relative;">
-            <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
-        </arcgis-map>
         <div id="legend" style="
             position:absolute;
             top:50%;
@@ -47,7 +53,7 @@
             transform:translateY(-50%);
             border-radius:15px;
             display:flex;
-            z-index:10;
+            z-index:9999;
             width:20%;
             min-width:200px;
             box-shadow:0 0px 15px rgba(0,0,0,0.4);
@@ -57,6 +63,11 @@
          ">
             <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
         </div>
+        <arcgis-map id="map" item-id="cddcd2af269640fd8ee2ffa859309937"
+            style="width:80%;margin-left:5%;margin-right:auto;position:relative;">
+            <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
+        </arcgis-map>
+
     </section>
 
 </body>

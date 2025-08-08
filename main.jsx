@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
-
+import { getNWSAlerts } from './services/nwsApi'
 import "./styles.css";
 
 
@@ -22,10 +22,7 @@ alertAudio.loop = true;
 // Track which alert is currently sounding
 let soundingAlertId = null;
 
-function AddMuteButtons() {
-  const centerBig = {
-    width: '100%'
-  }
+function MuteButtons() {
   const center = {
     display: 'flex',
     margin: 'auto',
@@ -36,59 +33,23 @@ function AddMuteButtons() {
     width: '50%',
     height: '50px',
     padding: '5px',
-    color: '#2c2c2c',
-
   }
-  const legendStyle = {
-    width: '100%',
-  }
-  return <div id="floating-box" style={centerBig}><div id="mute-buttons" style={center}>
-    <calcite-button id="Unmute" appearance="outline-fill" kind="brand" style={buttonStyle}>Unmute</calcite-button>
-    <calcite-button id="Mute" appearance="outline-fill" kind="inverse" style={buttonStyle}>Mute</calcite-button>
-  </div><arcgis-legend reference-element="map" style={legendStyle}></arcgis-legend></div>
+  return <div id="mute-buttons" style={center}>
+    <calcite-button id="Unmute" appearance="outline-fill" kind="neutral" style={buttonStyle} class="unmute-button">Unmute</calcite-button>
+    <calcite-button id="Mute" appearance="outline-fill" kind="inverse" style={buttonStyle} class="mute-button">Mute</calcite-button>
+  </div>
 }
 
 const domNode = document.getElementById("legend");
 const root = createRoot(domNode);
-root.render(<AddMuteButtons />)
-
-async function getNWSAlerts() {
-  const events = [];
-  try {
-    const response = await fetch('https://api.weather.gov/alerts/active/area/MO', {
-      method: 'get',
-      headers: {
-        'accept': 'application/ld+json'
-      }
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP Request status: ${response.status}`);
-    }
-    const data = await response.json();
-    if (data['@graph'] && data['@graph'].length > 0) {
-      for (let event of data['@graph']) {
-        if (event.severity === "Severe" || event.severity === "Extreme") {
-          events.push({
-            "id": event.id,
-            "area": event.areaDesc,
-            "event": event.event,
-            "headline": event.headline
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching data', error);
-  }
-  return events;
-}
+//root.render(<MuteButtons />)
 
 // please pass an array of json objects... please
 function NWSAlerts({ events }) {
   const fullWidth = {
-    width: '100%'
+    width: '100%',
+    margin: '5px',
   }
-  console.log(events[0].id)
   if (!events || events.length == 0) {
     return <div id="alerts-list-box" style={fullWidth}>No alerts at this time.</div>
   }
@@ -101,11 +62,22 @@ function NWSAlerts({ events }) {
   </ul></div>
 }
 
-getNWSAlerts().then(events => {
+getNWSAlerts("GA").then(events => {
   //const nwsDomNode = document.getElementById("legend")
   //const nwsRoot = createRoot(nwsDomNode)
-  console.log(events[0])
-  root.render(<NWSAlerts events={events} />)
+  try {
+    console.log(events[0].id)
+  }
+  catch {
+    console.log("No events found")
+  }
+  const currentSevereIds = events.map(item => item.id);
+  root.render(
+    <div>
+      <MuteButtons />
+      <NWSAlerts events={events} />
+    </div>
+  )
 })
 
 
