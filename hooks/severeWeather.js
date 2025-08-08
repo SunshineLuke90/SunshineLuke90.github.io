@@ -37,7 +37,7 @@ export function severeWeather(areaCode = 'MO') {
     // Fetch data on initial load and then on a timer
     useEffect(() => {
         fetchAndProcessAlerts(); // Initial fetch
-        const interval = setInterval(fetchAndProcessAlerts, 60000); // Fetch every 60 seconds
+        const interval = setInterval(fetchAndProcessAlerts, 30000); // Fetch every 60 seconds
         return () => clearInterval(interval); // Cleanup on unmount
     }, [fetchAndProcessAlerts]);
 

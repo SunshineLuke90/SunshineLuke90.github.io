@@ -4,7 +4,8 @@ export async function getNWSAlerts(areaCode = 'MO') {
         const response = await fetch(`https://api.weather.gov/alerts/active/area/${areaCode}`, {
             method: 'get',
             headers: {
-                'accept': 'application/ld+json'
+                'accept': 'application/ld+json',
+                'User-Agent': 'PortfolioAlertList-Lucius@luciuscreamer.com'
             }
         });
         if (!response.ok) {
