@@ -1,85 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
-import { getNWSAlerts } from './services/nwsApi'
+import { AlertPanel } from './components/AlertPanel';
 import "./styles.css";
-
-
-import Color from 'color';
-
-
-
-// Store previous severe event IDs to detect changes
-let previousSevereIds = [];
-// Store muted alert IDs
-let mutedAlerts = new Set();
-
-
-// Create audio element for alert sound
-const alertAudio = new Audio("https://actions.google.com/sounds/v1/weather/rolling_thunder.ogg");
-alertAudio.volume = 0.8;
-alertAudio.loop = true;
-
-// Track which alert is currently sounding
-let soundingAlertId = null;
-
-function MuteButtons() {
-  const center = {
-    display: 'flex',
-    margin: 'auto',
-    width: '100%',
-    justifyContent: 'space-evenly'
-  }
-  const buttonStyle = {
-    width: '50%',
-    height: '50px',
-    padding: '5px',
-  }
-  return <div id="mute-buttons" style={center}>
-    <calcite-button id="Unmute" appearance="outline-fill" kind="neutral" style={buttonStyle} class="unmute-button">Unmute</calcite-button>
-    <calcite-button id="Mute" appearance="outline-fill" kind="inverse" style={buttonStyle} class="mute-button">Mute</calcite-button>
-  </div>
-}
 
 const domNode = document.getElementById("legend");
 const root = createRoot(domNode);
-//root.render(<MuteButtons />)
 
-// please pass an array of json objects... please
-function NWSAlerts({ events }) {
-  const fullWidth = {
-    width: '100%',
-    margin: '5px',
-  }
-  if (!events || events.length == 0) {
-    return <div id="alerts-list-box" style={fullWidth}>No alerts at this time.</div>
-  }
-  return <div id="alerts-list-box" style={fullWidth}><ul>
-    {events.map(event => (
-      <li key={event.id}>
-        <b>{event.event} - {event.area}</b><br />{event.headline}
-      </li>
-    ))}
-  </ul></div>
-}
-
-getNWSAlerts("GA").then(events => {
-  //const nwsDomNode = document.getElementById("legend")
-  //const nwsRoot = createRoot(nwsDomNode)
-  try {
-    console.log(events[0].id)
-  }
-  catch {
-    console.log("No events found")
-  }
-  const currentSevereIds = events.map(item => item.id);
-  root.render(
-    <div>
-      <MuteButtons />
-      <NWSAlerts events={events} />
-    </div>
-  )
-})
-
+root.render(
+  <AlertPanel />
+)
 
 /*
 function fetchAndUpdateSevereAlerts() {
