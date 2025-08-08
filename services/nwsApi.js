@@ -1,4 +1,4 @@
-export async function getNWSAlerts(areaCode = 'GA') {
+export async function getNWSAlerts(areaCode = 'MO') {
     const events = [];
     try {
         const response = await fetch(`https://api.weather.gov/alerts/active/area/${areaCode}`, {

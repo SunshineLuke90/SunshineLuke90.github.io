@@ -3,14 +3,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { getNWSAlerts } from '../services/nwsApi';
 
-export function severeWeather() {
+export function severeWeather(areaCode = 'MO') {
     const [alerts, setAlerts] = useState([]);
     const [mutedAlertIds, setMutedAlertIds] = useState(new Set());
     const previousAlertIds = useRef([]);
     const audioRef = useRef(new Audio('https://actions.google.com/sounds/v1/weather/distant_thunder.ogg')); // Path to your audio file
 
     const fetchAndProcessAlerts = useCallback(async () => {
-        const currentAlerts = await getNWSAlerts();
+        const currentAlerts = await getNWSAlerts(areaCode);
         const currentAlertIds = currentAlerts.map(alert => alert.id);
 
         // Only update state and play sound if alerts have actually changed

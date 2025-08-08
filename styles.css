@@ -27,8 +27,8 @@
   --calcite-corner-radius-sharp: 5px;
   --calcite-corner-radius-pill: 10px;
   --calcite-corner-radius-0: 10px;
-  --calcite-corner-radius-sm:10px;
-  --calcite-corner-radius-xs:8px;
+  --calcite-corner-radius-sm: 10px;
+  --calcite-corner-radius-xs: 8px;
   --calcite-corner-radius-none: 5px;
   font-family: "Noto Sans", sans-serif;
 }
@@ -79,7 +79,7 @@
   --calcite-color-background-none: rgba(255, 255, 255, 0);
   --calcite-color-background: #212121;
   --calcite-button-background-color: #212121;
-  --calcite-border-color:#212121;
+  --calcite-border-color: #212121;
 }
 
 
@@ -107,6 +107,8 @@ calcite-action-bar {
 
 calcite-button {
   --calcite-button-corner-radius: 5em;
+  --calcite-button-text-color: '#ffffff';
+  --calcite-button-icon-color: '#ffffff'
 }
 
 html {
@@ -237,12 +239,12 @@ div.arcgis-zoom>calcite-button {
   /* Equivalent to font-medium */
 }
 
-.esri-widget{
-  background-color:#212121;
-  border-radius:15px;
+.esri-widget {
+  background-color: #212121;
+  border-radius: 15px;
 }
 
-.scrollable{
-  overflow-y:auto;
-  overflow-x:hidden;
+.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
