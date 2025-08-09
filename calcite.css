@@ -12329,7 +12329,8 @@ calcite-block>.esri-grid-controls {
     pointer-events: none;
     flex-flow: column;
     display: flex;
-    position: absolute
+    position: absolute;
+    border-radius: var(--calcite-corner-radius-round)
 }
 
 .esri-ui .esri-popup .esri-features {
@@ -12346,6 +12347,7 @@ calcite-block>.esri-grid-controls {
 }
 
 .esri-popup--shadow {
+    border-radius: var(--calcite-corner-radius-round);
     box-shadow: 0 1px 4px #000c
 }
 
