@@ -1,0 +1,50 @@
+/* Container for the list of links */
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    /* Creates space between link items */
+}
+
+/* Individual link items (phone, email, github) */
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    /* Equivalent to p-4 */
+    background-color: var(--calcite-color-foreground-2);
+    /* Equivalent to bg-gray-700 */
+    box-shadow: 0 0 8px 0 rgba(15, 15, 15, 0.5);
+    border-radius: var(--calcite-corner-radius-round);
+    /* Equivalent to rounded-lg */
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s ease;
+    /* Smooth hover effect */
+}
+
+/* Hover state for the links */
+.contact-item:hover {
+    background-color: var(--calcite-color-foreground-3);
+}
+
+.contact-item:active {
+    outline-color: var(--calcite-color-brand);
+    outline-offset: .15em;
+    outline-width: .15em;
+    outline-style: solid;
+}
+
+/* Styling for the SVG icons */
+.contact-icon {
+    color: var(--calcite-color-brand);
+    /* Equivalent to text-indigo-400 */
+    margin-right: 1em;
+    /* Equivalent to mr-4 */
+}
+
+/* Styling for the text next to the icon */
+.contact-label {
+    font-weight: 500;
+    /* Equivalent to font-medium */
+}

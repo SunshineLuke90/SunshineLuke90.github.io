@@ -7,7 +7,7 @@ const domNode = document.getElementById("legend");
 const root = createRoot(domNode);
 
 root.render(
-  <AlertPanel areaCode='TX' />
+  <AlertPanel areaCode='AZ' />
 )
 
 /*

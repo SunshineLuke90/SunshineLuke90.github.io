@@ -1,7 +1,8 @@
 <head>
     <script type="module" src="https://js.arcgis.com/calcite-components/3.2.1/calcite.esm.js"></script>
     <!-- Load the JavaScript Maps SDK core API -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/dark/main.css" />
+    <!--<link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/dark/main.css" /> -->
+    <link rel="stylesheet" href="calcite.css">
     <script src="https://js.arcgis.com/4.33/"></script>
 
     <!-- Load the JavaScript Maps SDK Map components or other component packages -->
@@ -18,12 +19,36 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .mute-button {
+            --calcite-button-background-color: var(--calcite-color-foreground-2)
+        }
+
+        .mute-button:hover {
             --calcite-button-background-color: var(--calcite-color-foreground-3)
         }
 
         .unmute-button {
-            --calcite-button-background-color: var(--calcite-color-foreground-3);
+            --calcite-button-background-color: var(--calcite-color-foreground-2);
             --calcite-button-border-color: var(--calcite-color-brand)
+        }
+
+        .unmute-button:hover {
+            --calcite-button-background-color: var(--calcite-color-foreground-3)
+        }
+
+        .esri-popup--shadow {
+            border-radius: var(--calcite-corner-radius-round)
+        }
+
+        .esri-view {
+            border-radius: var(--calcite-corner-radius-round)
+        }
+
+        .esri-view-surface {
+            border-radius: var(--calcite-corner-radius-round)
+        }
+
+        .esri-view-surface:after {
+            border-radius: var(--calcite-corner-radius-round)
         }
     </style>
 </head>
@@ -64,7 +89,7 @@
             <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
         </div>
         <arcgis-map id="map" item-id="cddcd2af269640fd8ee2ffa859309937"
-            style="width:80%;margin-left:5%;margin-right:auto;position:relative;">
+            style="width:80%;margin-left:5%;margin-right:auto;position:relative;border-radius:15px">
             <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
         </arcgis-map>
 
