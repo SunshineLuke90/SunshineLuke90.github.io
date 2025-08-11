@@ -17,6 +17,11 @@ export function severeWeather(areaCode = 'MO') {
         if (JSON.stringify(currentAlertIds) !== JSON.stringify(previousAlertIds.current)) {
             setAlerts(currentAlerts);
 
+            // On initial load, mute all current alerts
+            if (previousAlertIds.current.length === 0 && currentAlertIds.length > 0) {
+                setMutedAlertIds(new Set(currentAlertIds));
+            }
+
             // Find genuinely new alerts
             const newAlerts = currentAlerts.filter(
                 alert => !previousAlertIds.current.includes(alert.id)
@@ -32,7 +37,7 @@ export function severeWeather(areaCode = 'MO') {
 
         // Store the current IDs for the next check
         previousAlertIds.current = currentAlertIds;
-    }, [mutedAlertIds]); // Rerun if mutedAlertIds changes
+    }, [mutedAlertIds]);
 
     // Fetch data on initial load and then on a timer
     useEffect(() => {
