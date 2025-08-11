@@ -12,6 +12,7 @@
   "dependencies": {
     "@arcgis/core": "^4.33.12",
     "@arcgis/map-components": "^4.33.13",
+    "@esri/calcite-components": "^3.2.1",
     "@types/node": "^24.2.0",
     "path": "^0.12.7",
     "react": "^19.1.1",
