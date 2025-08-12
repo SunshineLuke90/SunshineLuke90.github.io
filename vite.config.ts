@@ -16,7 +16,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         about: resolve(__dirname, 'about.html'), // Your custom HTML entry
         contact: resolve(__dirname, 'contact.html'), // Another custom HTML entry
-        project1: resolve(__dirname, 'project1.html')
+        project1: resolve(__dirname, 'controllingCalcite.html')
       }
     }
   }
