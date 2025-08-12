@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import { AlertPanel } from './components/AlertPanel';
-import "./styles.css";
-import "./calcite.css"
+import "../styles.css";
+import "../calcite.css"
 
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
@@ -15,7 +15,7 @@ const domNode = document.getElementById("legend");
 const root = createRoot(domNode);
 
 root.render(
-  <AlertPanel areaCode='AZ' />
+  <AlertPanel areaCode='MO' />
 )
 
 /*
