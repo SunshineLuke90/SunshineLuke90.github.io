@@ -1,5 +1,12 @@
 :root {
   font-family: "Noto Sans", sans-serif;
+  --calcite-sans-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+}
+
+body,
+.calcite-mode-dark,
+.calcite-mode-light {
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif !important;
 }
 
 calcite-card {
