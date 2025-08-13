@@ -18,16 +18,26 @@ export function AlertList({ alerts, mutedAlertIds, onToggleMute, onMuteAll, onUn
                 <calcite-button onClick={onUnmuteAll} id="Unmute" appearance="outline-fill" kind="neutral" style={buttonStyle} class="unmute user-button">Unmute</calcite-button>
                 <calcite-button onClick={onMuteAll} id="Mute" appearance="outline-fill" kind="inverse" style={buttonStyle} class="user-button">Mute</calcite-button>
             </div>
-            <ul style={{ listStyleType: 'none', padding: 0, margin: 5 }}>
-                {alerts.map(alert => (
-                    <Alert
-                        key={alert.id}
-                        alert={alert}
-                        isMuted={mutedAlertIds.has(alert.id)}
-                        onToggleMute={onToggleMute}
-                    />
-                ))}
-            </ul>
+            {alerts.length == 0 ? (
+                <div style={{ padding: 0, margin: 5, textAlign: "center" }}>
+                    <h3>
+                        There are currently no severe alerts in Missouri.
+                    </h3>
+                </div>
+            ) : (
+                <ul style={{ listStyleType: 'none', padding: 0, margin: 5 }}>
+                    {alerts.map(alert => (
+                        <Alert
+                            key={alert.id}
+                            alert={alert}
+                            isMuted={mutedAlertIds.has(alert.id)}
+                            onToggleMute={onToggleMute}
+                        />
+                    ))}
+                </ul>
+            )
+            }
+
         </div>
     );
 }
