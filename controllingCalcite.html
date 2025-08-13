@@ -1,33 +1,33 @@
 <head>
+    <!--Instructions to get favicon for various webpages and types.-->
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <link rel="manifest" href="/images/site.webmanifest" />
 
-    <!-- Load the JavaScript Maps SDK core API -->
-    <!--<link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/dark/main.css" /> -->
-
-
-
-    <title>Lucius Creamers Portfolio</title>
+    <!--Import Noto Sans for using as the main font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
         rel="stylesheet">
 
-    <script type="module" src="./controllingCalcite/main.jsx"></script>
+    <!--Import Calcite stylesheet to control Esri component styling-->
     <link rel="stylesheet" href="calcite.css">
+
+    <!--Import general component stylesheet-->
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .user-button {
-            --calcite-button-background-color: var(--calcite-color-foreground-2)
-        }
 
-        .user-button:hover {
-            --calcite-button-background-color: var(--calcite-color-foreground-3)
-        }
+    <!--Actual jsx/react script that controls the legend div.-->
+    <script type="module" src="./controllingCalcite/main.jsx"></script>
 
-        .unmute {
-            --calcite-button-border-color: var(--calcite-color-brand)
-        }
-    </style>
+    <!--Stylesheet specific to this page-->
+    <link rel="stylesheet" href="./controllingCalcite/controllingCalcite.css">
+
+    <!--Title used in tab header-->
+    <title>Lucius Creamers Portfolio</title>
 </head>
 
 <body class="calcite-mode-dark">
@@ -47,26 +47,11 @@
         </div>
         <h3>Taking control over Calcite Design</h3>
     </div>
-    <section class="row" style="align-items:center;justify-content:center;display:-ms-flexbox;position:relative;">
-        <div id="legend" style="
-            position:absolute;
-            top:50%;
-            right:3%;
-            transform:translateY(-50%);
-            border-radius:15px;
-            display:flex;
-            z-index:9999;
-            width:20%;
-            min-width:200px;
-            box-shadow:0 0px 15px rgba(0,0,0,0.4);
-            max-height:70%;
-            overflow-y:auto;
-            background-color: var(--calcite-color-foreground-2);
-         ">
+    <section class="row">
+        <div id="legend" class="react-div">
             <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
         </div>
-        <arcgis-map id="map" item-id="cddcd2af269640fd8ee2ffa859309937"
-            style="width:80%;margin-left:5%;margin-right:auto;position:relative;border-radius:15px">
+        <arcgis-map id="map" class="map" item-id="cddcd2af269640fd8ee2ffa859309937">
             <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
         </arcgis-map>
 
