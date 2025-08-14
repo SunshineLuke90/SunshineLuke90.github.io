@@ -1,3 +1,27 @@
+export function MapNoZoom({ container, map_id }) {
+    const map = new WebMap({
+        portalItem: {
+            id: map_id
+        }
+    })
+
+    const view = new MapView({
+        container: container,
+        map: map,
+        ui: {
+            components: ['attribution'],
+        },
+        constraints: {
+            rotationEnabled: false,
+        },
+    })
+    view.when(disableZooming)
+}
+
+
+
+
+
 const [WebMap, MapView] = await $arcgis.import([
     "@arcgis/core/WebMap.js",
     "@arcgis/core/views/MapView.js",
@@ -18,13 +42,6 @@ const view = new MapView({
     },
     constraints: {
         rotationEnabled: false,
-    },
-    popup: {
-        dockEnabled: true,
-        dockOptions: {
-            position: "top-right",
-            breakpoint: false,
-        },
     },
 });
 
