@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="styles.css">
 
     <!--Actual jsx/react script that controls the legend div.-->
-    <script type="module" src="./controllingCalcite/main.jsx"></script>
+    <script type="module" src="./onHover/main.jsx"></script>
 
     <!--Stylesheet specific to this page-->
-    <link rel="stylesheet" href="./controllingCalcite/controllingCalcite.css">
+    <link rel="stylesheet" href="./onHover/styles.css">
 
     <!--Title used in tab header-->
     <title>Lucius Creamers Portfolio</title>
@@ -45,33 +45,11 @@
                     title="Contact"></calcite-button>
             </calcite-action-bar>
         </div>
-        <h2>Taking control over Calcite Design</h2>
+        <h2>Working with the hover effect</h2>
     </div>
-    <section class="row">
-        <div id="legend" class="react-div">
-            <arcgis-legend reference-element="map" style="width:100%"></arcgis-legend>
-        </div>
-        <arcgis-map id="map" class="map" item-id="cddcd2af269640fd8ee2ffa859309937" center="-92.5, 38.6" zoom="6">
-            <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
-        </arcgis-map>
-    </section>
-    <section style="margin-top:20px">
-        <h3 class="header-text">About this project</h3>
-        <p class="body-text">This project is a showcase of how calcite components and the ArcGIS Javascript SDK
-            can be adjusted to completely change the visual identity of the components. The
-            components in this page, and throughout this website are being adjusted to conform
-            to this websites visual identity, with soft rounded corners, overlapping elements, and
-            a dark color scheme.<br><br>
-            The map displays Watches, Warnings and Advisories from the National Weather Service.
-            The features within the map are set to update every 5 minutes. However, when looking for
-            real-time updates on a monitoring website, especially with the short term nature of some
-            warnings like tornado or flash flood warnings, 5 minutes is not quick enough.<br><br>
-            The panel to the right of the map sends API requests directly to the National
-            Weather Service, fetching active
-            severe and extreme alerts every 30 seconds. In addition, the side panel allows the user
-            to turn on an audio alert for new alerts. If the user unmutes an alert, a sound will play until
-            the user mutes the alert again.
-        </p>
+    <section class="main-content">
+        <arcgis-map id="map" class="map" item-id="cddcd2af269640fd8ee2ffa859309937" center="-92.5, 38.6"
+            zoom="6"></arcgis-map>
     </section>
     <footer>
         <p>&copy; 2025 Lucius Creamer. All rights reserved.</p>

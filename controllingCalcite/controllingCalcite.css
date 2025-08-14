@@ -40,3 +40,14 @@
     position: relative;
     border-radius: 15px
 }
+
+.header-text {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.body-text {
+    width: 50%;
+    margin: auto;
+}

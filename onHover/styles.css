@@ -1,0 +1,10 @@
+.main-content {
+    padding: 10px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    display: -ms-flexbox;
+    box-shadow: 0 0 4 #000;
+    border-radius: 15px;
+}
