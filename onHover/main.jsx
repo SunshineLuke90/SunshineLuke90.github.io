@@ -1,24 +1,42 @@
 import "../styles.css";
-import "../calcite.css"
-
-import { MapNoZoom } from "./components/MapNoZoom";
+import "../calcite.css";
 
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
-import '@esri/calcite-components/dist/components/calcite-shell';
-import '@arcgis/map-components/components/arcgis-map'
-import '@arcgis/map-components/components/arcgis-zoom'
-import '@arcgis/map-components/components/arcgis-legend'
+import '@arcgis/map-components/components/arcgis-map';
+
+import WebMap from "@arcgis/core/WebMap";
+import MapView from '@arcgis/core/views/MapView.js';
+
+import MapNoZoom from "./components/MapNoZoom";
+
+const mapinfo = MapNoZoom("83e20099377244d3b995de9e6a35ee37", "map", [-92.5, 38.6], 6)
 
 
-document.querySelector("map").addEventListener("arcgisViewReadyChange", (event) => {
-    const { thing } = event.target.map
-    thing.view
-});
-const domNode = document.getElementById("map");
 
-const root = createRoot(domNode);
+if (!mapinfo.view.ready) {
+    mapinfo.view.addEventListener("arcgisViewReadyChange", handleMapReady, {
+        once: true,
+    });
+} else {
+    handleMapReady();
+}
+const mapLayers = mapinfo.view.layerViews.toArray()
 
-root.render(
-    <MapNoZoom container="map" map_id="d5dda743788a4b0688fe48f43ae7beb9"></MapNoZoom>
-)
+console.log(mapLayers)
+async function handleMapReady() {
+    // change the default highlight option object's color to orange
+    mapinfo.view.highlights.forEach((highlightOption) => {
+        if (highlightOption.name === "default") {
+            highlightOption.color = "orange";
+        }
+    });
+
+    const layerView = await viewElement.whenLayerView(layer);
+
+    // update layer's renderer
+    const renderer = layer.renderer.clone();
+    renderer.symbol.width = 4;
+    renderer.symbol.color = [128, 128, 128, 0.8];
+    layer.renderer = renderer;
+}

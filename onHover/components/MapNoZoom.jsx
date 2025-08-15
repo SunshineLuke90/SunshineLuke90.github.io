@@ -1,58 +1,6 @@
-export function MapNoZoom({ container, map_id }) {
-    const map = new WebMap({
-        portalItem: {
-            id: map_id
-        }
-    })
+import WebMap from "@arcgis/core/WebMap";
+import MapView from '@arcgis/core/views/MapView.js'
 
-    const view = new MapView({
-        container: container,
-        map: map,
-        ui: {
-            components: ['attribution'],
-        },
-        constraints: {
-            rotationEnabled: false,
-        },
-    })
-    view.when(disableZooming)
-}
-
-
-
-
-
-const [WebMap, MapView] = await $arcgis.import([
-    "@arcgis/core/WebMap.js",
-    "@arcgis/core/views/MapView.js",
-]);
-
-const map = new WebMap({
-    portalItem: {
-        // autocasts as new PortalItem()
-        id: "d5dda743788a4b0688fe48f43ae7beb9",
-    },
-});
-
-const view = new MapView({
-    container: "viewDiv",
-    map: map,
-    ui: {
-        components: ["attribution"],
-    },
-    constraints: {
-        rotationEnabled: false,
-    },
-});
-
-view.when(disableZooming);
-
-/**
- * Disables all zoom gestures on the given view instance.
- *
- * @param {esri/views/MapView} view - The MapView instance on which to
- *                                  disable zooming gestures.
- */
 function disableZooming(view) {
     // Removes the zoom action on the popup
     view.popup.actions = [];
@@ -63,7 +11,7 @@ function disableZooming(view) {
     }
 
     // exlude the zoom widget from the default UI
-    view.ui.components = ["attribution"];
+    view.ui.components = [];
 
     // disable mouse wheel scroll zooming on the view
     view.on("mouse-wheel", stopEvtPropagation);
@@ -102,4 +50,35 @@ function disableZooming(view) {
     });
 
     return view;
+}
+
+export default function MapNoZoom(mapId, containerId, center, zoom) {
+    const map = new WebMap({
+        portalItem: {
+            // autocasts as new PortalItem()
+            id: mapId,
+        },
+    });
+
+    const view = new MapView({
+        container: containerId,
+        map: map,
+        center: center,
+        zoom: zoom,
+        ui: {
+            components: ["attribution"],
+        },
+        constraints: {
+            rotationEnabled: false,
+        },
+        popup: {
+            dockEnabled: true,
+            dockOptions: {
+                position: "top-left",
+                breakpoint: false,
+            },
+        },
+    });
+    view.when(disableZooming)
+    return { view: view, map: map };
 }
