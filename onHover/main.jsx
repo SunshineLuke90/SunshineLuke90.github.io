@@ -18,7 +18,7 @@ view.popup.dockOptions = {
     position: "top-left"
 };
 
-// fields used to display hurricanes info
+// fields used to display demographics info
 const demographicFields = {
     NAME: "Name",
     P0120002: "Male Population",
@@ -52,11 +52,11 @@ view.when(() => {
         const layerView = await view.whenLayerView(layer);
 
         async function eventHandler(event) {
-            // only include graphics from hurricanes layer in the hitTest
+            // only include graphics from Demographic layer in the hitTest
             const opts = {
                 include: layer,
             };
-            // the hitTest() checks to see if any graphics from the hurricanesLayer
+            // the hitTest() checks to see if any graphics from the Demographic Layer
             // intersect the x, y coordinates of the pointer
             const response = await view.hitTest(event.detail, opts);
             if (response.results.length === 0) {
@@ -67,7 +67,7 @@ view.when(() => {
                 return;
             }
 
-            // the topmost graphic from the hurricanes layer and display attribute
+            // the topmost graphic from the demographics layer and display attribute
             // values from the graphic to the user
             const hitGraphic = response.results[0].graphic;
             const objectId = hitGraphic.attributes.OBJECTID;
@@ -76,7 +76,7 @@ view.when(() => {
                 return;
             }
 
-            // highlight all features belonging to the same hurricane as the feature
+            // highlight all features belonging to the same demographic as the feature
             // returned from the hitTest
             const query = layer.createQuery();
             query.where = `OBJECTID = '${objectId}'`;
