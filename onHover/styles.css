@@ -32,5 +32,7 @@
     height: 500px;
     max-height: 70%;
     overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
     background-color: var(--calcite-color-foreground-2);
 }

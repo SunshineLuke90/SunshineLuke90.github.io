@@ -18,14 +18,22 @@ view.popup.dockOptions = {
     position: "top-left"
 };
 
+// fields used to display hurricanes info
+const demographicFields = {
+    NAME: "Name",
+    P0120002: "Male Population",
+    P0120026: "Female Population",
+};
+
+let highlight, currentId
+
+view.highlights = [{
+    name: "default",
+    color: "white"
+}];
+
 view.when(() => {
     const layer = view.map.layers.getItemAt(0);
-    layer.queryFeatures().then(function (results) {
-        // prints an array of all the features in the service to the console
-        console.log(results.features);
-    });
-    console.log(layer)
-
 
     if (!mapElement.ready) {
         mapElement.addEventListener("arcgisViewReadyChange", handleMapReady, {
@@ -37,18 +45,11 @@ view.when(() => {
 
     async function handleMapReady() {
         // Change the default highlight option color to white
-        view.highlights = [{
-            name: "default",
-            color: "white"
-        }];
 
         mapElement.addEventListener("arcgisViewPointerDown", eventHandler);
         mapElement.addEventListener("arcgisViewPointerMove", eventHandler);
 
-
         const layerView = await view.whenLayerView(layer);
-
-        let highlight, currentName;
 
         async function eventHandler(event) {
             // only include graphics from hurricanes layer in the hitTest
@@ -58,35 +59,55 @@ view.when(() => {
             // the hitTest() checks to see if any graphics from the hurricanesLayer
             // intersect the x, y coordinates of the pointer
             const response = await view.hitTest(event.detail, opts);
-            if (!response.results.length) {
+            if (response.results.length === 0) {
                 // no results returned from hittest, remove previous highlights
                 highlight?.remove();
-                document.getElementById("chart").innerHTML = `GEOID: <br> Category: <br> Speed:`;
+                currentId = null;
+                document.getElementById("chart").innerHTML = `Name: <br> Male Population: <br> Female Population:`;
                 return;
             }
 
             // the topmost graphic from the hurricanes layer and display attribute
             // values from the graphic to the user
-            const graphic = response.results[0].graphic;
+            const hitGraphic = response.results[0].graphic;
+            const objectId = hitGraphic.attributes.OBJECTID;
 
-            const attributes = graphic.attributes;
-            const objectid = attributes.OBJECTID;
-            console.log(graphic.attributes)
-            console.log(attributes);
-            console.log(objectid)
-
-            // update the hurricanes info div
-            //document.getElementById("info").innerHTML = setupHurricaneInfoDiv(attributes);
+            if (highlight && currentId === objectId) {
+                return;
+            }
 
             // highlight all features belonging to the same hurricane as the feature
             // returned from the hitTest
-            const query = layerView.createQuery();
-            query.where = `OBJECTID = '${objectid}'`;
-            layerView.queryObjectIds(query).then((ids) => {
+            const query = layer.createQuery();
+            query.where = `OBJECTID = '${objectId}'`;
+            query.outFields = ["NAME", "P0120002", "P0120026", "OBJECTID"];
+            query.returnGeometry = false;
+
+            const featureSet = await layer.queryFeatures(query);
+
+            if (featureSet.features.length > 0) {
+                const graphic = featureSet.features[0];
+                currentId = graphic.attributes.OBJECTID;
                 highlight?.remove();
-                highlight = layerView.highlight(ids);
-                currentName = objectid;
-            });
+                highlight = layerView.highlight(graphic);
+                document.getElementById("chart").innerHTML = setupChartDiv(graphic.attributes);
+            }
+
+            function setupChartDiv(attributes) {
+                let isFirst = true;
+                const htmls = Object.keys(demographicFields)
+                    .map((name) => {
+                        if (attributes[name] != null) {
+                            const html = `<div>${demographicFields[name]}: <b>${attributes[name]}</b><div>`;
+                            isFirst = false;
+                            return html;
+                        }
+                        return "";
+                    })
+                    .filter((html) => html !== "");
+                return htmls.join("");
+            }
+
         }
     }
 })
