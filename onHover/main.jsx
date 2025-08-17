@@ -1,6 +1,7 @@
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@arcgis/map-components/components/arcgis-map';
+import { Chart } from 'chart.js';
 import { disableZooming } from "./components/disableZoom";
 
 const mapElement = document.querySelector("arcgis-map");
@@ -95,6 +96,24 @@ view.when(() => {
 
             function setupChartDiv(attributes) {
                 let isFirst = true;
+                /* 
+                //Preparation for using the chart for data display. 
+                // First need to optimize dataset to be able to provide data more cleanly.
+                console.log(attributes)
+                const femaleAgeData = []
+                const maleAgeData = []
+
+                for (let key in attributes) {
+                    if (key.includes("26")) {
+                        femaleAgeData.push(attributes[key])
+                    }
+                    else if (key.includes("0002")) {
+                        maleAgeData.push(attributes[key])
+                    }
+                }
+                console.log(femaleAgeData)
+                console.log(maleAgeData)
+                */
                 const htmls = Object.keys(demographicFields)
                     .map((name) => {
                         if (attributes[name] != null) {
