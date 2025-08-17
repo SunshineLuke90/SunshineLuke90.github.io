@@ -1,9 +1,8 @@
-import WebMap from "@arcgis/core/WebMap";
-import MapView from '@arcgis/core/views/MapView.js'
-
-function disableZooming(view) {
-    // Removes the zoom action on the popup
+export function disableZooming(view) {
+    // Removes the zoom to feature option from the popup
     view.popup.actions = [];
+    view.popup.viewModel = { includeDefaultActions: false };
+
 
     // stops propagation of default behavior when an event fires
     function stopEvtPropagation(event) {
@@ -50,35 +49,4 @@ function disableZooming(view) {
     });
 
     return view;
-}
-
-export default function MapNoZoom(mapId, containerId, center, zoom) {
-    const map = new WebMap({
-        portalItem: {
-            // autocasts as new PortalItem()
-            id: mapId,
-        },
-    });
-
-    const view = new MapView({
-        container: containerId,
-        map: map,
-        center: center,
-        zoom: zoom,
-        ui: {
-            components: ["attribution"],
-        },
-        constraints: {
-            rotationEnabled: false,
-        },
-        popup: {
-            dockEnabled: true,
-            dockOptions: {
-                position: "top-left",
-                breakpoint: false,
-            },
-        },
-    });
-    view.when(disableZooming)
-    return { view: view, map: map };
 }

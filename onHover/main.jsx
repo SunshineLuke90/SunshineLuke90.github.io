@@ -1,42 +1,39 @@
-import "../styles.css";
-import "../calcite.css";
-
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@arcgis/map-components/components/arcgis-map';
+import { disableZooming } from "./components/disableZoom";
 
-import WebMap from "@arcgis/core/WebMap";
-import MapView from '@arcgis/core/views/MapView.js';
+const mapElement = document.querySelector("arcgis-map");
 
-import MapNoZoom from "./components/MapNoZoom";
+mapElement.addEventListener("arcgisViewReadyChange", (event) => {
+    console.log("Map component's view is ready.");
+    const view = event.target.view;
+    view.when(() => {
+        view.popup.dockOptions = {
+            // Disable the dock button so users cannot undock the popup
+            buttonEnabled: false,
+            // Dock the popup when the size of the view is less than or equal to 600x1000 pixels
+            breakpoint: {
+                width: 600,
+                height: 1000
+            },
+            position: "top-left"
+        };
+        console.log(view.popup)
+    })
 
-const mapinfo = MapNoZoom("83e20099377244d3b995de9e6a35ee37", "map", [-92.5, 38.6], 6)
+    // Apply the no-zoom logic to the component's view
+    disableZooming(view);
 
+    // Perform other map-ready actions
+    handleMapInteraction(view);
+});
 
+async function handleMapInteraction(view) {
+    // The view is already ready here.
 
-if (!mapinfo.view.ready) {
-    mapinfo.view.addEventListener("arcgisViewReadyChange", handleMapReady, {
-        once: true,
-    });
-} else {
-    handleMapReady();
-}
-const mapLayers = mapinfo.view.layerViews.toArray()
-
-console.log(mapLayers)
-async function handleMapReady() {
-    // change the default highlight option object's color to orange
-    mapinfo.view.highlights.forEach((highlightOption) => {
-        if (highlightOption.name === "default") {
-            highlightOption.color = "orange";
-        }
-    });
-
-    const layerView = await viewElement.whenLayerView(layer);
-
-    // update layer's renderer
-    const renderer = layer.renderer.clone();
-    renderer.symbol.width = 4;
-    renderer.symbol.color = [128, 128, 128, 0.8];
-    layer.renderer = renderer;
+    // Change the default highlight option color to orange
+    view.highlightOptions = {
+        color: "orange"
+    };
 }
