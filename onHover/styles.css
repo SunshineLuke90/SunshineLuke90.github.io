@@ -10,7 +10,7 @@
 }
 
 .map {
-    height: 90vh;
+    height: 80vh;
     width: 80%;
     margin-left: 5%;
     margin-right: auto;
@@ -18,7 +18,7 @@
     border-radius: 15px
 }
 
-.chart {
+.pop-panel {
     position: absolute;
     top: 50%;
     right: 3%;
@@ -28,9 +28,29 @@
     z-index: 9999;
     width: 20%;
     min-width: 200px;
+    max-width: 400px;
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
     height: 500px;
     max-height: 70%;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
+    background-color: var(--calcite-color-foreground-2);
+}
+
+.race-panel {
+    position: absolute;
+    top: 85%;
+    left: 10%;
+    border-radius: 15px;
+    display: flex;
+    z-index: 9999;
+    width: 20%;
+    min-width: 200px;
+    max-width: 400px;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+    height: 500px;
+    max-height: 25%;
     overflow-y: auto;
     overflow-wrap: normal;
     overflow-x: hidden;

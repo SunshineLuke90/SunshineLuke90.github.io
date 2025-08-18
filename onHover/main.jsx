@@ -1,14 +1,15 @@
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@arcgis/map-components/components/arcgis-map';
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement, Title, Legend, Tooltip } from 'chart.js';
 import { disableZooming } from "./components/disableZoom";
 
 const mapElement = document.querySelector("arcgis-map");
 const view = mapElement.view;
 disableZooming(view);
-Chart.register(BarController, BarElement, CategoryScale, LinearScale)
-
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Legend, Tooltip)
+Chart.defaults.color = "#FFFFFF"
+Chart.defaults.font.family = "'Noto Sans', sans-serif"
 
 view.popup.dockOptions = {
     // Disable the dock button so users cannot undock the popup
@@ -71,7 +72,7 @@ const demographicFields = {
     P0120049: "Female 85+"
 }
 
-let highlight, currentId, chart
+let highlight, currentId, pchart, rchart
 
 view.highlights = [{
     name: "default",
@@ -141,7 +142,6 @@ view.when(() => {
             }
 
             function queryData(attributes) {
-                let isFirst = true;
 
                 //Preparation for using the chart for data display. 
                 // First need to optimize dataset to be able to provide data more cleanly.
@@ -162,7 +162,6 @@ view.when(() => {
                     .map((name) => {
                         if (attributes[name] != null) {
                             const html = `<div>${demographicFields[name]}: <b>${attributes[name]}</b><div>`;
-                            isFirst = false;
                             return html;
                         }
                         return "";
@@ -175,9 +174,9 @@ view.when(() => {
             function updateChart(newData) {
                 const [femaleAgeData, maleAgeData] = newData;
 
-                if (!chart) {
+                if (!pchart) {
                     const canvasElement = document.getElementById("chart");
-                    chart = new Chart(canvasElement.getContext("2d"), {
+                    pchart = new Chart(canvasElement.getContext("2d"), {
                         type: "bar",
                         data: {
                             labels: [
@@ -203,6 +202,7 @@ view.when(() => {
                             datasets: [
                                 {
                                     label: "Female",
+                                    barThickness: 10,
                                     backgroundColor: "#B266FF",
                                     borderColor: "#7F00FF",
                                     borderWidth: 0.25,
@@ -210,6 +210,7 @@ view.when(() => {
                                 },
                                 {
                                     label: "Male",
+                                    barThickness: 10,
                                     backgroundColor: "#0080FF",
                                     borderColor: "#004C99",
                                     borderWidth: 0.25,
@@ -218,33 +219,55 @@ view.when(() => {
                             ],
                         },
                         options: {
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    position: 'top',
+                                    text: "Population Pyramid"
+                                },
+                                legend: {
+                                    display: true,
+                                    position: "bottom",
+                                    title: {
+                                        display: true,
+                                    },
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (tooltipItem) => {
+                                            return `${tooltipItem.dataset.label}: ${numberWithCommas(Math.abs(tooltipItem.parsed.x))}`;
+                                        },
+                                    },
+                                }
+                            },
                             indexAxis: "y",
-                            responsive: false,
-                            legend: { position: "bottom" },
-                            title: { display: true, text: "Population pyramid" },
+                            responsive: true,
                             scales: {
                                 x: {
-                                    barThickness: 10,
-                                    scaleLabel: { display: true, labelString: "Population" },
+                                    title: {
+                                        display: true,
+                                        text: "Population"
+                                    },
+                                    ticks: {
+                                        callback: (value) => numberWithCommas(Math.abs(parseInt(value))),
+                                    }
                                 },
                                 y: {
-                                    scaleLabel: { display: true, labelString: "Age Group" },
+                                    title: {
+                                        display: true,
+                                        text: "Age Group"
+                                    },
                                     stacked: true,
                                 },
                             },
-                            tooltips: {
-                                callbacks: {
-                                    label: (tooltipItem, data) => {
-                                        return `${data.datasets[tooltipItem.datasetIndex].label}: ${numberWithCommas(Math.abs(tooltipItem.xLabel))}`;
-                                    },
-                                },
-                            },
+                            maintainAspectRatio: false,
                         },
                     });
+
                 } else {
-                    chart.data.datasets[0].data = femaleAgeData;
-                    chart.data.datasets[1].data = maleAgeData;
-                    chart.update();
+                    pchart.data.datasets[0].data = femaleAgeData;
+                    pchart.data.datasets[1].data = maleAgeData;
+                    pchart.update();
                 }
             }
             function numberWithCommas(value) {
