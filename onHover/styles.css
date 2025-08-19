@@ -72,6 +72,26 @@
     aspect-ratio: 1/1;
 }
 
+.title-panel {
+    position: absolute;
+    top: -1%;
+    left: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    z-index: 9999;
+    width: 20%;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+    height: 30px;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
+    background-color: var(--calcite-color-foreground-2);
+    text-align: center;
+    line-height: 30px;
+}
+
 .legend {
     position: absolute;
     top: 30%;
