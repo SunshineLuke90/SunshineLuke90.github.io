@@ -1,13 +1,14 @@
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@arcgis/map-components/components/arcgis-map';
-import { Chart, CategoryScale, LinearScale, BarController, BarElement, Title, Legend, Tooltip } from 'chart.js';
+import '@arcgis/map-components/components/arcgis-legend';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement, Title, Legend, Tooltip, PieController, ArcElement } from 'chart.js';
 import { disableZooming } from "./components/disableZoom";
 
 const mapElement = document.querySelector("arcgis-map");
 const view = mapElement.view;
 disableZooming(view);
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Legend, Tooltip)
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Title, Legend, Tooltip)
 Chart.defaults.color = "#FFFFFF"
 Chart.defaults.font.family = "'Noto Sans', sans-serif"
 
@@ -30,8 +31,10 @@ const demographicFields = {
     P0120026: "Female Population",
 };
 */
-const femaleFields = ["P0120027", "P0120028", "P0120029", "F1519", "F2025", "P0120035", "P0120036", "P0120037", "P0120038", "P0120039", "P0120040", "P0120041", "F6064", "F6569", "P0120046", "P0120047", "P0120048", "P0120049"]
+const femaleFields = ["P0120027", "P0120028", "P0120029", "F1519", "F2024", "P0120035", "P0120036", "P0120037", "P0120038", "P0120039", "P0120040", "P0120041", "F6064", "F6569", "P0120046", "P0120047", "P0120048", "P0120049"]
 const maleFields = ["P0120003", "P0120004", "P0120005", "M1519", "M2024", "P0120011", "P0120012", "P0120013", "P0120014", "P0120015", "P0120016", "P0120017", "M6064", "M6569", "P0120022", "P0120023", "P0120024", "P0120025"]
+const urbanRuralFields = ["P0020002", "P0020003"]
+const raceFields = ["P0030002", "P0030003", "P0030004", "P0030005", "P0030006", "P0030007", "P0030008"]
 const demographicFields = {
     NAME: "Name",
     P0120003: "Male 0-4",
@@ -56,7 +59,7 @@ const demographicFields = {
     P0120028: "Female 5-9",
     P0120029: "Female 10-14",
     F1519: "Female 15-19",
-    F2025: "Female 20-24",
+    F2024: "Female 20-24",
     P0120035: "Female 25-29",
     P0120036: "Female 30-34",
     P0120037: "Female 35-39",
@@ -69,10 +72,19 @@ const demographicFields = {
     P0120046: "Female 70-74",
     P0120047: "Female 75-79",
     P0120048: "Female 80-84",
-    P0120049: "Female 85+"
+    P0120049: "Female 85+",
+    P0020002: "Urban Population",
+    P0020003: "Rural Population",
+    P0030002: "White Pop",
+    P0030003: "Black Pop",
+    P0030004: "Native American Pop",
+    P0030005: "Asian Pop",
+    P0030006: "Pacific Islander Pop",
+    P0030007: "Other Pop",
+    P0030008: "Two or More Pop",
 }
 
-let highlight, currentId, pchart, rchart
+let highlight, currentId, pchart, urbanChart, raceChart
 
 view.highlights = [{
     name: "default",
@@ -117,24 +129,24 @@ view.when(() => {
             // the topmost graphic from the demographics layer and display attribute
             // values from the graphic to the user
             const hitGraphic = response.results[0].graphic;
-            const FID = hitGraphic.attributes.FID;
+            const OBJECTID = hitGraphic.attributes.OBJECTID;
 
-            if (highlight && currentId === FID) {
+            if (highlight && currentId === OBJECTID) {
                 return;
             }
 
             // highlight all features belonging to the same demographic as the feature
             // returned from the hitTest
             const query = layer.createQuery();
-            query.where = `FID = '${FID}'`;
-            query.outFields = ["NAME", "FID", "P0120049", "P0120048", "P0120047", "P0120046", "F6569", "F6064", "P0120041", "P0120040", "P0120039", "P0120038", "P0120037", "P0120036", "P0120035", "F2025", "F1519", "P0120029", "P0120028", "P0120027", "P0120025", "P0120024", "P0120023", "P0120022", "M6569", "M6064", "P0120017", "P0120016", "P0120015", "P0120014", "P0120013", "P0120012", "P0120011", "M2024", "M1519", "P0120005", "P0120004", "P0120003"];
+            query.where = `OBJECTID = '${OBJECTID}'`;
+            query.outFields = ["NAME", "OBJECTID", "P0120049", "P0120048", "P0120047", "P0120046", "F6569", "F6064", "P0120041", "P0120040", "P0120039", "P0120038", "P0120037", "P0120036", "P0120035", "F2024", "F1519", "P0120029", "P0120028", "P0120027", "P0120025", "P0120024", "P0120023", "P0120022", "M6569", "M6064", "P0120017", "P0120016", "P0120015", "P0120014", "P0120013", "P0120012", "P0120011", "M2024", "M1519", "P0120005", "P0120004", "P0120003", "P0020002", "P0020003", "P0030002", "P0030003", "P0030004", "P0030005", "P0030006", "P0030007", "P0030008"];
             query.returnGeometry = false;
 
             const featureSet = await layer.queryFeatures(query);
 
             if (featureSet.features.length > 0) {
                 const graphic = featureSet.features[0];
-                currentId = graphic.attributes.FID;
+                currentId = graphic.attributes.OBJECTID;
                 highlight?.remove();
                 highlight = layerView.highlight(graphic);
                 document.getElementById("chart").innerHTML = queryData(graphic.attributes);
@@ -147,6 +159,8 @@ view.when(() => {
                 // First need to optimize dataset to be able to provide data more cleanly.
                 const femaleAgeData = []
                 const maleAgeData = []
+                const urbanRuralData = []
+                const raceData = []
 
                 for (let key in attributes) {
                     if (femaleFields.includes(key)) {
@@ -155,28 +169,25 @@ view.when(() => {
                     else if (maleFields.includes(key)) {
                         maleAgeData.push(-Math.abs(attributes[key]))
                     }
+                    else if (urbanRuralFields.includes(key)) {
+                        urbanRuralData.push(attributes[key])
+                    }
+                    else if (raceFields.includes(key)) {
+                        raceData.push(attributes[key])
+                    }
                 }
-                updateChart([femaleAgeData, maleAgeData])
-
-                const htmls = Object.keys(demographicFields)
-                    .map((name) => {
-                        if (attributes[name] != null) {
-                            const html = `<div>${demographicFields[name]}: <b>${attributes[name]}</b><div>`;
-                            return html;
-                        }
-                        return "";
-                    })
-                    .filter((html) => html !== "");
-                return htmls.join("");
+                updateChart([femaleAgeData, maleAgeData], urbanRuralData, raceData)
             }
 
 
-            function updateChart(newData) {
-                const [femaleAgeData, maleAgeData] = newData;
+            function updateChart(demData, urbanData, raceData) {
+                const [femaleAgeData, maleAgeData] = demData;
 
                 if (!pchart) {
-                    const canvasElement = document.getElementById("chart");
-                    pchart = new Chart(canvasElement.getContext("2d"), {
+                    const canvasElementPop = document.getElementById("chart");
+                    const canvasElementUrban = document.getElementById("urban-rural-pie")
+                    const canvasElementRace = document.getElementById("race-pie")
+                    pchart = new Chart(canvasElementPop.getContext("2d"), {
                         type: "bar",
                         data: {
                             labels: [
@@ -264,10 +275,97 @@ view.when(() => {
                         },
                     });
 
+                    urbanChart = new Chart(canvasElementUrban.getContext("2d"), {
+                        type: "doughnut",
+                        data: {
+                            labels: [
+                                "Urban",
+                                "Rural"
+                            ],
+                            datasets: [{
+                                label: "Urban/Rural Population",
+                                data: urbanData,
+                                backgroundColor: ["#992cc4", "#ebb41e"],
+                                borderColor: ["#4f1c6b", "#ad7e0f"]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    position: 'top',
+                                    text: "Urban/Rural Population"
+                                },
+                                legend: {
+                                    display: true,
+                                    position: "bottom",
+                                }
+                            }
+                        }
+
+                    });
+
+                    raceChart = new Chart(canvasElementRace.getContext("2d"), {
+                        type: "pie",
+                        data: {
+                            labels: [
+                                "White",
+                                "Black",
+                                "Native American",
+                                "Asian",
+                                "Pacific Islander",
+                                "Other",
+                                "Two or More"
+                            ],
+                            datasets: [{
+                                label: "Race",
+                                data: raceData,
+                                backgroundColor: ["#3366CC", "#FF9900", "#109618", "#990099", "#DC3912", "#3B3EAC", "#808080"],
+                                borderColor: "rgba(255,255,255,0.8)",
+                                borderWidth: .5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            layout: {
+                                padding: {
+                                    top: 10
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    position: 'top',
+                                    text: "Race"
+                                },
+                                legend: {
+                                    display: true,
+                                    position: "bottom",
+                                    maxWidth: 200,
+                                    labels: {
+                                        boxWidth: 10,
+                                        boxHeight: 10,
+                                        font: {
+                                            size: 10
+                                        }
+                                    },
+                                    padding: 5
+                                }
+                            }
+                        }
+
+                    });
+
                 } else {
                     pchart.data.datasets[0].data = femaleAgeData;
                     pchart.data.datasets[1].data = maleAgeData;
                     pchart.update();
+                    urbanChart.data.datasets[0].data = urbanData;
+                    urbanChart.update();
+                    raceChart.data.datasets[0].data = raceData;
+                    raceChart.update();
                 }
             }
             function numberWithCommas(value) {

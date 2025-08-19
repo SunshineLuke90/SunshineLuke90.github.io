@@ -40,14 +40,28 @@
 
 .race-panel {
     position: absolute;
-    top: 85%;
-    left: 10%;
+    top: 60%;
+    left: 2%;
+    border-radius: 15px;
+    display: flex;
+    z-index: 10000;
+    width: 14%;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+    height: 500px;
+    max-height: 40%;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
+    background-color: var(--calcite-color-foreground-2);
+}
+
+.urban-rural-panel {
+    position: absolute;
+    top: 50%;
+    left: 15%;
     border-radius: 15px;
     display: flex;
     z-index: 9999;
-    width: 20%;
-    min-width: 200px;
-    max-width: 400px;
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
     height: 500px;
     max-height: 25%;
@@ -55,4 +69,35 @@
     overflow-wrap: normal;
     overflow-x: hidden;
     background-color: var(--calcite-color-foreground-2);
+    aspect-ratio: 1/1;
+}
+
+.legend {
+    position: absolute;
+    top: 30%;
+    left: 3%;
+    transform: translateY(-50%);
+    border-radius: 15px;
+    display: flex;
+    z-index: 9999;
+    width: auto;
+    max-width: 200px;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+    height: auto;
+    max-height: 70%;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
+    background-color: var(--calcite-color-foreground-3);
+}
+
+.header-text {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.body-text {
+    width: 50%;
+    margin: auto;
 }

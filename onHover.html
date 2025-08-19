@@ -50,13 +50,33 @@
     <section class="main-content">
         <arcgis-map id="map" class="map" item-id="83e20099377244d3b995de9e6a35ee37" center="-92.5, 38.6"
             zoom="6"></arcgis-map>
+        <arcgis-legend id="legend" class="legend" reference-element="map"></arcgis-legend>
         <div id="chartPanel" class="pop-panel">
-
             <canvas id="chart" class="chart"></canvas>
         </div>
         <div id="chartPanel" class="race-panel">
-            <canvas id="race-donut" class="race-donut"></canvas>
+            <canvas id="race-pie" class="race-pie"></canvas>
         </div>
+        <div id="chartPanel" class="urban-rural-panel">
+            <canvas id="urban-rural-pie" class="urban-rural-pie"></canvas>
+        </div>
+    </section>
+    <section style="margin-top:20px">
+        <h3 class="header-text">About this project</h3>
+        <p class="body-text">Extending from the previous project, taking control of Calcite Components, this project
+            takes control of the drawing of a map widget, restricting the map from being able to zoom, pan or scale.
+            This enables for a more focused experience, allowing for cartography decisions to be made manually, but also
+            keeps the functionality of being able to interact with a dynamic map.<br><br>
+            This project focuses on the use of the hover effect, using hitTest() to watch the pointer to see what
+            feature is being hovered. This enables the webpage to dynamically query the features very rapidly. The
+            charts throughout the page are using the Charts.js library, which is a robust and lightweight library for
+            creating dynamic charts.<br><br>
+            The use of population statistics in this project is a way to show that a very high number of fields can be
+            queried and displayed at the same time, without sacrificing performance. The most interesting of the charts
+            is likely the population pyramid on the right side of the screen. Exploring the population pyramids of
+            primarily Rural vs Urban counties, and viewing the relationship between age statistics, male vs female
+            population, and racial makeup is a good proof of concept for using dynamic charts on ArcGIS map elements.
+        </p>
     </section>
     <footer>
         <p>&copy; 2025 Lucius Creamer. All rights reserved.</p>
