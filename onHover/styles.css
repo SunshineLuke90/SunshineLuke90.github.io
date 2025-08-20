@@ -11,8 +11,8 @@
 
 .map {
     height: 80vh;
-    width: 80%;
-    margin-left: 5%;
+    width: 75%;
+    margin-left: 10%;
     margin-right: auto;
     position: relative;
     border-radius: 15px
@@ -120,4 +120,28 @@
 .body-text {
     width: 50%;
     margin: auto;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: -2%;
+    right: 50%;
+    transform: translateX(50%);
+    border-radius: 15px;
+    z-index: 9999;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+    height: 40px;
+    line-height: 40px;
+    max-height: 70%;
+    overflow-y: auto;
+    overflow-wrap: normal;
+    overflow-x: hidden;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--calcite-color-foreground-2);
+    visibility: hidden;
 }

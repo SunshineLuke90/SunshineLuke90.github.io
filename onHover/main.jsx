@@ -12,26 +12,25 @@ const mapElement = document.querySelector("arcgis-map");
 const view = mapElement.view;
 // disable map zooming and panning, effectively creating an interactive but static map
 disableZooming(view);
-
-
-view.popup.dockOptions = {
-    // Disable the dock button so users cannot undock the popup
-    buttonEnabled: false,
-    // Dock the popup when the size of the view is less than or equal to 600x1000 pixels
-    breakpoint: {
-        width: 2000,
-        height: 2000
-    },
-    position: "top-left"
-};
-
-let highlight, currentId
-let first = false
-
 view.highlights = [{
     name: "default",
     color: "white"
 }];
+
+//fill with missouri data. Order is female, male, urban, race.
+// this will be put in a priming read, and then used as a fallback whenever the user has not hovered a feature.
+let missouriData = [
+    [79562, 72388, 107689, 151490, 155295, 214486, 216427, 186149, 178612, 181573, 198643, 201131, 199105, 201126, 200337, 197724, 185820, 173242],
+    [-43898, -53314, -87820, -130465, -165836, -199428, -206630, -180929, -175924, -179869, -196736, -200745, -201123, -209603, -207351, -207308, -195353, -181782],
+    [4275663, 1879250],
+    [4740335, 699840, 30518, 133377, 9730, 127942, 413171]
+]
+let highlight, currentId
+let first = false
+let selected = false
+first = updateChart(missouriData, first);
+
+document.getElementById("title-panel").innerHTML = "Missouri"
 
 view.when(() => {
     const layer = view.map.layers.getItemAt(0);
@@ -49,13 +48,58 @@ view.when(() => {
     }
 
     async function handleMapReady() {
-
-        mapElement.addEventListener("arcgisViewPointerDown", eventHandler);
-        mapElement.addEventListener("arcgisViewPointerMove", eventHandler);
+        mapElement.addEventListener("arcgisViewImmediateClick", clickHandler);
+        mapElement.addEventListener("arcgisViewPointerDown", moveHandler);
+        mapElement.addEventListener("arcgisViewPointerMove", moveHandler);
 
         const layerView = await view.whenLayerView(layer);
 
-        async function eventHandler(event) {
+        async function clickHandler(event) {
+            const opts = {
+                include: layer,
+            }
+
+            const response = await view.hitTest(event.detail, opts)
+
+            if (response.results.length === 0) {
+                highlight?.remove();
+                document.getElementById("title-panel").innerHTML = "Missouri"
+                first = updateChart(missouriData, first);
+                currentId = null;
+                selected = false;
+                document.getElementById("tooltip").style.visibility = "hidden";
+                return;
+
+            }
+            const hitGraphic = response.results[0].graphic;
+            const OBJECTID = hitGraphic.attributes.OBJECTID;
+
+            if (highlight && currentId === OBJECTID && selected) {
+                selected = false;
+                document.getElementById("tooltip").style.visibility = "hidden";
+                return;
+            }
+
+            query.where = `OBJECTID = '${OBJECTID}'`;
+            const featureSet = await layer.queryFeatures(query);
+
+            if (featureSet.features.length > 0) {
+                selected = true;
+                const graphic = featureSet.features[0];
+                currentId = graphic.attributes.OBJECTID;
+                highlight?.remove();
+                highlight = layerView.highlight(graphic);
+                document.getElementById("title-panel").innerHTML = graphic.attributes.NAME
+                const chartData = queryData(graphic.attributes);
+                first = updateChart(chartData, first)
+                document.getElementById("tooltip").style.visibility = "visible";
+            }
+        }
+
+        async function moveHandler(event) {
+            if (selected) {
+                return;
+            }
             // only include graphics from Demographic layer in the hitTest
             const opts = {
                 include: layer,
@@ -66,6 +110,10 @@ view.when(() => {
             if (response.results.length === 0) {
                 // no results returned from hittest, remove previous highlights
                 highlight?.remove();
+                if (currentId === null) {
+                    document.getElementById("title-panel").innerHTML = "Missouri"
+                    first = updateChart(missouriData, first)
+                }
                 currentId = null;
                 return;
             }
