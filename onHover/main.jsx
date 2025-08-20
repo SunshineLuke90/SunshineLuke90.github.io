@@ -12,6 +12,7 @@ const mapElement = document.querySelector("arcgis-map");
 const view = mapElement.view;
 // disable map zooming and panning, effectively creating an interactive but static map
 disableZooming(view);
+view.popupEnabled = false; // disable the popup that appears when hovering over features
 view.highlights = [{
     name: "default",
     color: "white"
