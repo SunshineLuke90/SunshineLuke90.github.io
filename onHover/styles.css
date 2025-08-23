@@ -81,15 +81,18 @@
     transform: translateX(-50%);
     border-radius: 15px;
     z-index: 9999;
-    width: 20%;
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
     height: 30px;
+    line-height: 30px;
     overflow-y: auto;
     overflow-wrap: normal;
     overflow-x: hidden;
     background-color: var(--calcite-color-foreground-2);
+    width: auto;
+    min-width: 20%;
+    padding-left: 15px;
+    padding-right: 15px;
     text-align: center;
-    line-height: 30px;
 }
 
 .legend {
@@ -118,7 +121,8 @@
 }
 
 .body-text {
-    width: 50%;
+    width: 800px;
+    max-width: 90%;
     margin: auto;
 }
 
@@ -130,10 +134,13 @@
     border-radius: 15px;
     z-index: 9999;
     width: auto;
+    max-width: 80%;
+    text-wrap: auto;
     padding-left: 10px;
     padding-right: 10px;
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
-    height: 40px;
+    height: auto;
+    min-height: 40px;
     line-height: 40px;
     max-height: 70%;
     overflow-y: auto;

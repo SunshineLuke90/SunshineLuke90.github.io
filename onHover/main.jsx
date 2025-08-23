@@ -3,6 +3,7 @@ import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@arcgis/map-components/components/arcgis-map';
 import '@arcgis/map-components/components/arcgis-legend';
 
+import Extent from "@arcgis/core/geometry/Extent.js";
 import { disableZooming } from "./components/disableZoom";
 import queryData from "./services/queryData";
 import updateChart from "./services/updateChart";
@@ -35,7 +36,12 @@ document.getElementById("title-panel").innerHTML = "Missouri"
 
 view.when(() => {
     const layer = view.map.layers.getItemAt(0);
-
+    view.extent = new Extent({
+        xmin: -96.0,
+        ymin: 35.7,
+        xmax: -88.9,
+        ymax: 40.9,
+    });
     const query = layer.createQuery();
     query.outFields = ["NAME", "OBJECTID", "P0120049", "P0120048", "P0120047", "P0120046", "F6569", "F6064", "P0120041", "P0120040", "P0120039", "P0120038", "P0120037", "P0120036", "P0120035", "F2024", "F1519", "P0120029", "P0120028", "P0120027", "P0120025", "P0120024", "P0120023", "P0120022", "M6569", "M6064", "P0120017", "P0120016", "P0120015", "P0120014", "P0120013", "P0120012", "P0120011", "M2024", "M1519", "P0120005", "P0120004", "P0120003", "P0020002", "P0020003", "P0030002", "P0030003", "P0030004", "P0030005", "P0030006", "P0030007", "P0030008"];
     query.returnGeometry = false;

@@ -48,6 +48,7 @@
 }
 
 .body-text {
-    width: 50%;
+    width: 800px;
+    max-width: 90%;
     margin: auto;
 }
