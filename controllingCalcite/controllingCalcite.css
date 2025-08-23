@@ -34,6 +34,7 @@
 }
 
 .map {
+    height: 80vh;
     width: 80%;
     margin-left: 5%;
     margin-right: auto;
@@ -51,4 +52,36 @@
     width: 800px;
     max-width: 90%;
     margin: auto;
+}
+
+.description-text {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 800px) {
+    .map {
+        height: 50vh;
+        width: 90%;
+        margin: auto;
+    }
+
+    .react-div {
+        height: auto;
+        max-height: 40vh;
+        width: 70%;
+        margin-top: -40px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        display: block;
+        top: 0px;
+        right: 0px;
+        transform: none;
+        min-width: none;
+    }
+
+    .description-text {
+        margin-top: none;
+        position: relative;
+    }
 }
