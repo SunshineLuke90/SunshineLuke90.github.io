@@ -1,0 +1,16 @@
+.card {
+    width: calc(500px + 20%);
+    margin: auto;
+    --calcite-card-corner-radius: var(--calcite-corner-radius-round);
+    --calcite-card-background-color: var(--calcite-color-foreground-2);
+    --calcite-card-border-color: var(--calcite-color-foreground-2);
+    box-shadow: 0 0 8px 0 rgba(15, 15, 15, 0.5);
+    border-radius: var(--calcite-corner-radius-round);
+    --calcite-font-weight-medium: 650;
+}
+
+.chip {
+    --calcite-font-weight-medium: 400;
+    --calcite-chip-background-color: var(--calcite-color-foreground-3);
+    scale: "small"
+}
