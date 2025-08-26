@@ -6,7 +6,7 @@ Chart.defaults.font.family = "'Noto Sans', sans-serif"
 
 let pchart, urbanChart, raceChart
 
-export default function updateChart(chartData, first) {
+export default function updateChart(chartData, first, isMobile = false) {
     if (!first) {
         const canvasElementPop = document.getElementById("chart");
         const canvasElementUrban = document.getElementById("urban-rural-pie")
@@ -61,7 +61,7 @@ export default function updateChart(chartData, first) {
                         text: "Population Pyramid"
                     },
                     legend: {
-                        display: true,
+                        display: isMobile ? false : true,
                         position: "bottom",
                         title: {
                             display: true,
@@ -84,13 +84,17 @@ export default function updateChart(chartData, first) {
                             text: "Population"
                         },
                         ticks: {
+                            display: isMobile ? false : true,
                             callback: (value) => numberWithCommas(Math.abs(parseInt(value))),
                         }
                     },
                     y: {
                         title: {
-                            display: true,
+                            display: isMobile ? false : true,
                             text: "Age Group"
+                        },
+                        ticks: {
+                            display: isMobile ? false : true,
                         },
                         stacked: true,
                     },
@@ -124,6 +128,15 @@ export default function updateChart(chartData, first) {
                     legend: {
                         display: true,
                         position: "bottom",
+                        maxWidth: 200,
+                        labels: {
+                            boxWidth: 10,
+                            boxHeight: 10,
+                            font: {
+                                size: 10
+                            }
+                        },
+                        padding: 5
                     }
                 }
             }

@@ -30,7 +30,10 @@ let missouriData = [
 let highlight, currentId
 let first = false
 let selected = false
-first = updateChart(missouriData, first);
+
+let isMobile = window.innerWidth < 800;
+
+first = updateChart(missouriData, first, isMobile);
 
 document.getElementById("title-panel").innerHTML = "Missouri"
 
