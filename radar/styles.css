@@ -1,0 +1,20 @@
+.radar-map {
+    position: relative;
+    padding-top: 2vh;
+    padding-bottom: 8vh;
+    margin: auto;
+    width: 90vw;
+    height: 70vh;
+}
+
+.project-title {
+    text-align: center;
+    margin: auto;
+}
+
+@media screen and (max-width: 800px) {
+    .radar-map {
+        width: 90vw;
+        height: 50vh;
+    }
+}

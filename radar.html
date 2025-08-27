@@ -19,6 +19,7 @@
 
     <!--Reference component stylesheet-->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./radar/styles.css">
     <script type="module" src="./radar/main.jsx"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,8 +41,12 @@
                 label="Open contact information" icon-start="address-book" scale="m" appearance="transparent"
                 title="Contact"></calcite-button>
         </div>
+        <h2 class="project-title">A Better Esri Radar Viewer</h2>
     </div>
     <div class="content">
-        <arcgis-map id="radar-map" basemap="satellite" center="-154.88, 19.46" zoom="2"></arcgis-map>
+        <arcgis-map id="radar-map" class="radar-map" basemap="satellite" center="-98.583, 39.83" zoom="4"></arcgis-map>
     </div>
+    <footer>
+        <p>&copy; 2025 Lucius Creamer. All rights reserved.</p>
+    </footer>
 </body>
