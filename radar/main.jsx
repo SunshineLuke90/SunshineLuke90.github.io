@@ -213,26 +213,46 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
                     }
 
+                    function canonicalizeWmsUrl(rawUrl) {
+                        try {
+                            const u = new URL(rawUrl);
+                            // drop ephemeral cache-busting params (e.g. _ts) and any param starting with '_'
+                            const params = Array.from(u.searchParams.entries()).filter(([k]) => !k.startsWith('_'));
+                            params.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
+                            const qp = params.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
+                            return `${u.origin}${u.pathname}?${qp}`;
+                        } catch (e) {
+                            return rawUrl;
+                        }
+                    }
+
                     try {
                         const cache = await caches.open(CACHE_NAME);
                         statusEl.textContent = `Radar: caching ${frames.length} frames...`;
                         for (let i = 0; i < frames.length; i++) {
                             const url = buildGetMapUrl(frames[i]);
                             if (!url) continue;
+                            const key = canonicalizeWmsUrl(url);
                             try {
-                                console.debug('[radar] prefetching', url);
+                                // request as CORS; some responses may be opaque and have zero length — avoid caching those
                                 const resp = await fetch(url, { mode: 'cors', credentials: 'omit' });
-                                if (resp) console.debug('[radar] prefetch response type:', resp.type, 'status:', resp.status, url);
-                                if (resp && resp.ok) {
-                                    try {
-                                        await cache.put(url, resp.clone());
-                                        console.debug('[radar] cached', url);
-                                    } catch (putErr) {
-                                        console.debug('[radar] cache.put failed for', url, putErr);
-                                    }
-                                } else {
-                                    console.debug('[radar] prefetch non-ok response for', url);
+                                if (!resp) continue;
+                                // if response is opaque (type === 'opaque') it may have zero-length body due to CORS; skip caching opaque responses
+                                if (resp.type === 'opaque') {
+                                    console.debug('Prefetch: opaque response, skipping cache for', url);
+                                    continue;
                                 }
+                                if (!resp.ok) {
+                                    console.debug('Prefetch: non-ok response, skipping', url, resp.status);
+                                    continue;
+                                }
+                                // ensure there is a non-zero body by reading a small slice (blob) — avoids caching empty responses
+                                const blob = await resp.clone().blob();
+                                if (!blob || blob.size === 0) {
+                                    console.debug('Prefetch: empty body, skipping', url);
+                                    continue;
+                                }
+                                await cache.put(key, resp.clone());
                             } catch (fetchErr) {
                                 console.debug('Prefetch failed for', url, fetchErr);
                             }
