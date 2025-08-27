@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // animation state
             let idx = frames.length - 1; // start at latest
             let intervalId = null;
-            const frameDelay = 800;
+            const frameDelay = 300;
 
             function applyFrame(i) {
                 if (!frames || frames.length === 0) return;
@@ -183,6 +183,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     } catch (err) {
                         console.debug("Failed to set WMS TIME parameter:", err);
                     }
+                }
+                // force the layer to refresh so the new TIME parameter is requested immediately
+                try {
+                    if (typeof wms.refresh === 'function') wms.refresh();
+                } catch (e) {
+                    console.debug('WMS refresh failed:', e);
                 }
                 slider.value = String(i);
                 // display human-friendly timestamp where possible
