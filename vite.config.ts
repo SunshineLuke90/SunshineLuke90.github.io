@@ -15,7 +15,9 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         contact: resolve(__dirname, 'contact.html'),
         controllingCalcite: resolve(__dirname, 'controllingCalcite.html'),
-        onHover: resolve(__dirname, 'onHover.html')
+        onHover: resolve(__dirname, 'onHover.html'),
+        accessibility: resolve(__dirname, 'accessibility.html'),
+        radar: resolve(__dirname, 'radar.html')
       }
     }
   }
