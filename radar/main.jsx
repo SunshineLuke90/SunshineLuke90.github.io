@@ -163,6 +163,90 @@ document.addEventListener("DOMContentLoaded", async () => {
             const frames = times.slice(-30); // keep more frames for user control
             statusEl.textContent = `Radar: ${frames.length} time frames available`;
 
+            // Service Worker registration & prefetching of WMS GetMap frames
+            // This will attempt to register the SW at /sw-radar.js and then prefetch
+            // a GetMap URL for each frame into the Cache API so the service worker
+            // can serve cached responses during animation.
+            (function () {
+                const SW_PATH = '/sw-radar.js';
+                const CACHE_NAME = 'radar-wms-v1';
+
+                async function registerAndPrefetch() {
+                    if (!('serviceWorker' in navigator) || !('caches' in window)) {
+                        console.debug('ServiceWorker or Cache API not available in this browser');
+                        return;
+                    }
+
+                    try {
+                        await navigator.serviceWorker.register(SW_PATH);
+                        console.debug('Service worker registered:', SW_PATH);
+                    } catch (e) {
+                        console.debug('Service worker registration failed:', e);
+                    }
+
+                    function buildGetMapUrl(time) {
+                        // Build a GetMap URL that matches the WMSLayer requests so the SW
+                        // can intercept and cache them. Uses the current view extent/size.
+                        try {
+                            const extent = view.extent;
+                            const bbox = [extent.xmin, extent.ymin, extent.xmax, extent.ymax].join(',');
+                            const width = Math.max(256, view.width || 1024);
+                            const height = Math.max(256, view.height || 1024);
+                            const params = new URLSearchParams({
+                                SERVICE: 'WMS',
+                                VERSION: '1.3.0',
+                                REQUEST: 'GetMap',
+                                LAYERS: layerName,
+                                STYLES: '',
+                                CRS: 'EPSG:3857',
+                                BBOX: bbox,
+                                WIDTH: String(width),
+                                HEIGHT: String(height),
+                                FORMAT: 'image/png',
+                                TRANSPARENT: 'true',
+                                TIME: time,
+                            });
+                            return `${wmsBase}?${params.toString()}`;
+                        } catch (err) {
+                            console.debug('Failed to build GetMap URL for prefetch:', err);
+                            return null;
+                        }
+                    }
+
+                    try {
+                        const cache = await caches.open(CACHE_NAME);
+                        statusEl.textContent = `Radar: caching ${frames.length} frames...`;
+                        for (let i = 0; i < frames.length; i++) {
+                            const url = buildGetMapUrl(frames[i]);
+                            if (!url) continue;
+                            try {
+                                console.debug('[radar] prefetching', url);
+                                const resp = await fetch(url, { mode: 'cors', credentials: 'omit' });
+                                if (resp) console.debug('[radar] prefetch response type:', resp.type, 'status:', resp.status, url);
+                                if (resp && resp.ok) {
+                                    try {
+                                        await cache.put(url, resp.clone());
+                                        console.debug('[radar] cached', url);
+                                    } catch (putErr) {
+                                        console.debug('[radar] cache.put failed for', url, putErr);
+                                    }
+                                } else {
+                                    console.debug('[radar] prefetch non-ok response for', url);
+                                }
+                            } catch (fetchErr) {
+                                console.debug('Prefetch failed for', url, fetchErr);
+                            }
+                        }
+                        statusEl.textContent = `Radar: cached ${frames.length} frames`;
+                    } catch (cacheErr) {
+                        console.debug('Caching frames failed:', cacheErr);
+                    }
+                }
+
+                // start registration and prefetch in background
+                registerAndPrefetch();
+            })();
+
             // wire slider
             slider.max = String(Math.max(0, frames.length - 1));
             slider.value = String(frames.length - 1); // default to latest
@@ -170,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // animation state
             let idx = frames.length - 1; // start at latest
             let intervalId = null;
-            const frameDelay = 300;
+            const frameDelay = 100;
 
             function applyFrame(i) {
                 if (!frames || frames.length === 0) return;
