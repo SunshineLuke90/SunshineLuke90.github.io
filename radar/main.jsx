@@ -8,7 +8,7 @@ import WebTileLayer from "@arcgis/core/layers/WebTileLayer.js";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 import WMSLayer from "@arcgis/core/layers/WMSLayer.js";
 import esriRequest from "@arcgis/core/request";
-import './sw-radar.js'
+
 
 // Simple radar animation using RainViewer public tiles.
 // Strategy: fetch available radar frames, create a WebTileLayer per frame,
@@ -179,8 +179,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
 
                     try {
-                        await navigator.serviceWorker.register(SW_PATH);
-                        console.debug('Service worker registered:', SW_PATH);
+                        // register relative to the current document so it works on project pages
+                        const swUrl = new URL('sw-radar.js', location.href).href;
+                        await navigator.serviceWorker.register(swUrl, { scope: './' });
+                        console.debug('Service worker registered:', swUrl);
                     } catch (e) {
                         console.debug('Service worker registration failed:', e);
                     }
