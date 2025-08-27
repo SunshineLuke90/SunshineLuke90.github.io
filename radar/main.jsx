@@ -8,6 +8,7 @@ import WebTileLayer from "@arcgis/core/layers/WebTileLayer.js";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 import WMSLayer from "@arcgis/core/layers/WMSLayer.js";
 import esriRequest from "@arcgis/core/request";
+import './sw-radar.js'
 
 // Simple radar animation using RainViewer public tiles.
 // Strategy: fetch available radar frames, create a WebTileLayer per frame,
@@ -168,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // a GetMap URL for each frame into the Cache API so the service worker
             // can serve cached responses during animation.
             (function () {
-                const SW_PATH = '/sw-radar.js';
+                const SW_PATH = '/radar/sw-radar.js';
                 const CACHE_NAME = 'radar-wms-v1';
 
                 async function registerAndPrefetch() {
