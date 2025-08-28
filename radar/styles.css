@@ -1,7 +1,7 @@
 .radar-map {
     position: relative;
-    padding-top: 2vh;
-    padding-bottom: 8vh;
+    padding-top: 4vh;
+    padding-bottom: 2vh;
     margin: auto;
     width: 90vw;
     height: 70vh;
@@ -10,6 +10,28 @@
 .project-title {
     text-align: center;
     margin: auto;
+}
+
+.radar-panel {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -5vh;
+    width: 300px;
+    min-width: 25vw;
+    max-width: 90vw;
+    text-align: center;
+    padding: 10px;
+    background-color: #2C2C2C;
+    z-index: 9999;
+    border-radius: 15px;
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
+}
+
+.radar-play-pause {
+    height: 40px;
+    width: 80px;
+    padding: 10px;
 }
 
 @media screen and (max-width: 800px) {
