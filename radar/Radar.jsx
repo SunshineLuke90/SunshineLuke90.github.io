@@ -125,35 +125,20 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     }
                 }
 
-                function canonicalizeWmsUrl(rawUrl) {
-                    try {
-                        const u = new URL(rawUrl);
-                        const params = Array.from(u.searchParams.entries()).filter(([k]) => !k.startsWith('_'));
-                        params.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
-                        const qp = params.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
-                        return `${u.origin}${u.pathname}?${qp}`;
-                    } catch (e) { return rawUrl; }
-                }
-
                 async function prefetchFrames(frameList) {
                     if (!frameList || frameList.length === 0) return;
                     try {
                         const cache = await caches.open(CACHE_NAME);
                         setStatusText(`Radar: caching ${frameList.length} frames...`);
+                        let respArr = [];
                         for (let i = 0; i < frameList.length; i++) {
                             const url = buildGetMapUrl(frameList[i]);
                             if (!url) continue;
-                            const key = canonicalizeWmsUrl(url);
                             try {
-                                const resp = await fetch(url, { mode: 'cors', credentials: 'omit' });
-                                if (!resp) continue;
-                                if (resp.type === 'opaque') { console.debug('Prefetch: opaque response, skipping cache for', url); continue; }
-                                if (!resp.ok) { console.debug('Prefetch: non-ok response, skipping', url, resp.status); continue; }
-                                const blob = await resp.clone().blob();
-                                if (!blob || blob.size === 0) { console.debug('Prefetch: empty body, skipping', url); continue; }
-                                await cache.put(key, resp.clone());
+                                respArr.push(fetch(url, { mode: 'cors', credentials: 'omit' }));
                             } catch (fetchErr) { console.debug('Prefetch failed for', url, fetchErr); }
                         }
+                        await Promise.all(respArr);
                         setStatusText(`Radar: cached ${frameList.length} frames`);
                     } catch (cacheErr) { console.debug('Caching frames failed:', cacheErr); }
                 }
@@ -205,10 +190,27 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 function schedulePrefetchForCurrentExtent(delay = 500) {
                     if (panZoomTimerRef.current) clearTimeout(panZoomTimerRef.current);
                     panZoomTimerRef.current = setTimeout(async () => {
-                        if (prefetchInProgressRef.current) { console.debug('Prefetch already in progress, skipping'); return; }
-                        const key = getExtentKey(); if (!key) return; if (key === prevExtentKeyRef.current) { console.debug('Extent unchanged, skipping prefetch'); return; }
+                        if (prefetchInProgressRef.current) {
+                            console.debug('Prefetch already in progress, skipping');
+                            return;
+                        }
+                        const key = getExtentKey();
+                        if (!key) return;
+                        if (key === prevExtentKeyRef.current) {
+                            console.debug('Extent unchanged, skipping prefetch');
+                            return;
+                        }
                         prevExtentKeyRef.current = key;
-                        try { prefetchInProgressRef.current = true; setStatusText('Radar: prefetching frames for new extent...'); await prefetchFrames(framesRef.current); setStatusText(`Radar: cached ${framesRef.current.length} frames for extent`); } catch (err) { console.debug('Extent prefetch failed:', err); } finally { prefetchInProgressRef.current = false; }
+                        try {
+                            prefetchInProgressRef.current = true;
+                            setStatusText('Radar: prefetching frames for new extent...');
+                            await prefetchFrames(framesRef.current);
+                            setStatusText(`Radar: cached ${framesRef.current.length} frames for extent`);
+                        } catch (err) {
+                            console.debug('Extent prefetch failed:', err);
+                        } finally {
+                            prefetchInProgressRef.current = false;
+                        }
                     }, delay);
                 }
 
@@ -312,9 +314,9 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     // JSX UI for controls (React-managed)
     return (
         <>
-            <calcite-button class="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
+            <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
             <input
-                class="timeline-slider"
+                className="timeline-slider"
                 ref={sliderRef}
                 type="range"
                 min={0}
