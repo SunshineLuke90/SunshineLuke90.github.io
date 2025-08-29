@@ -28,7 +28,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     const [playing, setPlaying] = useState(false);
     const intervalRef = useRef(null);
     const sliderRef = useRef(null);
-    const [statusText, setStatusText] = useState('Radar: loading...');
+    const [statusText, setStatusText] = useState('Status: loading...');
     const [tsText, setTsText] = useState('—');
     const applyFrameRef = useRef(null);
     const startAnimationRef = useRef(null);
@@ -47,7 +47,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
             const view = await mapElement.view;
 
             // status (migrated to React state)
-            setStatusText('Radar: loading...');
+            setStatusText('Status: loading...');
 
             try {
                 const wmsBase = 'https://nowcoast.noaa.gov/geoserver/observations/weather_radar/ows';
@@ -65,7 +65,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
 
                 wmsRef.current = new WMSLayer({ url: wmsBase, title: 'nowCOAST Radar (WMS)', sublayers: [{ name: layerName }], opacity: 0.75, visible: true });
                 view.map.add(wmsRef.current);
-                setStatusText('Radar: WMS layer added');
+                setStatusText('Status: WMS layer added');
 
                 // controls are rendered via React JSX/state (see component return)
 
@@ -100,13 +100,13 @@ export default function Radar({ mapElementId = 'radar-map' }) {
 
                 if (!times || times.length === 0) {
                     console.debug('WMS capabilities did not include explicit times for layer; rendering latest available image.');
-                    setStatusText('Radar: WMS layer (latest) added');
+                    setStatusText('Status: WMS layer (latest) added');
                     return;
                 }
 
                 framesRef.current = times.slice(-30);
                 setFramesState(framesRef.current);
-                setStatusText(`Radar: ${framesRef.current.length} time frames available`);
+                setStatusText(`Status: ${framesRef.current.length} time frames available`);
 
                 // Service Worker + prefetch helpers
                 const CACHE_NAME = 'radar-wms-v1';
@@ -129,7 +129,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     if (!frameList || frameList.length === 0) return;
                     try {
                         const cache = await caches.open(CACHE_NAME);
-                        setStatusText(`Radar: caching ${frameList.length} frames...`);
+                        setStatusText(`Status: caching ${frameList.length} frames...`);
                         let respArr = [];
                         for (let i = 0; i < frameList.length; i++) {
                             const url = buildGetMapUrl(frameList[i]);
@@ -139,7 +139,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                             } catch (fetchErr) { console.debug('Prefetch failed for', url, fetchErr); }
                         }
                         await Promise.all(respArr);
-                        setStatusText(`Radar: cached ${frameList.length} frames`);
+                        setStatusText(`Status: ready`);
                     } catch (cacheErr) { console.debug('Caching frames failed:', cacheErr); }
                 }
 
@@ -179,7 +179,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                                 setIdxState(idxRef.current);
                                 if (applyFrameRef.current) await applyFrameRef.current(idxRef.current);
                             }
-                            setStatusText(`Radar: ${framesRef.current.length} time frames available (updated)`);
+                            setStatusText(`Status: ${framesRef.current.length} time frames available (updated)`);
                             await prefetchFrames(newly);
                         } else { console.debug('refreshTimes: no new frames'); }
                     } catch (err) { console.debug('refreshTimes failed:', err); }
@@ -203,9 +203,9 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                         prevExtentKeyRef.current = key;
                         try {
                             prefetchInProgressRef.current = true;
-                            setStatusText('Radar: prefetching frames for new extent...');
+                            setStatusText('Status: prefetching frames for new extent...');
                             await prefetchFrames(framesRef.current);
-                            setStatusText(`Radar: cached ${framesRef.current.length} frames for extent`);
+                            setStatusText(`Status: ready`);
                         } catch (err) {
                             console.debug('Extent prefetch failed:', err);
                         } finally {
@@ -288,12 +288,12 @@ export default function Radar({ mapElementId = 'radar-map' }) {
 
             } catch (err) {
                 console.error('Error creating WMS layer from nowCOAST:', err);
-                setStatusText('Radar: WMS layer error or not accessible');
+                setStatusText('Status: WMS layer error or not accessible');
                 try {
                     const nowcoastUrl = 'https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/radar_meteo_imagery_nexrad_time/MapServer';
                     const nowLayer = new MapImageLayer({ url: nowcoastUrl, id: 'nowcoast-radar', opacity: 0.75, visible: true });
                     if (view && view.map) view.map.add(nowLayer);
-                    setStatusText('Radar: nowCOAST MapImageLayer added as fallback');
+                    setStatusText('Status: nowCOAST MapImageLayer added as fallback');
                 } catch (e) { console.error('Fallback MapImageLayer failed:', e); }
             }
         })();
@@ -330,8 +330,8 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                         applyFrameRef.current && await applyFrameRef.current(val);
                         stopAnimationRef.current && stopAnimationRef.current();
                     }} />
-            <div>{tsText}</div>
-            <div>{statusText}</div>
+            <div className='timestamp'>{tsText}</div>
+            <div className='radar-status'>{statusText}</div>
         </>
     );
 }

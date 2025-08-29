@@ -47,6 +47,24 @@
         <arcgis-map id="radar-map" class="radar-map" basemap="satellite" center="-98.583, 39.83" zoom="4"></arcgis-map>
         <div id="radar-panel" class="radar-panel"></div>
     </div>
+    <section style="margin-top:20px">
+        <h3 class="header-text">About this project</h3>
+        <p class="body-text">There are very few radar applications that work efficiently with the esri software suite.
+            The goal of this project is to use open source or free radar, and loop it on a timeline while allowing
+            developers to use their own maps and data. This application uses the NOAA nowCOAST WMS layer, and caches all
+            frames for the current view extent as soon as the user is done panning and zooming, so that the radar loads
+            near-instantly.<br><br>
+            The current capabilities of the out of the box esri solutions for viewing time enabled layers are incredibly
+            slow, and require the developer to choose between viewing patterns across large time periods, or viewing
+            patterns with high temporal resolution. This project shows that it is possible with some minor modifications
+            to display a user friendly and responsive timeline application.<br><br>
+            One massive benefit of the way that this page works is that it will work with any time enabled WMS layer, as
+            it pre-caches images, and fetches the frames based on the time slots in the WMS definition. This makes it
+            easy to add layers in the future, or switch out radar layers for other services. Using an Open Geospatial
+            Consortium standard, this ensures that the layers will be supported into the future, and the layers that
+            will be supported using this approach will be widely available.
+        </p>
+    </section>
     <footer>
         <p>&copy; 2025 Lucius Creamer. All rights reserved.</p>
     </footer>

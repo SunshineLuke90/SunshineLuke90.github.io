@@ -34,6 +34,22 @@
     padding: 10px;
 }
 
+.radar-status {
+    font-size: x-small;
+}
+
+.header-text {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.body-text {
+    width: 800px;
+    max-width: 90%;
+    margin: auto;
+}
+
 @media screen and (max-width: 800px) {
     .radar-map {
         width: 90vw;
