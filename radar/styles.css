@@ -51,15 +51,15 @@
     width: 100%;
 }
 
-.speed-slider {
-    --calcite-slider-track-color: rgba(255, 255, 255, 0.2);
-    width: 100%;
-}
-
 .speed-container {
     display: flex;
     flex-direction: column;
     flex-grow: 5;
+}
+
+.speed-slider {
+    --calcite-slider-track-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
 }
 
 .header-text {

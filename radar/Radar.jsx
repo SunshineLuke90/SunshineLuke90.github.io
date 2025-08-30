@@ -341,6 +341,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
             <div className="control-row">
                 <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
                 <div className="speed-container">
+                    <div className="speed-label" style={{ fontSize: 'small', paddingTop: '4px' }}>Play Speed</div>
                     <CalciteSlider
                         className="speed-slider"
                         value={playSpeed}
@@ -352,13 +353,15 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                             (e) => {
                                 setPlaySpeed(e.target.value);
                                 playSpeedRef.current = e.target.value;
+                                console.debug('Adjusting play speed to', e.target.value);
                                 if (!playing) return;
+                                console.debug('Restarting animation with new speed');
                                 clearInterval(intervalRef.current);
                                 intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, e.target.value * 100, 100);
                             }
                         }
                     />
-                    <div className="speed-label" style={{ fontSize: 'small' }}>Play Speed</div>
+
                 </div>
             </div>
             <div className='radar-status'>{statusText}</div>
