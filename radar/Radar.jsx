@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@esri/calcite-components/dist/components/calcite-slider';
+import { CalciteSlider } from '@esri/calcite-components-react';
 import '@arcgis/map-components/components/arcgis-map';
 import '@arcgis/map-components/components/arcgis-legend';
 
@@ -25,6 +26,8 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     const framesRef = useRef([]);
     const [idxState, setIdxState] = useState(0);
     const idxRef = useRef(0);
+    const [playSpeed, setPlaySpeed] = useState(3);
+    const playSpeedRef = useRef(3);
     const [playing, setPlaying] = useState(false);
     const intervalRef = useRef(null);
     const sliderRef = useRef(null);
@@ -227,7 +230,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     idxRef.current = framesRef.current.length - 1;
                     setIdxState(idxRef.current);
                 }
-                const frameDelay = 100;
+
                 async function applyFrame(i) {
                     if (!framesRef.current || framesRef.current.length === 0) return;
                     const t = framesRef.current[i];
@@ -248,7 +251,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 function startAnimation() {
                     if (intervalRef.current) return;
                     setPlaying(true);
-                    intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, frameDelay);
+                    intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, playSpeedRef.current * 100);
                 }
 
                 function stopAnimation() {
@@ -314,23 +317,50 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     // JSX UI for controls (React-managed)
     return (
         <>
-            <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
-            <input
-                className="timeline-slider"
-                ref={sliderRef}
-                type="range"
-                min={0}
-                max={Math.max(0, framesState.length - 1)}
-                value={idxState}
-                onChange={
-                    async (e) => {
-                        const val = Number(e.target.value);
-                        idxRef.current = val;
-                        setIdxState(val);
-                        applyFrameRef.current && await applyFrameRef.current(val);
-                        stopAnimationRef.current && stopAnimationRef.current();
-                    }} />
-            <div className='timestamp'>{tsText}</div>
+
+
+            <div className="timeline-container">
+                <div className='timestamp'>{tsText}</div>
+                <CalciteSlider
+                    className="timeline-slider"
+                    ref={sliderRef}
+                    type="range"
+                    min={0}
+                    max={Math.max(0, framesState.length - 1)}
+                    value={idxState}
+                    onCalciteSliderInput={
+                        async (e) => {
+                            const val = Number(e.target.value);
+                            idxRef.current = val;
+                            setIdxState(val);
+                            applyFrameRef.current && await applyFrameRef.current(val);
+                            stopAnimationRef.current && stopAnimationRef.current();
+                        }}
+                />
+            </div>
+            <div className="control-row">
+                <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
+                <div className="speed-container">
+                    <CalciteSlider
+                        className="speed-slider"
+                        value={playSpeed}
+                        mirrored fill-placement="end"
+                        max={5} max-label="Play Speed: Upper Bound"
+                        min={1} min-label="Play Speed: Lower Bound"
+                        step="1" ticks="1" snap
+                        onCalciteSliderInput={
+                            (e) => {
+                                setPlaySpeed(e.target.value);
+                                playSpeedRef.current = e.target.value;
+                                if (!playing) return;
+                                clearInterval(intervalRef.current);
+                                intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, e.target.value * 100, 100);
+                            }
+                        }
+                    />
+                    <div className="speed-label" style={{ fontSize: 'small' }}>Play Speed</div>
+                </div>
+            </div>
             <div className='radar-status'>{statusText}</div>
         </>
     );

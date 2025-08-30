@@ -28,14 +28,38 @@
     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.4);
 }
 
+.radar-status {
+    font-size: x-small;
+}
+
+.control-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
 .radar-play-pause {
+    flex-grow: 1;
     height: 40px;
     width: 80px;
     padding: 10px;
 }
 
-.radar-status {
-    font-size: x-small;
+.timeline-slider {
+    --calcite-slider-track-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
+}
+
+.speed-slider {
+    --calcite-slider-track-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
+}
+
+.speed-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 5;
 }
 
 .header-text {
