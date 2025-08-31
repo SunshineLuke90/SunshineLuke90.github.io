@@ -317,8 +317,6 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     // JSX UI for controls (React-managed)
     return (
         <>
-
-
             <div className="timeline-container">
                 <div className='timestamp'>{tsText}</div>
                 <CalciteSlider
@@ -339,7 +337,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 />
             </div>
             <div className="control-row">
-                <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
+                <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); console.debug(playing) } else { startAnimationRef.current && startAnimationRef.current(); console.debug(playing) } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
                 <div className="speed-container">
                     <div className="speed-label" style={{ fontSize: 'small', paddingTop: '4px' }}>Play Speed</div>
                     <CalciteSlider
@@ -354,7 +352,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                                 setPlaySpeed(e.target.value);
                                 playSpeedRef.current = e.target.value;
                                 console.debug('Adjusting play speed to', e.target.value);
-                                if (!playing) {
+                                if (intervalRef.current == null) {
                                     console.debug(playing);
                                     return;
                                 }
