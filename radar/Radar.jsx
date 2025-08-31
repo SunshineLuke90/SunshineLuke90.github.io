@@ -354,7 +354,10 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                                 setPlaySpeed(e.target.value);
                                 playSpeedRef.current = e.target.value;
                                 console.debug('Adjusting play speed to', e.target.value);
-                                if (!playing) return;
+                                if (!playing) {
+                                    console.debug(playing);
+                                    return;
+                                }
                                 console.debug('Restarting animation with new speed');
                                 clearInterval(intervalRef.current);
                                 intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, e.target.value * 100, 100);
