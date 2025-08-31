@@ -39,7 +39,6 @@ self.addEventListener('fetch', (event) => {
         const cached = await cache.match(key);
         if (cached) {
             // console log for debugging
-            console.debug('SW: serving cached WMS frame for', key);
             return cached;
         }
         try {
