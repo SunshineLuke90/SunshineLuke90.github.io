@@ -46,6 +46,10 @@
     padding: 10px;
 }
 
+.timestamp {
+    height: fit-content
+}
+
 .timeline-slider {
     --calcite-slider-track-color: rgba(255, 255, 255, 0.2);
     width: 100%;

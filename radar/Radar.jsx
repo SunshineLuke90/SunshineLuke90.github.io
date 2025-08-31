@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@esri/calcite-components/dist/components/calcite-slider';
+import '@esri/calcite-components/dist/components/calcite-tooltip';
 import { CalciteSlider } from '@esri/calcite-components-react';
 import '@arcgis/map-components/components/arcgis-map';
 import '@arcgis/map-components/components/arcgis-legend';
@@ -33,13 +34,15 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     const sliderRef = useRef(null);
     const [statusText, setStatusText] = useState('Status: loading...');
     const [tsText, setTsText] = useState('—');
+    const [timeType, setTimeType] = useState(false);
+    const toggleTimeType = () => {
+        setTimeType(!timeType);
+    };
     const applyFrameRef = useRef(null);
     const startAnimationRef = useRef(null);
     const stopAnimationRef = useRef(null);
 
     useEffect(() => {
-        // local vars bound to refs where necessary
-
         (async function init() {
             // find the arcgis-map element and its view
             const mapElement = document.getElementById(mapElementId) || document.querySelector('arcgis-map');
@@ -49,7 +52,6 @@ export default function Radar({ mapElementId = 'radar-map' }) {
             }
             const view = await mapElement.view;
 
-            // status (migrated to React state)
             setStatusText('Status: loading...');
 
             try {
@@ -237,12 +239,20 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     try {
                         if (wmsRef.current && typeof wmsRef.current.setCustomParameters === 'function') wmsRef.current.setCustomParameters({ TIME: t });
                         else if (wmsRef.current) wmsRef.current.customParameters = { TIME: t };
-                    } catch (e) { console.debug('Failed to set WMS TIME parameter:', e); }
-                    try { if (wmsRef.current && typeof wmsRef.current.refresh === 'function') wmsRef.current.refresh(); } catch (e) { console.debug('WMS refresh failed:', e); }
+                    } catch (e) {
+                        console.debug('Failed to set WMS TIME parameter:', e);
+                    }
+                    try {
+                        if (wmsRef.current && typeof wmsRef.current.refresh === 'function') wmsRef.current.refresh();
+                    } catch (e) {
+                        console.debug('WMS refresh failed:', e);
+                    }
                     idxRef.current = i;
                     setIdxState(i);
-                    try { const dt = new Date(t); if (!isNaN(dt.getTime())) setTsText(dt.toLocaleString()); else setTsText(t); } catch (e) { setTsText(t); }
-                    if (sliderRef.current) sliderRef.current.value = String(i);
+                    setTsText(t);
+                    if (sliderRef.current) {
+                        sliderRef.current.value = String(i);
+                    }
                 }
 
                 // expose functions to refs for JSX handlers
@@ -310,7 +320,6 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 if (panZoomTimerRef.current) { clearTimeout(panZoomTimerRef.current); panZoomTimerRef.current = null; }
                 if (viewWatchHandleRef.current && viewWatchHandleRef.current.remove) viewWatchHandleRef.current.remove();
             } catch (e) { /* ignore */ }
-            // clear any SW registration or other resources if desired (left as-is)
         };
     }, [mapElementId]);
 
@@ -318,7 +327,20 @@ export default function Radar({ mapElementId = 'radar-map' }) {
     return (
         <>
             <div className="timeline-container">
-                <div className='timestamp'>{tsText}</div>
+                <calcite-button id="timestamp" className='timestamp' kind="neutral" appearance="transparent" onClick={toggleTimeType}>{(() => {
+                    if (tsText === '—') return tsText;
+                    const dt = new Date(tsText);
+                    const now = Date.now();
+                    if (timeType) {
+                        return (Math.round((now - dt.getTime()) / (1000 * 60)) + " minutes ago"); //for minutes differential
+                    } else {
+                        return (dt.toLocaleString()); //for localized timestamp of frame
+                    }
+                }
+                )()}</calcite-button>
+                <calcite-tooltip referenceElement="timestamp" placement="top">
+                    <span>Toggle Time Format</span>
+                </calcite-tooltip>
                 <CalciteSlider
                     className="timeline-slider"
                     ref={sliderRef}
