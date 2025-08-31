@@ -297,7 +297,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     await waitForViewAndLayerReady();
                     try { await registerAndPrefetch(); } catch (e) { console.debug('registerAndPrefetch failed after wait:', e); }
                 })();
-                refreshTimerIdRef.current = setInterval(refreshTimes, 10 * 60 * 1000);
+                refreshTimerIdRef.current = setInterval(refreshTimes, 4 * 60 * 1000);
 
             } catch (err) {
                 console.error('Error creating WMS layer from nowCOAST:', err);
@@ -359,7 +359,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 />
             </div>
             <div className="control-row">
-                <calcite-button className="radar-play-pause" onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
+                <calcite-button className="radar-play-pause" appearance={playing ? "outline" : "solid"} onClick={() => { if (playing) { stopAnimationRef.current && stopAnimationRef.current(); } else { startAnimationRef.current && startAnimationRef.current(); } }}>{playing ? 'Pause' : 'Play'}</calcite-button>
                 <div className="speed-container">
                     <div className="speed-label" style={{ fontSize: 'small', paddingTop: '4px' }}>Play Speed</div>
                     <CalciteSlider
