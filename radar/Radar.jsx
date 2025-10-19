@@ -368,7 +368,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                         mirrored fill-placement="end"
                         max={5} max-label="Play Speed: Upper Bound"
                         min={1} min-label="Play Speed: Lower Bound"
-                        step="1" ticks="1" snap
+                        step={1} ticks={1} snap
                         onCalciteSliderInput={
                             (e) => {
                                 setPlaySpeed(e.target.value);
