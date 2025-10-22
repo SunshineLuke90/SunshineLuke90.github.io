@@ -54,6 +54,12 @@
     margin: auto;
 }
 
+.project-title {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
 .description-text {
     margin-top: 20px;
 }

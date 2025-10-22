@@ -86,10 +86,33 @@ footer {
 
 .header h1 {
   position: relative;
-  top: -60px;
+  z-index: 20;
+  top: -115px;
   margin-bottom: -55px;
   font-size: 50px;
   text-shadow: 0px -15px 30px rgba(0, 0, 0, 0.5), 0px -7px 15px rgba(0, 0, 0, 0.5);
+}
+
+.header h2 {
+  position: relative;
+  z-index: 19;
+  top: -90px;
+  margin-bottom: -40px;
+  font-size: 30px;
+  text-shadow: 0px -15px 30px rgba(0, 0, 0, 0.5), 0px -7px 15px rgba(0, 0, 0, 0.5);
+}
+
+.header h3 {
+  position: relative;
+  z-index: 18;
+  top: -70px;
+  margin-bottom: -65px;
+  font-size: 20px;
+  text-shadow: 0px -15px 30px rgba(0, 0, 0, 0.5), 0px -7px 15px rgba(0, 0, 0, 0.5);
+}
+
+.sub-header {
+  margin-top: -20px;
 }
 
 @media screen and (max-width: 800px) {

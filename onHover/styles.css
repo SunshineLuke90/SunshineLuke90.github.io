@@ -126,6 +126,12 @@
     margin: auto;
 }
 
+.project-title {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
 .tooltip {
     position: absolute;
     bottom: -2%;
