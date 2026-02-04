@@ -52,13 +52,30 @@
                 <calcite-card-group>
                     <!-- Project cards will go here -->
                     <calcite-card class="card" thumbnail-position="inline-start">
+                        <img slot="thumbnail" src="https://placebear.com/301/254" alt="A bear in its natural habitat."
+                            object-fit="cover">
+                        <span slot="heading">Custom Experience Builder Widgets</span>
+                        <span slot="description">Building apps using ArcGIS Maps SDK is great, but sometimes it's best to 
+                            build applications with low-code utilities. This page showcases some apps, and links to custom widgets.
+                        </span>
+                        <calcite-chip scale="s" class="chip ongoing"><img slot="image" src="./images/ongoing.png" alt="Blue dots icon">Ongoing</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#38bef0"><img slot="image" src="./images/ts-logo-128.png">TypeScript</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#5d9fef"><img slot="image" src="./images/azure-devops.png">Azure DevOps (CI/CD)</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#0ebace"><img slot="image" src="./images/exb.png">Experience Builder</calcite-chip>
+                        <div slot="footer-start"></div>
+                        <calcite-button slot="footer-end" kind="neutral" href="exb.html">Open</calcite-button>
+                    </calcite-card>
+                    <calcite-card class="card" thumbnail-position="inline-start">
                         <img slot="thumbnail" src="https://placebear.com/301/253" alt="A bear in its natural habitat."
                             object-fit="cover">
                         <span slot="heading">A Better Esri Radar Viewer</span>
                         <span slot="description">Esri doesn't really provide a radar solution out of the box. This
                             project seeks to provide an alternative method to be able to add radar to any Esri map based
                             product.</span>
-                        <calcite-chip icon="initiative" scale="s" class="chip">Mostly Complete</calcite-chip>
+                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
                         <div slot="footer-start"></div>
                         <calcite-button slot="footer-end" kind="neutral" href="radar.html">Open</calcite-button>
                     </calcite-card>
@@ -69,7 +86,7 @@
                         <span slot="description">A consistent goal, to improve accessibility, and create responsive
                             design that works on any device. Read about how I work to implement accessible design in my
                             own projects.</span>
-                        <calcite-chip icon="initiative" scale="s" class="chip">Ongoing</calcite-chip>
+                        <calcite-chip scale="s" class="chip ongoing"><img slot="image" src="./images/ongoing.png" alt="Blue dots icon">Ongoing</calcite-chip>
                         <div slot="footer-start"></div>
                         <calcite-button slot="footer-end" kind="neutral" href="accessibility.html">Open</calcite-button>
                     </calcite-card>
@@ -80,7 +97,9 @@
                         <span slot="description">Web-Mapping is highly interactive! Allowing users to click on features
                             to get more information is a great way to reduce clutter. But what if you could get insights
                             without even making an input?</span>
-                        <calcite-chip icon="initiative" scale="s" class="chip">Complete</calcite-chip>
+                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
                         <div slot="footer-start"></div>
                         <calcite-button slot="footer-end" kind="neutral" href="onHover.html">Open</calcite-button>
                     </calcite-card>
@@ -88,10 +107,13 @@
                         <img slot="thumbnail" src="https://placebear.com/310/250" alt="A bear in its natural habitat."
                             object-fit="cover">
                         <span slot="heading">Taking Control of Calcite Design</span>
-                        <span slot="description">This is a work in progress. I am working on controlling the Calcite
-                            Design
-                            framework to make highly styled applications in the future.</span>
-                        <calcite-chip icon="initiative" scale="s" class="chip">Complete</calcite-chip>
+                        <span slot="description">I am working on controlling the Calcite Design framework to make highly styled applications. 
+                            Using this framework makes it easy to work in accessibility, and ensure consistent design language.
+                            This application uses a simple map viewer to show the usefulness of Calcite.
+                        </span>
+                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
+                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
                         <div slot="footer-start"></div>
                         <calcite-button slot="footer-end" kind="neutral"
                             href="controllingCalcite.html">Open</calcite-button>
@@ -103,6 +125,6 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Lucius Creamer. All rights reserved.</p>
+        <p>&copy; 2026 Lucius Creamer. All rights reserved.</p>
     </footer>
 </body>

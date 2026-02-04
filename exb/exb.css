@@ -1,0 +1,32 @@
+.body-text {
+    width: 800px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.header-text {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.link-button {
+  height: 30px;
+  width: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+a:link {
+  color: var(--calcite-color-text-link) /* Unvisited link color */
+}
+
+a:visited {
+  color: #DC90EE; /* Visited link color */
+}

@@ -12,5 +12,16 @@
 .chip {
     --calcite-font-weight-medium: 400;
     --calcite-chip-background-color: var(--calcite-color-foreground-3);
-    scale: "small"
+    scale: "small";
+    margin-top: 5px;
+}
+
+.complete {
+    --calcite-chip-text-color:#75FB4C
+}
+.in-progress {
+    --calcite-chip-text-color:#EAC452
+}
+.ongoing {
+    --calcite-chip-text-color:#75FBFD
 }
