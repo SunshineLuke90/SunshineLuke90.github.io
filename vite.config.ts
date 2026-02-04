@@ -17,7 +17,8 @@ export default defineConfig({
         controllingCalcite: resolve(__dirname, 'controllingCalcite.html'),
         onHover: resolve(__dirname, 'onHover.html'),
         accessibility: resolve(__dirname, 'accessibility.html'),
-        radar: resolve(__dirname, 'radar.html')
+        radar: resolve(__dirname, 'radar.html'),
+        exb: resolve(__dirname, 'exb.html')
       }
     }
   }
