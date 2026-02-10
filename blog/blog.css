@@ -1,0 +1,66 @@
+.back-button {
+    height: 30px;
+    margin-top: -30px;
+}
+
+.blog-container {
+    width: calc(500px + 20%);
+    max-width: 90%;
+    margin: auto;
+}
+
+.blog-card {
+    width: calc(500px + 20%);
+    height: min-content;
+    margin: auto;
+    --calcite-card-corner-radius: var(--calcite-corner-radius-round);
+    --calcite-card-background-color: var(--calcite-color-foreground-2);
+    --calcite-card-border-color: var(--calcite-color-foreground-2);
+    box-shadow: 0 0 8px 0 rgba(15, 15, 15, 0.5);
+    border-radius: var(--calcite-corner-radius-round);
+    --calcite-font-weight-medium: 650;
+    margin-bottom: 15px;
+}
+
+.blog-post-title {
+    margin-bottom: 5px;
+}
+
+.blog-date {
+    font-size: 0.85em;
+    color: var(--calcite-color-text-3);
+    margin-top: 0;
+}
+
+.blog-post {
+    margin-top: 20px;
+    line-height: 1.7;
+}
+
+.blog-post img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.blog-post code {
+    background-color: var(--calcite-color-foreground-3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.blog-post pre {
+    background-color: var(--calcite-color-foreground-3);
+    padding: 15px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.blog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    height: 30px;
+}

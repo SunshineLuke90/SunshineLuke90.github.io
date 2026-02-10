@@ -120,3 +120,11 @@ footer {
     max-height: 7em;
   }
 }
+
+a:link {
+  color: var(--calcite-color-text-link) /* Unvisited link color */
+}
+
+a:visited {
+  color: #DC90EE; /* Visited link color */
+}

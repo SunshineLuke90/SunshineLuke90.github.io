@@ -16,9 +16,12 @@
     "@esri/calcite-components-react": "^3.2.1",
     "@types/node": "^24.2.0",
     "chart.js": "^4.5.0",
+    "front-matter": "^4.0.2",
     "path": "^0.12.7",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
