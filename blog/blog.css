@@ -39,6 +39,7 @@
 
 .blog-post img {
     max-width: 100%;
+    width:100%;
     border-radius: 16px;
 }
 
