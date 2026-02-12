@@ -1,6 +1,67 @@
+.blog-post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -30px;
+}
+
 .back-button {
     height: 30px;
-    margin-top: -30px;
+}
+
+.share-wrapper {
+    position: relative;
+}
+
+.share-button {
+    height: 30px;
+}
+
+.share-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 6px;
+    background: var(--calcite-color-foreground-1);
+    border: 1px solid var(--calcite-color-border-3);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    min-width: 170px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.share-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: var(--calcite-color-text-1);
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.share-menu-item:hover {
+    background: var(--calcite-color-foreground-2);
+}
+
+.share-menu-item:focus-visible {
+    outline: 2px solid var(--calcite-color-brand);
+    outline-offset: -2px;
+}
+
+.share-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--calcite-color-foreground-3);
+    font-weight: 700;
+    font-size: 0.8em;
 }
 
 .blog-container {

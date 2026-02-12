@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getAllPosts } from './posts';
 import { CalciteCard, CalciteButton, CalciteCardGroup } from '@esri/calcite-components-react';
 
+const SHARE_PLATFORMS = [
+    { name: 'X', icon: '𝕏', buildUrl: (url, title) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
+    { name: 'Facebook', icon: 'f', buildUrl: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+    { name: 'Reddit', icon: 'r', buildUrl: (url, title) => `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
+    { name: 'LinkedIn', icon: 'in', buildUrl: (url, title) => `https://www.linkedin.com/shareArticle/?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent("Check out this blog post!")}&source=${encodeURIComponent("Lucius Creamer")}` },
+];
+
 const POSTS_PER_PAGE = 5;
+
+function getSlugFromURL() {
+    return new URLSearchParams(window.location.search).get('post') || null;
+}
 
 export default function Blog() {
     const allPosts = getAllPosts();
-    const [selectedSlug, setSelectedSlug] = useState(null);
+    const [selectedSlug, setSelectedSlug] = useState(getSlugFromURL);
     const [page, setPage] = useState(0);
+
+    const selectPost = useCallback((slug) => {
+        setSelectedSlug(slug);
+        const url = new URL(window.location);
+        if (slug) {
+            url.searchParams.set('post', slug);
+        } else {
+            url.searchParams.delete('post');
+        }
+        window.history.pushState({}, '', url);
+    }, []);
+
+    // Handle browser back/forward navigation
+    useEffect(() => {
+        const onPopState = () => setSelectedSlug(getSlugFromURL());
+        window.addEventListener('popstate', onPopState);
+        return () => window.removeEventListener('popstate', onPopState);
+    }, []);
 
     const selectedPost = selectedSlug
         ? allPosts.find((p) => p.slug === selectedSlug)
@@ -21,18 +50,76 @@ export default function Blog() {
         (page + 1) * POSTS_PER_PAGE
     );
 
+    const [shareOpen, setShareOpen] = useState(false);
+    const shareRef = useRef(null);
+
+    // Close share menu when clicking outside
+    useEffect(() => {
+        if (!shareOpen) return;
+        const handleClick = (e) => {
+            if (shareRef.current && !shareRef.current.contains(e.target)) {
+                setShareOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, [shareOpen]);
+
+    const getShareUrl = () => {
+        const url = new URL(window.location);
+        url.searchParams.set('post', selectedSlug);
+        return url.toString();
+    };
+
     if (selectedPost) {
         return (
             <div className="blog-container">
-                <CalciteButton
-                    kind="neutral"
-                    className="back-button"
-                    appearance="outline"
-                    icon-start="arrow-left"
-                    onClick={() => setSelectedSlug(null)}
-                >
-                    Back to posts
-                </CalciteButton>
+                <div className="blog-post-header">
+                    <CalciteButton
+                        kind="neutral"
+                        className="back-button"
+                        appearance="outline"
+                        icon-start="arrow-left"
+                        onClick={() => selectPost(null)}
+                    >
+                        Back to posts
+                    </CalciteButton>
+                    <div className="share-wrapper" ref={shareRef}>
+                        <CalciteButton
+                            kind="neutral"
+                            className="share-button"
+                            appearance="outline"
+                            icon-start="share"
+                            onClick={() => setShareOpen((o) => !o)}
+                        >
+                            Share
+                        </CalciteButton>
+                        {shareOpen && (
+                            <div
+                                className="share-menu"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Escape') {
+                                        setShareOpen(false);
+                                        shareRef.current?.querySelector('.share-button, calcite-button')?.focus();
+                                    }
+                                }}
+                            >                                {SHARE_PLATFORMS.map((platform) => (
+                                    <a
+                                        key={platform.name}
+                                        className="share-menu-item"
+                                        href={platform.buildUrl(getShareUrl(), selectedPost.title)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={() => setShareOpen(false)}
+                                    >
+                                        <span className="share-icon">{platform.icon}</span>
+                                        {platform.name}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
                 <article className="blog-post">
                     <h2 className="blog-post-title">{selectedPost.title}</h2>
                     <p className="blog-date">{selectedPost.date}</p>
@@ -53,10 +140,10 @@ export default function Blog() {
                 <CalciteCard
                     key={post.slug}
                     className="card blog-card"
-                    onClick={() => setSelectedSlug(post.slug)}
+                    onClick={() => selectPost(post.slug)}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                            setSelectedSlug(post.slug);
+                            selectPost(post.slug);
                         }
                     }}
                     //calciteCardSelect={() =>setSelectedSlug(post.slug)}
