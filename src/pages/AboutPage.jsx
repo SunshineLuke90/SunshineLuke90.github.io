@@ -1,6 +1,6 @@
 import '../../about.css';
 
-export default function AboutPage() {
+export default function AboutPage () {
     return (
         <main>
             <h2 className="sub-header">About Me</h2>

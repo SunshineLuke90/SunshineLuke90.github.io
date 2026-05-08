@@ -5,7 +5,7 @@ const NAV_ITEMS = [
     { key: 'contact', label: 'Contact', icon: 'address-book' },
 ];
 
-export default function Layout({ navigate, currentPage, children }) {
+export default function Layout ({ navigate, currentPage, children }) {
     return (
         <>
             <div className="header noto-sans-heavy">
