@@ -8,7 +8,7 @@ export default function AboutPage() {
                 <calcite-card className="card" thumbnail-position="inline-start">
                     <img
                         slot="thumbnail"
-                        src="images/BlazerProfile.jpg"
+                        src="/images/BlazerProfile.jpg"
                         alt="A picture of me in a Northwest Blazer"
                         width="20%"
                     />
@@ -39,7 +39,7 @@ export default function AboutPage() {
                 <calcite-card className="card" thumbnail-position="inline-start">
                     <img
                         slot="thumbnail"
-                        src="images/Boulder.jpg"
+                        src="/images/Boulder.jpg"
                         alt="A picture of me sitting on a rock in Colorado"
                         width="20%"
                     />
@@ -62,7 +62,7 @@ export default function AboutPage() {
                 <calcite-card className="card" thumbnail-position="inline-start">
                     <img
                         slot="thumbnail"
-                        src="images/CouplePhoto.jpg"
+                        src="/images/CouplePhoto.jpg"
                         alt="A selfie of me and my girlfriend on pikes peak"
                         width="20%"
                     />

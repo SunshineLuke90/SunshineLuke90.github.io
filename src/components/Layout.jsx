@@ -9,7 +9,7 @@ export default function Layout({ navigate, currentPage, children }) {
     return (
         <>
             <div className="header noto-sans-heavy">
-                <img src="images/KC1440p.jpg" alt="A styled topographic map background" />
+                <img src="/images/KC1440p.jpg" alt="A styled topographic map background" />
                 <h1>Sunshine Spatial</h1>
                 <h2>GIS and Developer Portfolio | Lucius Creamer</h2>
                 <h3>A showcase of passion projects, coding exercises, and design work.</h3>

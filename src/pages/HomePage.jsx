@@ -27,23 +27,23 @@ export default function HomePage ({ navigate }) {
                                 and links to custom widgets.
                             </span>
                             <calcite-chip scale="s" className="chip ongoing">
-                                <img slot="image" src="./images/ongoing.png" alt="Blue dots icon" />
+                                <img slot="image" src="/images/ongoing.png" alt="Blue dots icon" />
                                 Ongoing
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipTs}>
-                                <img slot="image" src="./images/ts-logo-128.png" />
+                                <img slot="image" src="/images/ts-logo-128.png" />
                                 TypeScript
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipReact}>
-                                <img slot="image" src="./images/logo_dark.svg" />
+                                <img slot="image" src="/images/logo_dark.svg" />
                                 React
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipAzure}>
-                                <img slot="image" src="./images/azure-devops.png" />
+                                <img slot="image" src="/images/azure-devops.png" />
                                 Azure DevOps (CI/CD)
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipExb}>
-                                <img slot="image" src="./images/exb.png" />
+                                <img slot="image" src="/images/exb.png" />
                                 Experience Builder
                             </calcite-chip>
                             <div slot="footer-start"></div>
@@ -65,19 +65,19 @@ export default function HomePage ({ navigate }) {
                                 SAG award by Esri.
                             </span>
                             <calcite-chip scale="s" className="chip" style={chipTs}>
-                                <img slot="image" src="./images/ts-logo-128.png" />
+                                <img slot="image" src="/images/ts-logo-128.png" />
                                 TypeScript
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipReact}>
-                                <img slot="image" src="./images/logo_dark.svg" />
+                                <img slot="image" src="/images/logo_dark.svg" />
                                 React
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipAzure}>
-                                <img slot="image" src="./images/azure-devops.png" />
+                                <img slot="image" src="/images/azure-devops.png" />
                                 Azure DevOps (CI/CD)
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipExb}>
-                                <img slot="image" src="./images/exb.png" />
+                                <img slot="image" src="/images/exb.png" />
                                 Experience Builder
                             </calcite-chip>
                             <div slot="footer-start"></div>
@@ -100,15 +100,15 @@ export default function HomePage ({ navigate }) {
                                 map based product.
                             </span>
                             <calcite-chip scale="s" className="chip complete">
-                                <img slot="image" src="./images/check.png" alt="Green check icon" />
+                                <img slot="image" src="/images/check.png" alt="Green check icon" />
                                 Complete
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipReact}>
-                                <img slot="image" src="./images/logo_dark.svg" />
+                                <img slot="image" src="/images/logo_dark.svg" />
                                 React
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipJs}>
-                                <img slot="image" src="./images/icons8-javascript-48.png" />
+                                <img slot="image" src="/images/icons8-javascript-48.png" />
                                 Javascript
                             </calcite-chip>
                             <div slot="footer-start"></div>
@@ -131,7 +131,7 @@ export default function HomePage ({ navigate }) {
                                 design in my own projects.
                             </span>
                             <calcite-chip scale="s" className="chip ongoing">
-                                <img slot="image" src="./images/ongoing.png" alt="Blue dots icon" />
+                                <img slot="image" src="/images/ongoing.png" alt="Blue dots icon" />
                                 Ongoing
                             </calcite-chip>
                             <div slot="footer-start"></div>
@@ -158,15 +158,15 @@ export default function HomePage ({ navigate }) {
                                 could get insights without even making an input?
                             </span>
                             <calcite-chip scale="s" className="chip complete">
-                                <img slot="image" src="./images/check.png" alt="Green check icon" />
+                                <img slot="image" src="/images/check.png" alt="Green check icon" />
                                 Complete
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipReact}>
-                                <img slot="image" src="./images/logo_dark.svg" />
+                                <img slot="image" src="/images/logo_dark.svg" />
                                 React
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipJs}>
-                                <img slot="image" src="./images/icons8-javascript-48.png" />
+                                <img slot="image" src="/images/icons8-javascript-48.png" />
                                 Javascript
                             </calcite-chip>
                             <div slot="footer-start"></div>
@@ -190,15 +190,15 @@ export default function HomePage ({ navigate }) {
                                 simple map viewer to show the usefulness of Calcite.
                             </span>
                             <calcite-chip scale="s" className="chip complete">
-                                <img slot="image" src="./images/check.png" alt="Green check icon" />
+                                <img slot="image" src="/images/check.png" alt="Green check icon" />
                                 Complete
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipReact}>
-                                <img slot="image" src="./images/logo_dark.svg" />
+                                <img slot="image" src="/images/logo_dark.svg" />
                                 React
                             </calcite-chip>
                             <calcite-chip scale="s" className="chip" style={chipJs}>
-                                <img slot="image" src="./images/icons8-javascript-48.png" />
+                                <img slot="image" src="/images/icons8-javascript-48.png" />
                                 Javascript
                             </calcite-chip>
                             <div slot="footer-start"></div>
