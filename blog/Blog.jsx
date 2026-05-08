@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getAllPosts } from './posts';
-import { CalciteCard, CalciteButton, CalciteCardGroup } from '@esri/calcite-components-react';
+import { CalciteCard, CalciteButton, CalciteCardGroup, CalcitePopover, CalciteList, CalciteListItem } from '@esri/calcite-components-react';
 
 const SHARE_PLATFORMS = [
     { name: 'X', icon: '𝕏', buildUrl: (url, title) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
@@ -13,11 +13,15 @@ const SHARE_PLATFORMS = [
 
 const POSTS_PER_PAGE = 5;
 
-function getSlugFromURL() {
+function getSlugFromURL () {
     return new URLSearchParams(window.location.search).get('post') || null;
 }
 
-export default function Blog() {
+function buildBlogSearch (slug) {
+    return slug ? `?blog&post=${encodeURIComponent(slug)}` : '?blog';
+}
+
+export default function Blog () {
     const allPosts = getAllPosts();
     const [selectedSlug, setSelectedSlug] = useState(getSlugFromURL);
     const [page, setPage] = useState(0);
@@ -25,11 +29,7 @@ export default function Blog() {
     const selectPost = useCallback((slug) => {
         setSelectedSlug(slug);
         const url = new URL(window.location);
-        if (slug) {
-            url.searchParams.set('post', slug);
-        } else {
-            url.searchParams.delete('post');
-        }
+        url.search = buildBlogSearch(slug);
         window.history.pushState({}, '', url);
     }, []);
 
@@ -50,26 +50,15 @@ export default function Blog() {
         (page + 1) * POSTS_PER_PAGE
     );
 
-    const [shareOpen, setShareOpen] = useState(false);
-    const shareRef = useRef(null);
-
-    // Close share menu when clicking outside
-    useEffect(() => {
-        if (!shareOpen) return;
-        const handleClick = (e) => {
-            if (shareRef.current && !shareRef.current.contains(e.target)) {
-                setShareOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClick);
-        return () => document.removeEventListener('mousedown', handleClick);
-    }, [shareOpen]);
-
     const getShareUrl = () => {
         const url = new URL(window.location);
-        url.searchParams.set('post', selectedSlug);
+        url.search = buildBlogSearch(selectedSlug);
         return url.toString();
     };
+
+    const openShareLink = useCallback((url) => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }, []);
 
     if (selectedPost) {
         return (
@@ -84,40 +73,40 @@ export default function Blog() {
                     >
                         Back to posts
                     </CalciteButton>
-                    <div className="share-wrapper" ref={shareRef}>
+                    <div>
+                        <CalcitePopover
+                            className="share-popover"
+                            referenceElement="share-button"
+                            autoClose={true}
+                            pointerDisabled={true}
+                            placement='bottom'
+                        >
+                            <div className="share-popover-content">
+                                <CalciteList className="share-list">
+                                    {SHARE_PLATFORMS.map((platform) => (
+                                        <CalciteListItem
+                                            key={platform.name}
+                                            label={platform.name}
+                                            value={platform.name}
+                                            onCalciteListItemSelect={() => openShareLink(platform.buildUrl(getShareUrl(), selectedPost.title))}
+                                        >
+                                            <span slot="content-start" className="share-icon" aria-hidden="true">
+                                                {platform.icon}
+                                            </span>
+                                        </CalciteListItem>
+                                    ))}
+                                </CalciteList>
+                            </div>
+                        </CalcitePopover>
                         <CalciteButton
+                            id="share-button"
                             kind="neutral"
                             className="share-button"
                             appearance="outline"
                             icon-start="share"
-                            onClick={() => setShareOpen((o) => !o)}
                         >
                             Share
                         </CalciteButton>
-                        {shareOpen && (
-                            <div
-                                className="share-menu"
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Escape') {
-                                        setShareOpen(false);
-                                        shareRef.current?.querySelector('.share-button, calcite-button')?.focus();
-                                    }
-                                }}
-                            >                                {SHARE_PLATFORMS.map((platform) => (
-                                    <a
-                                        key={platform.name}
-                                        className="share-menu-item"
-                                        href={platform.buildUrl(getShareUrl(), selectedPost.title)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={() => setShareOpen(false)}
-                                    >
-                                        <span className="share-icon">{platform.icon}</span>
-                                        {platform.name}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
                     </div>
                 </div>
                 <article className="blog-post">
@@ -136,26 +125,26 @@ export default function Blog() {
             <CalciteCardGroup
                 className="blog-card-group"
             >
-            {paginatedPosts.map((post) => (
-                <CalciteCard
-                    key={post.slug}
-                    className="card blog-card"
-                    onClick={() => selectPost(post.slug)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            selectPost(post.slug);
-                        }
-                    }}
-                    //calciteCardSelect={() =>setSelectedSlug(post.slug)}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <span slot="heading">{post.title}</span>
-                    <span slot="description">
-                        <p className="blog-date">{post.date}</p>
-                        <p>{post.summary}</p>
-                    </span>
-                </CalciteCard>
-            ))}
+                {paginatedPosts.map((post) => (
+                    <CalciteCard
+                        key={post.slug}
+                        className="card blog-card"
+                        onClick={() => selectPost(post.slug)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                selectPost(post.slug);
+                            }
+                        }}
+                        //calciteCardSelect={() =>setSelectedSlug(post.slug)}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <span slot="heading">{post.title}</span>
+                        <span slot="description">
+                            <p className="blog-date">{post.date}</p>
+                            <p>{post.summary}</p>
+                        </span>
+                    </CalciteCard>
+                ))}
             </CalciteCardGroup>
             <div className="blog-pagination">
                 <CalciteButton

@@ -1,5 +1,13 @@
+<!doctype html>
+<html lang="en">
 <head>
-    <!--Instructions to get favicon for various webpages and types.-->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Lucius Creamer Portfolio" />
+    <meta property="og:image" content="images/KC1440p.jpg" />
+    <meta name="author" content="Lucius Creamer" />
+
     <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="shortcut icon" href="/images/favicon.ico" />
@@ -7,126 +15,19 @@
     <meta name="apple-mobile-web-app-title" content="MyWebSite" />
     <link rel="manifest" href="/images/site.webmanifest" />
 
-    <!--Import Calcite Stylesheet via CDN. This is easier than having to create react stuff for each static page-->
     <script type="module" src="https://js.arcgis.com/calcite-components/3.2.1/calcite.esm.js"></script>
-    <link rel="stylesheet" href="calcite.css">
 
-
-    <!--Import Noto Sans so that the website draws properly-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"
+    />
 
-    <!--Reference component stylesheet-->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="home.css">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!--Webpage Title-->
     <title>Lucius Creamers Portfolio</title>
 </head>
-
 <body>
-    <div class="header noto-sans-heavy">
-        <img src="images/KC1440p.jpg" alt="A styled topographic map background" />
-        <h1>Sunshine Spatial</h1>
-        <h2>GIS and Developer Portfolio | Lucius Creamer</h2>
-        <h3>A showcase of passion projects, coding exercises, and design work.</h3>
-        <div class="action-bar">
-            <calcite-button href="index.html" class="menu-button" round="true" kind="neutral" label="Open home Page"
-                icon-start="home" scale="m" appearance="transparent" title="Home"></calcite-button>
-            <calcite-button href="about.html" class="menu-button" round="true" kind="neutral" label="Open about me"
-                icon-start="information" scale="m" appearance="transparent" title="About me"></calcite-button>
-            <calcite-button href="blog.html" class="menu-button" round="true" kind="neutral" label="Open blog"
-                icon-start="blog" scale="m" appearance="transparent" title="Blog"></calcite-button>
-            <calcite-button href="contact.html" class="menu-button" round="true" kind="neutral"
-                label="Open contact information" icon-start="address-book" scale="m" appearance="transparent"
-                title="Contact"></calcite-button>
-        </div>
-    </div>
-    <main>
-        <section>
-            <h2 class="projects sub-header">Featured Projects</h2>
-            <div>
-                <calcite-card-group>
-                    <!-- Project cards will go here -->
-                    <calcite-card class="card" thumbnail-position="inline-start">
-                        <img slot="thumbnail" src="https://placebear.com/301/254" alt="A bear in its natural habitat."
-                            object-fit="cover">
-                        <span slot="heading">Custom Experience Builder Widgets</span>
-                        <span slot="description">Building apps using ArcGIS Maps SDK is great, but sometimes it's best to 
-                            build applications with low-code utilities. This page showcases some apps, and links to custom widgets.
-                        </span>
-                        <calcite-chip scale="s" class="chip ongoing"><img slot="image" src="./images/ongoing.png" alt="Blue dots icon">Ongoing</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#38bef0"><img slot="image" src="./images/ts-logo-128.png">TypeScript</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#5d9fef"><img slot="image" src="./images/azure-devops.png">Azure DevOps (CI/CD)</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#0ebace"><img slot="image" src="./images/exb.png">Experience Builder</calcite-chip>
-                        <div slot="footer-start"></div>
-                        <calcite-button slot="footer-end" kind="neutral" href="exb.html">Open</calcite-button>
-                    </calcite-card>
-                    <calcite-card class="card" thumbnail-position="inline-start">
-                        <img slot="thumbnail" src="https://placebear.com/301/253" alt="A bear in its natural habitat."
-                            object-fit="cover">
-                        <span slot="heading">A Better Esri Radar Viewer</span>
-                        <span slot="description">Esri doesn't really provide a radar solution out of the box. This
-                            project seeks to provide an alternative method to be able to add radar to any Esri map based
-                            product.</span>
-                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
-                        <div slot="footer-start"></div>
-                        <calcite-button slot="footer-end" kind="neutral" href="radar.html">Open</calcite-button>
-                    </calcite-card>
-                    <calcite-card class="card" thumbnail-position="inline-start">
-                        <img slot="thumbnail" src="https://placebear.com/300/252" alt="A bear in its natural habitat."
-                            object-fit="cover">
-                        <span slot="heading">Accessibility Through Responsive Design</span>
-                        <span slot="description">A consistent goal, to improve accessibility, and create responsive
-                            design that works on any device. Read about how I work to implement accessible design in my
-                            own projects.</span>
-                        <calcite-chip scale="s" class="chip ongoing"><img slot="image" src="./images/ongoing.png" alt="Blue dots icon">Ongoing</calcite-chip>
-                        <div slot="footer-start"></div>
-                        <calcite-button slot="footer-end" kind="neutral" href="accessibility.html">Open</calcite-button>
-                    </calcite-card>
-                    <calcite-card class="card" thumbnail-position="inline-start">
-                        <img slot="thumbnail" src="https://placebear.com/300/250" alt="A bear in its natural habitat."
-                            object-fit="cover">
-                        <span slot="heading">Working With the Hover Effect</span>
-                        <span slot="description">Web-Mapping is highly interactive! Allowing users to click on features
-                            to get more information is a great way to reduce clutter. But what if you could get insights
-                            without even making an input?</span>
-                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
-                        <div slot="footer-start"></div>
-                        <calcite-button slot="footer-end" kind="neutral" href="onHover.html">Open</calcite-button>
-                    </calcite-card>
-                    <calcite-card class="card" thumbnail-position="inline-start">
-                        <img slot="thumbnail" src="https://placebear.com/310/250" alt="A bear in its natural habitat."
-                            object-fit="cover">
-                        <span slot="heading">Taking Control of Calcite Design</span>
-                        <span slot="description">I am working on controlling the Calcite Design framework to make highly styled applications. 
-                            Using this framework makes it easy to work in accessibility, and ensure consistent design language.
-                            This application uses a simple map viewer to show the usefulness of Calcite.
-                        </span>
-                        <calcite-chip scale="s" class="chip complete"><img slot="image" src="./images/check.png" alt="Green check icon">Complete</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#58c4dc"><img slot="image" src="./images/logo_dark.svg">React</calcite-chip>
-                        <calcite-chip scale="s" class="chip" style="--calcite-chip-text-color:#e9d44d"><img slot="image" src="./images/icons8-javascript-48.png">Javascript</calcite-chip>
-                        <div slot="footer-start"></div>
-                        <calcite-button slot="footer-end" kind="neutral"
-                            href="controllingCalcite.html">Open</calcite-button>
-                    </calcite-card>
-                </calcite-card-group>
-            </div>
-
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Lucius Creamer. All rights reserved.</p>
-    </footer>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
+</html>

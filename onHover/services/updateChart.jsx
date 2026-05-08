@@ -6,7 +6,16 @@ Chart.defaults.font.family = "'Noto Sans', sans-serif"
 
 let pchart, urbanChart, raceChart
 
-export default function updateChart(chartData, first, isMobile = false) {
+export function destroyCharts () {
+    pchart?.destroy();
+    urbanChart?.destroy();
+    raceChart?.destroy();
+    pchart = undefined;
+    urbanChart = undefined;
+    raceChart = undefined;
+}
+
+export default function updateChart (chartData, first, isMobile = false) {
     if (!first) {
         const canvasElementPop = document.getElementById("chart");
         const canvasElementUrban = document.getElementById("urban-rural-pie")
@@ -206,6 +215,6 @@ export default function updateChart(chartData, first, isMobile = false) {
     return true
 }
 
-function numberWithCommas(value) {
+function numberWithCommas (value) {
     return (value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

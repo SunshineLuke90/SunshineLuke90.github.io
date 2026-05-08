@@ -17,6 +17,64 @@
     height: 30px;
 }
 
+.share-popover {
+    --calcite-popover-corner-radius: 12px;
+}
+
+.share-popover-content {
+    border-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    overflow: hidden;
+}
+
+.share-list {
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.share-list calcite-list-item {
+    position: relative;
+    display: block;
+    --calcite-color-focus: transparent;
+    --calcite-ui-focus-color: transparent;
+}
+
+.share-list calcite-list-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 0 transparent;
+    transition: box-shadow 120ms ease;
+}
+
+.share-list calcite-list-item:focus-within::after,
+.share-list calcite-list-item[active]::after {
+    box-shadow: inset 0 0 0 2px var(--calcite-color-brand);
+}
+
+.share-list calcite-list-item:first-child {
+    border-top-left-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    border-top-right-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    overflow: hidden;
+}
+
+.share-list calcite-list-item:first-child::after {
+    border-top-left-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    border-top-right-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+}
+
+.share-list calcite-list-item:last-child {
+    border-bottom-left-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    border-bottom-right-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    overflow: hidden;
+}
+
+.share-list calcite-list-item:last-child::after {
+    border-bottom-left-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+    border-bottom-right-radius: var(--calcite-popover-corner-radius, var(--calcite-corner-radius-round));
+}
+
 .share-menu {
     position: absolute;
     right: 0;
@@ -100,7 +158,7 @@
 
 .blog-post img {
     max-width: 100%;
-    width:100%;
+    width: 100%;
     border-radius: 16px;
 }
 
