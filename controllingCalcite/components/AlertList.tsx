@@ -1,17 +1,26 @@
 import { Alert } from "./Alert";
+import type { NwsAlert } from '../../src/types/appTypes';
 
-export function AlertList({ alerts, mutedAlertIds, onToggleMute, onMuteAll, onUnmuteAll }) {
+interface AlertListProps {
+    alerts: NwsAlert[];
+    mutedAlertIds: Set<string>;
+    onToggleMute: (id: string) => void;
+    onMuteAll: () => void;
+    onUnmuteAll: () => void;
+}
+
+export function AlertList({ alerts, mutedAlertIds, onToggleMute, onMuteAll, onUnmuteAll }: AlertListProps) {
     const center = {
         display: 'flex',
         margin: 'auto',
         width: '100%',
         justifyContent: 'space-evenly'
-    }
+    };
     const buttonStyle = {
         width: '50%',
         height: '50px',
         padding: '5px',
-    }
+    };
     return (
         <div className="alert-list-container">
             <div id="mute-buttons" style={center}>
@@ -26,7 +35,7 @@ export function AlertList({ alerts, mutedAlertIds, onToggleMute, onMuteAll, onUn
                 </div>
             ) : (
                 <ul style={{ listStyleType: 'none', padding: 0, margin: 5 }}>
-                    {alerts.map(alert => (
+                    {alerts.map((alert) => (
                         <Alert
                             key={alert.id}
                             alert={alert}

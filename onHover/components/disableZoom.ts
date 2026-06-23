@@ -1,11 +1,11 @@
-export function disableZooming(view) {
+export function disableZooming(view: any) {
     // Removes the zoom to feature option from the popup
     view.popup.actions = [];
     view.popup.viewModel = { includeDefaultActions: false };
 
 
     // stops propagation of default behavior when an event fires
-    function stopEvtPropagation(event) {
+    function stopEvtPropagation(event: any) {
         event.stopPropagation();
     }
 
@@ -30,7 +30,7 @@ export function disableZooming(view) {
     view.on("drag", ["Shift", "Control"], stopEvtPropagation);
 
     // prevents zooming with the + and - keys
-    view.on("key-down", (event) => {
+    view.on("key-down", (event: any) => {
         const prohibitedKeys = [
             "+",
             "-",

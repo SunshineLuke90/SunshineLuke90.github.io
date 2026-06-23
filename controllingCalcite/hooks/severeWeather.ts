@@ -1,12 +1,13 @@
 // src/hooks/useSevereWeather.js
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getNWSAlerts } from '../services/nwsApi';
+import type { NwsAlert } from '../../src/types/appTypes';
 
 export function severeWeather(areaCode = 'MO') {
-    const [alerts, setAlerts] = useState([]);
-    const [mutedAlertIds, setMutedAlertIds] = useState(new Set());
-    const previousAlertIds = useRef([]);
+    const [alerts, setAlerts] = useState<NwsAlert[]>([]);
+    const [mutedAlertIds, setMutedAlertIds] = useState<Set<string>>(new Set());
+    const previousAlertIds = useRef<string[]>([]);
     const audioRef = useRef(new Audio('https://actions.google.com/sounds/v1/weather/distant_thunder.ogg'));
 
     // Fetch alerts from NWS on load and every 30s
@@ -14,7 +15,7 @@ export function severeWeather(areaCode = 'MO') {
         let isMounted = true;
         const fetchAndProcessAlerts = async () => {
             const currentAlerts = await getNWSAlerts(areaCode);
-            const currentAlertIds = currentAlerts.map(alert => alert.id);
+            const currentAlertIds = currentAlerts.map((alert) => alert.id);
 
             // Only update state if alerts have changed
             if (JSON.stringify(currentAlertIds) !== JSON.stringify(previousAlertIds.current)) {
@@ -26,12 +27,12 @@ export function severeWeather(areaCode = 'MO') {
                     }
                     // Find genuinely new alerts
                     const newAlerts = currentAlerts.filter(
-                        alert => !previousAlertIds.current.includes(alert.id)
+                        (alert) => !previousAlertIds.current.includes(alert.id)
                     );
                     // If there are new, unmuted alerts, play the sound
-                    const shouldPlaySound = newAlerts.some(alert => !mutedAlertIds.has(alert.id)) && (previousAlertIds.current.length > 0);
+                    const shouldPlaySound = newAlerts.some((alert) => !mutedAlertIds.has(alert.id)) && (previousAlertIds.current.length > 0);
                     if (shouldPlaySound) {
-                        console.log(`playing here ${previousAlertIds.current}`)
+                        console.log(`playing here ${previousAlertIds.current}`);
                         audioRef.current.currentTime = 0;
                         audioRef.current.play();
                     }
@@ -49,8 +50,8 @@ export function severeWeather(areaCode = 'MO') {
 
     // --- Handler Functions ---
     // These only affect muting/unmuting, not fetching
-    const toggleMute = (id) => {
-        setMutedAlertIds(prev => {
+    const toggleMute = (id: string) => {
+        setMutedAlertIds((prev) => {
             const newSet = new Set(prev);
             if (newSet.has(id)) {
                 newSet.delete(id);
@@ -58,8 +59,8 @@ export function severeWeather(areaCode = 'MO') {
                 newSet.add(id);
             }
             // Only pause audio if all alerts are muted
-            const allAlertIds = alerts.map(a => a.id);
-            const allMuted = allAlertIds.every(alertId => newSet.has(alertId));
+            const allAlertIds = alerts.map((a) => a.id);
+            const allMuted = allAlertIds.every((alertId) => newSet.has(alertId));
             if (allMuted) {
                 audioRef.current.pause();
             } else if (!newSet.has(id)) {
@@ -72,7 +73,7 @@ export function severeWeather(areaCode = 'MO') {
     };
 
     const muteAll = () => {
-        const allIds = new Set(alerts.map(a => a.id));
+        const allIds = new Set(alerts.map((a) => a.id));
         setMutedAlertIds(allIds);
         audioRef.current.pause();
     };

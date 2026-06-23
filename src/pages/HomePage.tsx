@@ -1,4 +1,5 @@
 import '../../home.css';
+import type { NavigateFn } from '../types/appTypes';
 
 const chipTs = { '--calcite-chip-text-color': '#38bef0' };
 const chipReact = { '--calcite-chip-text-color': '#58c4dc' };
@@ -6,7 +7,11 @@ const chipJs = { '--calcite-chip-text-color': '#e9d44d' };
 const chipAzure = { '--calcite-chip-text-color': '#5d9fef' };
 const chipExb = { '--calcite-chip-text-color': '#0ebace' };
 
-export default function HomePage ({ navigate }) {
+interface HomePageProps {
+    navigate: NavigateFn;
+}
+
+export default function HomePage ({ navigate }: HomePageProps) {
     return (
         <main>
             <section>

@@ -5,9 +5,10 @@ import '@arcgis/map-components/components/arcgis-legend';
 import { disableZooming } from '../../onHover/components/disableZoom';
 import queryData from '../../onHover/services/queryData';
 import updateChart, { destroyCharts } from '../../onHover/services/updateChart';
+import type { HoverChartData } from '../../onHover/services/updateChart';
 import '../../onHover/styles.css';
 
-const MISSOURI_DATA = [
+const MISSOURI_DATA: HoverChartData = [
     [79562, 72388, 107689, 151490, 155295, 214486, 216427, 186149, 178612, 181573, 198643, 201131, 199105, 201126, 200337, 197724, 185820, 173242],
     [-43898, -53314, -87820, -130465, -165836, -199428, -206630, -180929, -175924, -179869, -196736, -200745, -201123, -209603, -207351, -207308, -195353, -181782],
     [4275663, 1879250],
@@ -25,22 +26,22 @@ const OUT_FIELDS = [
 
 export default function OnHoverPage () {
     useEffect(() => {
-        const mapElement = document.getElementById('on-hover-map');
+        const mapElement = document.getElementById('on-hover-map') as any;
         if (!mapElement) {
             return;
         }
 
-        const view = mapElement.view;
+        const view = mapElement.view as any;
         if (!view) {
             return;
         }
 
-        let highlight;
-        let currentId;
+        let highlight: any;
+        let currentId: any = null;
         let first = false;
         let selected = false;
-        let clickHandler;
-        let moveHandler;
+        let clickHandler: ((event: any) => Promise<void>) | null = null;
+        let moveHandler: ((event: any) => Promise<void>) | null = null;
         let disposed = false;
 
         const isMobile = window.innerWidth < 800;
@@ -78,7 +79,7 @@ export default function OnHoverPage () {
             const handleMapReady = async () => {
                 const layerView = await view.whenLayerView(layer);
 
-                clickHandler = async (event) => {
+                clickHandler = async (event: any) => {
                     if (disposed) {
                         return;
                     }
@@ -129,7 +130,7 @@ export default function OnHoverPage () {
                         title.innerHTML = graphic.attributes.NAME;
                     }
 
-                    const chartData = queryData(graphic.attributes);
+                    const chartData = queryData(graphic.attributes as Record<string, number>);
                     first = updateChart(chartData, first);
 
                     const tooltip = document.getElementById('tooltip');
@@ -138,7 +139,7 @@ export default function OnHoverPage () {
                     }
                 };
 
-                moveHandler = async (event) => {
+                moveHandler = async (event: any) => {
                     if (disposed || selected) {
                         return;
                     }
@@ -180,7 +181,7 @@ export default function OnHoverPage () {
                         title.innerHTML = graphic.attributes.NAME;
                     }
 
-                    const chartData = queryData(graphic.attributes);
+                    const chartData = queryData(graphic.attributes as Record<string, number>);
                     first = updateChart(chartData, first);
                 };
 
@@ -227,7 +228,7 @@ export default function OnHoverPage () {
                     className="map"
                     item-id="83e20099377244d3b995de9e6a35ee37"
                     center="-92.5, 38.4"
-                    zoom="6"
+                    zoom={6}
                 ></arcgis-map>
                 <arcgis-legend id="legend" className="legend" reference-element="on-hover-map"></arcgis-legend>
                 <div id="title-panel" className="title-panel"></div>

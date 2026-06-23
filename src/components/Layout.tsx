@@ -1,3 +1,6 @@
+import type { ReactNode } from 'react';
+import type { NavigateFn } from '../types/appTypes';
+
 const NAV_ITEMS = [
     { key: 'home', label: 'Home', icon: 'home' },
     { key: 'about', label: 'About me', icon: 'information' },
@@ -5,7 +8,13 @@ const NAV_ITEMS = [
     { key: 'contact', label: 'Contact', icon: 'address-book' },
 ];
 
-export default function Layout ({ navigate, currentPage, children }) {
+interface LayoutProps {
+    navigate: NavigateFn;
+    currentPage: string;
+    children: ReactNode;
+}
+
+export default function Layout ({ navigate, currentPage, children }: LayoutProps) {
     return (
         <>
             <div className="header noto-sans-heavy">

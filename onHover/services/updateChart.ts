@@ -1,10 +1,19 @@
 import { Chart, CategoryScale, LinearScale, BarController, BarElement, Title, Legend, Tooltip, PieController, ArcElement } from 'chart.js';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Title, Legend, Tooltip)
-Chart.defaults.color = "#FFFFFF"
-Chart.defaults.font.family = "'Noto Sans', sans-serif"
+export type HoverChartData = [number[], number[], number[], number[]];
 
-let pchart, urbanChart, raceChart
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Title, Legend, Tooltip);
+Chart.defaults.color = "#FFFFFF";
+Chart.defaults.font.family = "'Noto Sans', sans-serif";
+
+let pchart: Chart<'bar'> | undefined;
+let urbanChart: Chart<'doughnut'> | undefined;
+let raceChart: Chart<'pie'> | undefined;
+
+function getContext(id: string): CanvasRenderingContext2D | null {
+    const canvas = document.getElementById(id) as HTMLCanvasElement | null;
+    return canvas?.getContext('2d') ?? null;
+}
 
 export function destroyCharts () {
     pchart?.destroy();
@@ -15,12 +24,17 @@ export function destroyCharts () {
     raceChart = undefined;
 }
 
-export default function updateChart (chartData, first, isMobile = false) {
+export default function updateChart (chartData: HoverChartData, first: boolean, isMobile = false): boolean {
     if (!first) {
-        const canvasElementPop = document.getElementById("chart");
-        const canvasElementUrban = document.getElementById("urban-rural-pie")
-        const canvasElementRace = document.getElementById("race-pie")
-        pchart = new Chart(canvasElementPop.getContext("2d"), {
+        const canvasContextPop = getContext('chart');
+        const canvasContextUrban = getContext('urban-rural-pie');
+        const canvasContextRace = getContext('race-pie');
+
+        if (!canvasContextPop || !canvasContextUrban || !canvasContextRace) {
+            return first;
+        }
+
+        pchart = new Chart(canvasContextPop, {
             type: "bar",
             data: {
                 labels: [
@@ -94,7 +108,10 @@ export default function updateChart (chartData, first, isMobile = false) {
                         },
                         ticks: {
                             display: isMobile ? false : true,
-                            callback: (value) => numberWithCommas(Math.abs(parseInt(value))),
+                            callback: (value: string | number) => {
+                                const numeric = typeof value === 'number' ? value : Number.parseInt(value, 10);
+                                return numberWithCommas(Math.abs(numeric));
+                            },
                         }
                     },
                     y: {
@@ -112,7 +129,7 @@ export default function updateChart (chartData, first, isMobile = false) {
             },
         });
 
-        urbanChart = new Chart(canvasElementUrban.getContext("2d"), {
+        urbanChart = new Chart(canvasContextUrban, {
             type: "doughnut",
             data: {
                 labels: [
@@ -144,15 +161,14 @@ export default function updateChart (chartData, first, isMobile = false) {
                             font: {
                                 size: 10
                             }
-                        },
-                        padding: 5
+                        }
                     }
                 }
             }
 
         });
 
-        raceChart = new Chart(canvasElementRace.getContext("2d"), {
+        raceChart = new Chart(canvasContextRace, {
             type: "pie",
             data: {
                 labels: [
@@ -196,14 +212,16 @@ export default function updateChart (chartData, first, isMobile = false) {
                             font: {
                                 size: 10
                             }
-                        },
-                        padding: 5
+                        }
                     }
                 }
             }
 
         });
     } else {
+        if (!pchart || !urbanChart || !raceChart) {
+            return false;
+        }
         pchart.data.datasets[0].data = chartData[0];
         pchart.data.datasets[1].data = chartData[1];
         pchart.update();
@@ -212,9 +230,9 @@ export default function updateChart (chartData, first, isMobile = false) {
         raceChart.data.datasets[0].data = chartData[3];
         raceChart.update();
     }
-    return true
+    return true;
 }
 
-function numberWithCommas (value) {
+function numberWithCommas (value: number | string): string {
     return (value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

@@ -7,12 +7,13 @@ import BlogPage from './pages/BlogPage';
 import AccessibilityPage from './pages/AccessibilityPage';
 import ExbPage from './pages/ExbPage';
 import SagPage from './pages/SagPage';
+import type { NavigateFn } from './types/appTypes';
 
 const ControllingCalcitePage = lazy(() => import('./pages/ControllingCalcitePage'));
 const OnHoverPage = lazy(() => import('./pages/OnHoverPage'));
 const RadarPage = lazy(() => import('./pages/RadarPage'));
 
-const ROUTES = {
+const ROUTES: Record<string, any> = {
     home: HomePage,
     about: AboutPage,
     contact: ContactPage,
@@ -37,7 +38,7 @@ const QUERY_PAGES = [
     'sag',
 ];
 
-function getPageFromURL () {
+function getPageFromURL (): string {
     const params = new URLSearchParams(window.location.search);
 
     for (const key of params.keys()) {
@@ -54,7 +55,7 @@ function getPageFromURL () {
 }
 
 export default function App () {
-    const [page, setPage] = useState(getPageFromURL);
+    const [page, setPage] = useState<string>(getPageFromURL);
 
     useEffect(() => {
         const onPopState = () => setPage(getPageFromURL());
@@ -71,7 +72,7 @@ export default function App () {
         };
     }, [page]);
 
-    const navigate = useCallback((nextPage = 'home') => {
+    const navigate = useCallback<NavigateFn>((nextPage = 'home') => {
         const search = nextPage === 'home' ? '' : `?${nextPage}`;
         const nextURL = `${window.location.pathname}${search}`;
 

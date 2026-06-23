@@ -7,7 +7,7 @@ import '../../controllingCalcite/controllingCalcite.css';
 
 export default function ControllingCalcitePage() {
     useEffect(() => {
-        const mapElement = document.getElementById('calcite-map');
+        const mapElement = document.getElementById('calcite-map') as (HTMLElement & { view?: any }) | null;
         if (!mapElement) {
             return;
         }
@@ -46,7 +46,7 @@ export default function ControllingCalcitePage() {
                     className="map"
                     item-id="cddcd2af269640fd8ee2ffa859309937"
                     center="-92.5, 38.6"
-                    zoom="6"
+                    zoom={6}
                 >
                     <arcgis-zoom id="zoom" layout="horizontal"></arcgis-zoom>
                 </arcgis-map>

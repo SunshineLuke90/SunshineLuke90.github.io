@@ -1,5 +1,7 @@
-export async function getNWSAlerts(areaCode = 'MO') {
-    const events = [];
+import type { NwsAlert } from '../../src/types/appTypes';
+
+export async function getNWSAlerts(areaCode = 'MO'): Promise<NwsAlert[]> {
+    const events: NwsAlert[] = [];
     try {
         const response = await fetch(`https://api.weather.gov/alerts/active/area/${areaCode}`, {
             method: 'get',
@@ -13,7 +15,7 @@ export async function getNWSAlerts(areaCode = 'MO') {
         }
         const data = await response.json();
         if (data['@graph'] && data['@graph'].length > 0) {
-            for (let event of data['@graph']) {
+            for (const event of data['@graph']) {
                 if (event.severity === "Severe" || event.severity === "Extreme") {
                     events.push({
                         "id": event.id,
@@ -26,7 +28,7 @@ export async function getNWSAlerts(areaCode = 'MO') {
         }
     } catch (error) {
         console.error('Error fetching data', error);
-        return []
+        return [];
     }
     return events;
 }

@@ -11,7 +11,7 @@ export default function RadarPage() {
                     className="radar-map"
                     basemap="hybrid"
                     center="-98.583, 39.83"
-                    zoom="4"
+                    zoom={4}
                 ></arcgis-map>
                 <div className="radar-panel">
                     <Radar mapElementId="radar-map" />

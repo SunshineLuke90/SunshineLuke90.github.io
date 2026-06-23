@@ -1,34 +1,42 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import type { KeyboardEvent } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getAllPosts } from './posts';
 import { CalciteCard, CalciteButton, CalciteCardGroup, CalcitePopover, CalciteList, CalciteListItem } from '@esri/calcite-components-react';
+import type { Post } from '../src/types/appTypes';
 
-const SHARE_PLATFORMS = [
+interface SharePlatform {
+    name: string;
+    icon: string;
+    buildUrl: (url: string, title: string) => string;
+}
+
+const SHARE_PLATFORMS: SharePlatform[] = [
     { name: 'X', icon: '𝕏', buildUrl: (url, title) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
-    { name: 'Facebook', icon: 'f', buildUrl: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+    { name: 'Facebook', icon: 'f', buildUrl: (url, _title) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
     { name: 'Reddit', icon: 'r', buildUrl: (url, title) => `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
     { name: 'LinkedIn', icon: 'in', buildUrl: (url, title) => `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
 ];
 
 const POSTS_PER_PAGE = 5;
 
-function getSlugFromURL () {
+function getSlugFromURL (): string | null {
     return new URLSearchParams(window.location.search).get('post') || null;
 }
 
-function buildBlogSearch (slug) {
+function buildBlogSearch (slug: string | null): string {
     return slug ? `?blog&post=${encodeURIComponent(slug)}` : '?blog';
 }
 
 export default function Blog () {
-    const allPosts = getAllPosts();
-    const [selectedSlug, setSelectedSlug] = useState(getSlugFromURL);
+    const allPosts: Post[] = getAllPosts();
+    const [selectedSlug, setSelectedSlug] = useState<string | null>(getSlugFromURL);
     const [page, setPage] = useState(0);
 
-    const selectPost = useCallback((slug) => {
+    const selectPost = useCallback((slug: string | null) => {
         setSelectedSlug(slug);
-        const url = new URL(window.location);
+        const url = new URL(window.location.href);
         url.search = buildBlogSearch(slug);
         window.history.pushState({}, '', url);
     }, []);
@@ -50,13 +58,13 @@ export default function Blog () {
         (page + 1) * POSTS_PER_PAGE
     );
 
-    const getShareUrl = () => {
-        const url = new URL(window.location);
+    const getShareUrl = (): string => {
+        const url = new URL(window.location.href);
         url.search = buildBlogSearch(selectedSlug);
         return url.toString();
     };
 
-    const openShareLink = useCallback((url) => {
+    const openShareLink = useCallback((url: string) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }, []);
 
@@ -130,7 +138,7 @@ export default function Blog () {
                         key={post.slug}
                         className="card blog-card"
                         onClick={() => selectPost(post.slug)}
-                        onKeyDown={(e) => {
+                        onKeyDown={(e: KeyboardEvent) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 selectPost(post.slug);
                             }

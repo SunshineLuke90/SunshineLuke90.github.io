@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '@esri/calcite-components/dist/components/calcite-button';
 import '@esri/calcite-components/dist/components/calcite-action-bar';
 import '@esri/calcite-components/dist/components/calcite-slider';
@@ -7,50 +7,47 @@ import { CalciteSlider } from '@esri/calcite-components-react';
 import '@arcgis/map-components/components/arcgis-map';
 import '@arcgis/map-components/components/arcgis-legend';
 
-import Extent from "@arcgis/core/geometry/Extent.js";
-import WebTileLayer from "@arcgis/core/layers/WebTileLayer.js";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 import WMSLayer from "@arcgis/core/layers/WMSLayer.js";
 import esriRequest from "@arcgis/core/request";
 
 // React wrapper component for the radar animation
 export default function Radar({ mapElementId = 'radar-map' }) {
-    let mounted = true;
-    const wmsRef = useRef(null);
-    const viewWatchHandleRef = useRef(null);
-    const refreshTimerIdRef = useRef(null);
-    const panZoomTimerRef = useRef(null);
+    const wmsRef = useRef<WMSLayer | null>(null);
+    const viewWatchHandleRef = useRef<any>(null);
+    const refreshTimerIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const panZoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const prefetchInProgressRef = useRef(false);
-    const prevExtentKeyRef = useRef(null);
+    const prevExtentKeyRef = useRef<string | null>(null);
 
-    const [framesState, setFramesState] = useState([]);
-    const framesRef = useRef([]);
+    const [framesState, setFramesState] = useState<string[]>([]);
+    const framesRef = useRef<string[]>([]);
     const [idxState, setIdxState] = useState(0);
     const idxRef = useRef(0);
     const [playSpeed, setPlaySpeed] = useState(3);
     const playSpeedRef = useRef(3);
     const [playing, setPlaying] = useState(false);
-    const intervalRef = useRef(null);
-    const sliderRef = useRef(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const sliderRef = useRef<any>(null);
     const [statusText, setStatusText] = useState('Status: loading...');
     const [tsText, setTsText] = useState('—');
     const [timeType, setTimeType] = useState(false);
     const toggleTimeType = () => {
         setTimeType(!timeType);
     };
-    const applyFrameRef = useRef(null);
-    const startAnimationRef = useRef(null);
-    const stopAnimationRef = useRef(null);
+    const applyFrameRef = useRef<((i: number) => Promise<void>) | null>(null);
+    const startAnimationRef = useRef<(() => void) | null>(null);
+    const stopAnimationRef = useRef<(() => void) | null>(null);
 
     useEffect(() => {
         (async function init() {
             // find the arcgis-map element and its view
-            const mapElement = document.getElementById(mapElementId) || document.querySelector('arcgis-map');
+            const mapElement = (document.getElementById(mapElementId) || document.querySelector('arcgis-map')) as any;
             if (!mapElement) {
                 console.error('No <arcgis-map> element found on page.');
                 return;
             }
-            const view = await mapElement.view;
+            const view = await mapElement.view as any;
 
             setStatusText('Status: loading...');
 
@@ -75,14 +72,14 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 // controls are rendered via React JSX/state (see component return)
 
                 // parse times
-                let times = [];
+                let times: string[] = [];
                 if (targetLayer) {
                     const dims = targetLayer.getElementsByTagNameNS('http://www.opengis.net/wms', 'Dimension');
                     for (let i = 0; i < dims.length; i++) {
                         const dim = dims[i];
                         const name = dim.getAttribute('name');
                         if (name && name.toLowerCase() === 'time') {
-                            const text = dim.textContent.trim();
+                            const text = (dim.textContent ?? '').trim();
                             if (text.indexOf(',') !== -1) times = text.split(',').map((s) => s.trim());
                             else times = [text];
                             break;
@@ -94,7 +91,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                             const ext = exts[i];
                             const name = ext.getAttribute('name');
                             if (name && name.toLowerCase() === 'time') {
-                                const text = ext.textContent.trim();
+                                const text = (ext.textContent ?? '').trim();
                                 if (text.indexOf(',') !== -1) times = text.split(',').map((s) => s.trim());
                                 else times = [text];
                                 break;
@@ -116,7 +113,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 // Service Worker + prefetch helpers
                 const CACHE_NAME = 'radar-wms-v1';
 
-                function buildGetMapUrl(time) {
+                function buildGetMapUrl(time: string): string | null {
                     try {
                         const extent = view.extent;
                         const bbox = [extent.xmin, extent.ymin, extent.xmax, extent.ymax].join(',');
@@ -130,12 +127,12 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     }
                 }
 
-                async function prefetchFrames(frameList) {
+                async function prefetchFrames(frameList: string[]) {
                     if (!frameList || frameList.length === 0) return;
                     try {
-                        const cache = await caches.open(CACHE_NAME);
+                        await caches.open(CACHE_NAME);
                         setStatusText(`Status: caching ${frameList.length} frames...`);
-                        let respArr = [];
+                        const respArr: Array<Promise<Response>> = [];
                         for (let i = 0; i < frameList.length; i++) {
                             const url = buildGetMapUrl(frameList[i]);
                             if (!url) continue;
@@ -163,18 +160,18 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                         const layers2 = xml2.getElementsByTagNameNS('http://www.opengis.net/wms', 'Layer');
                         let targetLayer2 = null;
                         for (let i = 0; i < layers2.length; i++) { const nameNode = layers2[i].getElementsByTagNameNS('http://www.opengis.net/wms', 'Name')[0]; if (nameNode && nameNode.textContent === layerName) { targetLayer2 = layers2[i]; break; } }
-                        let times2 = [];
+                        let times2: string[] = [];
                         if (targetLayer2) {
                             const dims2 = targetLayer2.getElementsByTagNameNS('http://www.opengis.net/wms', 'Dimension');
-                            for (let i = 0; i < dims2.length; i++) { const dim = dims2[i]; const name = dim.getAttribute('name'); if (name && name.toLowerCase() === 'time') { const text = dim.textContent.trim(); if (text.indexOf(',') !== -1) times2 = text.split(',').map((s) => s.trim()); else times2 = [text]; break; } }
+                            for (let i = 0; i < dims2.length; i++) { const dim = dims2[i]; const name = dim.getAttribute('name'); if (name && name.toLowerCase() === 'time') { const text = (dim.textContent ?? '').trim(); if (text.indexOf(',') !== -1) times2 = text.split(',').map((s) => s.trim()); else times2 = [text]; break; } }
                             if (times2.length === 0) {
                                 const exts2 = targetLayer2.getElementsByTagNameNS('http://www.opengis.net/wms', 'Extent');
-                                for (let i = 0; i < exts2.length; i++) { const ext = exts2[i]; const name = ext.getAttribute('name'); if (name && name.toLowerCase() === 'time') { const text = ext.textContent.trim(); if (text.indexOf(',') !== -1) times2 = text.split(',').map((s) => s.trim()); else times2 = [text]; break; } }
+                                for (let i = 0; i < exts2.length; i++) { const ext = exts2[i]; const name = ext.getAttribute('name'); if (name && name.toLowerCase() === 'time') { const text = (ext.textContent ?? '').trim(); if (text.indexOf(',') !== -1) times2 = text.split(',').map((s) => s.trim()); else times2 = [text]; break; } }
                             }
                         }
                         if (!times2 || times2.length === 0) { console.debug('refreshTimes: no times found'); return; }
                         const newFrames = times2.slice(-30);
-                        const newly = newFrames.filter(t => !framesRef.current.includes(t));
+                        const newly = newFrames.filter((t) => !framesRef.current.includes(t));
                         if (newly.length > 0) {
                             framesRef.current = newFrames;
                             setFramesState(framesRef.current);
@@ -221,7 +218,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
 
                 // note: replace statusEl text updates above with setStatusText where used
 
-                try { viewWatchHandleRef.current = view.watch('stationary', (isStationary) => { if (!isStationary) return; schedulePrefetchForCurrentExtent(600); }); } catch (e) { if (view.on) { try { view.on('stationary', () => schedulePrefetchForCurrentExtent(600)); } catch (err) { } } }
+                try { viewWatchHandleRef.current = view.watch('stationary', (isStationary: boolean) => { if (!isStationary) return; schedulePrefetchForCurrentExtent(600); }); } catch (e) { if (view.on) { try { view.on('stationary', () => schedulePrefetchForCurrentExtent(600)); } catch (err) { } } }
 
                 // wire animation using React refs/state
                 if (framesRef.current && framesRef.current.length) {
@@ -233,11 +230,12 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                     setIdxState(idxRef.current);
                 }
 
-                async function applyFrame(i) {
+                async function applyFrame(i: number) {
                     if (!framesRef.current || framesRef.current.length === 0) return;
                     const t = framesRef.current[i];
                     try {
-                        if (wmsRef.current && typeof wmsRef.current.setCustomParameters === 'function') wmsRef.current.setCustomParameters({ TIME: t });
+                        const wms = wmsRef.current as any;
+                        if (wms && typeof wms.setCustomParameters === 'function') wms.setCustomParameters({ TIME: t });
                         else if (wmsRef.current) wmsRef.current.customParameters = { TIME: t };
                     } catch (e) {
                         console.debug('Failed to set WMS TIME parameter:', e);
@@ -293,7 +291,7 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 }
 
                 // initial register/prefetch and periodic refresh (but only after the view/layer have settled)
-                (async () => {
+                void (async () => {
                     await waitForViewAndLayerReady();
                     try { await registerAndPrefetch(); } catch (e) { console.debug('registerAndPrefetch failed after wait:', e); }
                 })();
@@ -313,7 +311,6 @@ export default function Radar({ mapElementId = 'radar-map' }) {
 
         // cleanup on unmount
         return () => {
-            mounted = false;
             try {
                 if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
                 if (refreshTimerIdRef.current) { clearInterval(refreshTimerIdRef.current); refreshTimerIdRef.current = null; }
@@ -344,12 +341,11 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                 <CalciteSlider
                     className="timeline-slider"
                     ref={sliderRef}
-                    type="range"
                     min={0}
                     max={Math.max(0, framesState.length - 1)}
                     value={idxState}
                     onCalciteSliderInput={
-                        async (e) => {
+                        async (e: any) => {
                             const val = Number(e.target.value);
                             idxRef.current = val;
                             setIdxState(val);
@@ -370,14 +366,16 @@ export default function Radar({ mapElementId = 'radar-map' }) {
                         min={1} min-label="Play Speed: Lower Bound"
                         step={1} ticks={1} snap
                         onCalciteSliderInput={
-                            (e) => {
-                                setPlaySpeed(e.target.value);
-                                playSpeedRef.current = e.target.value;
-                                if (intervalRef.current == null) {
+                            (e: any) => {
+                                const rawValue = e.target.value as number | number[] | null;
+                                const nextSpeed = Array.isArray(rawValue) ? (rawValue[0] ?? 1) : (rawValue ?? 1);
+                                setPlaySpeed(nextSpeed);
+                                playSpeedRef.current = nextSpeed;
+                                if (intervalRef.current === null) {
                                     return;
                                 }
                                 clearInterval(intervalRef.current);
-                                intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, e.target.value * 100, 100);
+                                intervalRef.current = setInterval(() => { idxRef.current = (idxRef.current + 1) % framesRef.current.length; if (applyFrameRef.current) applyFrameRef.current(idxRef.current); }, nextSpeed * 100);
                             }
                         }
                     />
