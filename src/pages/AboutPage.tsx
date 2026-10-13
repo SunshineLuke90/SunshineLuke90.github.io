@@ -4,7 +4,7 @@ export default function AboutPage () {
     return (
         <main>
             <h2 className="sub-header">About Me</h2>
-            <calcite-card-group>
+            <calcite-card-group label="About me">
                 <calcite-card className="card" thumbnail-position="inline-start">
                     <img
                         slot="thumbnail"

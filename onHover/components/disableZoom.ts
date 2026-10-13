@@ -1,11 +1,13 @@
-export function disableZooming(view) {
+import type MapView from '@arcgis/core/views/MapView';
+
+export function disableZooming(view: MapView) {
     // Removes the zoom to feature option from the popup
-    view.popup.actions = [];
-    view.popup.viewModel = { includeDefaultActions: false };
+    view.popup!.actions = [];
+    view.popup!.viewModel = { includeDefaultActions: false };
 
 
     // stops propagation of default behavior when an event fires
-    function stopEvtPropagation(event) {
+    function stopEvtPropagation(event: { stopPropagation: () => void }) {
         event.stopPropagation();
     }
 

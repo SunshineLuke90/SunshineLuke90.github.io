@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import Extent from '@arcgis/core/geometry/Extent';
+import type { GraphicHit } from '@arcgis/core/views/types';
+import type { ResourceHandle } from '@arcgis/core/core/Handles';
+import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import '@arcgis/map-components/components/arcgis-map';
 import '@arcgis/map-components/components/arcgis-legend';
 import { disableZooming } from '../../onHover/components/disableZoom';
@@ -25,7 +28,7 @@ const OUT_FIELDS = [
 
 export default function OnHoverPage () {
     useEffect(() => {
-        const mapElement = document.getElementById('on-hover-map');
+        const mapElement = document.getElementById('on-hover-map') as HTMLArcgisMapElement | null;
         if (!mapElement) {
             return;
         }
@@ -35,12 +38,12 @@ export default function OnHoverPage () {
             return;
         }
 
-        let highlight;
-        let currentId;
+        let highlight: ResourceHandle | undefined;
+        let currentId: number | null | undefined;
         let first = false;
         let selected = false;
-        let clickHandler;
-        let moveHandler;
+        let clickHandler: ((event: CustomEvent<{ x: number; y: number }>) => Promise<void>) | undefined;
+        let moveHandler: ((event: CustomEvent<{ x: number; y: number }>) => Promise<void>) | undefined;
         let disposed = false;
 
         const isMobile = window.innerWidth < 800;
@@ -63,7 +66,7 @@ export default function OnHoverPage () {
                 return;
             }
 
-            const layer = view.map.layers.getItemAt(0);
+            const layer = view.map!.layers.getItemAt(0) as FeatureLayer;
             view.extent = new Extent({
                 xmin: -96.0,
                 ymin: 35.7,
@@ -100,7 +103,7 @@ export default function OnHoverPage () {
                         return;
                     }
 
-                    const hitGraphic = response.results[0].graphic;
+                    const hitGraphic = (response.results[0] as GraphicHit).graphic;
                     const objectId = hitGraphic.attributes.OBJECTID;
 
                     if (highlight && currentId === objectId && selected) {
@@ -157,7 +160,7 @@ export default function OnHoverPage () {
                         return;
                     }
 
-                    const hitGraphic = response.results[0].graphic;
+                    const hitGraphic = (response.results[0] as GraphicHit).graphic;
                     const objectId = hitGraphic.attributes.OBJECTID;
 
                     if (highlight && currentId === objectId) {
@@ -227,7 +230,7 @@ export default function OnHoverPage () {
                     className="map"
                     item-id="83e20099377244d3b995de9e6a35ee37"
                     center="-92.5, 38.4"
-                    zoom="6"
+                    zoom={6}
                 ></arcgis-map>
                 <arcgis-legend id="legend" className="legend" reference-element="on-hover-map"></arcgis-legend>
                 <div id="title-panel" className="title-panel"></div>

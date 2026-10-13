@@ -1,8 +1,8 @@
-import { severeWeather } from "../hooks/severeWeather";
+import { useSevereWeather } from "../hooks/severeWeather";
 import { AlertList } from "./AlertList";
 
 export function AlertPanel({ areaCode = 'MO' }) {
-    const { alerts, mutedAlertIds, toggleMute, muteAll, unmuteAll } = severeWeather(areaCode);
+    const { alerts, mutedAlertIds, toggleMute, muteAll, unmuteAll } = useSevereWeather(areaCode);
 
     const style = {
         width: '100%',

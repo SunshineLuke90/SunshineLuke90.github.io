@@ -11,10 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@arcgis/core": "^4.33.12",
-    "@arcgis/map-components": "^4.33.14",
-    "@esri/calcite-components": "^3.2.1",
-    "@esri/calcite-components-react": "^3.2.1",
+    "@arcgis/core": "5.1",
+    "@arcgis/map-components": "5.1",
+    "@esri/calcite-components": "5.1",
     "@types/node": "^24.2.0",
     "chart.js": "^4.5.0",
     "front-matter": "^4.0.2",
@@ -22,6 +21,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.4",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {

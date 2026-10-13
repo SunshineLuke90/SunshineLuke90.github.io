@@ -1,12 +1,12 @@
 // src/hooks/useSevereWeather.js
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { getNWSAlerts } from '../services/nwsApi';
+import { useState, useEffect, useRef } from 'react';
+import { getNWSAlerts, type NWSAlert } from '../services/nwsApi';
 
-export function severeWeather(areaCode = 'MO') {
-    const [alerts, setAlerts] = useState([]);
-    const [mutedAlertIds, setMutedAlertIds] = useState(new Set());
-    const previousAlertIds = useRef([]);
+export function useSevereWeather(areaCode = 'MO') {
+    const [alerts, setAlerts] = useState<NWSAlert[]>([]);
+    const [mutedAlertIds, setMutedAlertIds] = useState<Set<string>>(new Set());
+    const previousAlertIds = useRef<string[]>([]);
     const audioRef = useRef(new Audio('https://actions.google.com/sounds/v1/weather/distant_thunder.ogg'));
 
     // Fetch alerts from NWS on load and every 30s
@@ -49,7 +49,7 @@ export function severeWeather(areaCode = 'MO') {
 
     // --- Handler Functions ---
     // These only affect muting/unmuting, not fetching
-    const toggleMute = (id) => {
+    const toggleMute = (id: string) => {
         setMutedAlertIds(prev => {
             const newSet = new Set(prev);
             if (newSet.has(id)) {

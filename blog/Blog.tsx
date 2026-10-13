@@ -1,44 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getAllPosts } from './posts';
-import { CalciteCard, CalciteButton, CalciteCardGroup, CalcitePopover, CalciteList, CalciteListItem } from '@esri/calcite-components-react';
 
 const SHARE_PLATFORMS = [
-    { name: 'X', icon: '𝕏', buildUrl: (url, title) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
-    { name: 'Facebook', icon: 'f', buildUrl: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
-    { name: 'Reddit', icon: 'r', buildUrl: (url, title) => `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
-    { name: 'LinkedIn', icon: 'in', buildUrl: (url, title) => `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
+    { name: 'X', icon: '𝕏', buildUrl: (url: string, title: string) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
+    { name: 'Facebook', icon: 'f', buildUrl: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+    { name: 'Reddit', icon: 'r', buildUrl: (url: string, title: string) => `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
+    { name: 'LinkedIn', icon: 'in', buildUrl: (url: string, title: string) => `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}` },
 ];
 
 const POSTS_PER_PAGE = 5;
 
-function getSlugFromURL () {
-    return new URLSearchParams(window.location.search).get('post') || null;
-}
-
-function buildBlogSearch (slug) {
-    return slug ? `?blog&post=${encodeURIComponent(slug)}` : '?blog';
-}
-
 export default function Blog () {
     const allPosts = getAllPosts();
-    const [selectedSlug, setSelectedSlug] = useState(getSlugFromURL);
+    const { slug: selectedSlug = null } = useParams();
+    const navigate = useNavigate();
     const [page, setPage] = useState(0);
 
-    const selectPost = useCallback((slug) => {
-        setSelectedSlug(slug);
-        const url = new URL(window.location);
-        url.search = buildBlogSearch(slug);
-        window.history.pushState({}, '', url);
-    }, []);
-
-    // Handle browser back/forward navigation
-    useEffect(() => {
-        const onPopState = () => setSelectedSlug(getSlugFromURL());
-        window.addEventListener('popstate', onPopState);
-        return () => window.removeEventListener('popstate', onPopState);
-    }, []);
+    const selectPost = useCallback((slug: string | null) => {
+        navigate(slug ? `/blog/${encodeURIComponent(slug)}` : '/blog');
+    }, [navigate]);
 
     const selectedPost = selectedSlug
         ? allPosts.find((p) => p.slug === selectedSlug)
@@ -51,12 +34,10 @@ export default function Blog () {
     );
 
     const getShareUrl = () => {
-        const url = new URL(window.location);
-        url.search = buildBlogSearch(selectedSlug);
-        return url.toString();
+        return `${window.location.origin}/blog/${encodeURIComponent(selectedSlug ?? '')}`;
     };
 
-    const openShareLink = useCallback((url) => {
+    const openShareLink = useCallback((url: string) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }, []);
 
@@ -64,7 +45,7 @@ export default function Blog () {
         return (
             <div className="blog-container">
                 <div className="blog-post-header">
-                    <CalciteButton
+                    <calcite-button
                         kind="neutral"
                         className="back-button"
                         appearance="outline"
@@ -72,9 +53,10 @@ export default function Blog () {
                         onClick={() => selectPost(null)}
                     >
                         Back to posts
-                    </CalciteButton>
+                    </calcite-button>
                     <div>
-                        <CalcitePopover
+                        <calcite-popover
+                            label="Share post"
                             className="share-popover"
                             referenceElement="share-button"
                             autoClose={true}
@@ -82,23 +64,23 @@ export default function Blog () {
                             placement='bottom'
                         >
                             <div className="share-popover-content">
-                                <CalciteList className="share-list">
+                                <calcite-list className="share-list" label="Share platforms">
                                     {SHARE_PLATFORMS.map((platform) => (
-                                        <CalciteListItem
+                                        <calcite-list-item
                                             key={platform.name}
                                             label={platform.name}
                                             value={platform.name}
-                                            onCalciteListItemSelect={() => openShareLink(platform.buildUrl(getShareUrl(), selectedPost.title))}
+                                            oncalciteListItemSelect={() => openShareLink(platform.buildUrl(getShareUrl(), selectedPost.title))}
                                         >
                                             <span slot="content-start" className="share-icon" aria-hidden="true">
                                                 {platform.icon}
                                             </span>
-                                        </CalciteListItem>
+                                        </calcite-list-item>
                                     ))}
-                                </CalciteList>
+                                </calcite-list>
                             </div>
-                        </CalcitePopover>
-                        <CalciteButton
+                        </calcite-popover>
+                        <calcite-button
                             id="share-button"
                             kind="neutral"
                             className="share-button"
@@ -106,7 +88,7 @@ export default function Blog () {
                             icon-start="share"
                         >
                             Share
-                        </CalciteButton>
+                        </calcite-button>
                     </div>
                 </div>
                 <article className="blog-post">
@@ -122,11 +104,12 @@ export default function Blog () {
 
     return (
         <div className="blog-container">
-            <CalciteCardGroup
+            <calcite-card-group
                 className="blog-card-group"
+                label="Blog posts"
             >
                 {paginatedPosts.map((post) => (
-                    <CalciteCard
+                    <calcite-card
                         key={post.slug}
                         className="card blog-card"
                         onClick={() => selectPost(post.slug)}
@@ -143,11 +126,11 @@ export default function Blog () {
                             <p className="blog-date">{post.date}</p>
                             <p>{post.summary}</p>
                         </span>
-                    </CalciteCard>
+                    </calcite-card>
                 ))}
-            </CalciteCardGroup>
+            </calcite-card-group>
             <div className="blog-pagination">
-                <CalciteButton
+                <calcite-button
                     kind="neutral"
                     appearance="outline"
                     icon-start="chevron-left"
@@ -155,11 +138,11 @@ export default function Blog () {
                     onClick={() => setPage((p) => Math.max(0, p - 1))}
                 >
                     Previous
-                </CalciteButton>
+                </calcite-button>
                 <span>
                     Page {page + 1} of {totalPages}
                 </span>
-                <CalciteButton
+                <calcite-button
                     kind="neutral"
                     appearance="outline"
                     icon-end="chevron-right"
@@ -167,7 +150,7 @@ export default function Blog () {
                     onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                 >
                     Next
-                </CalciteButton>
+                </calcite-button>
             </div>
         </div>
     );

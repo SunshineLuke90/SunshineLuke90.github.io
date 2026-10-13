@@ -1,5 +1,20 @@
-export async function getNWSAlerts(areaCode = 'MO') {
-    const events = [];
+export interface NWSAlert {
+    id: string;
+    area: string;
+    event: string;
+    headline: string;
+}
+
+interface NWSGraphEvent {
+    id: string;
+    areaDesc: string;
+    event: string;
+    headline: string;
+    severity: string;
+}
+
+export async function getNWSAlerts(areaCode = 'MO'): Promise<NWSAlert[]> {
+    const events: NWSAlert[] = [];
     try {
         const response = await fetch(`https://api.weather.gov/alerts/active/area/${areaCode}`, {
             method: 'get',
@@ -13,7 +28,7 @@ export async function getNWSAlerts(areaCode = 'MO') {
         }
         const data = await response.json();
         if (data['@graph'] && data['@graph'].length > 0) {
-            for (let event of data['@graph']) {
+            for (const event of data['@graph'] as NWSGraphEvent[]) {
                 if (event.severity === "Severe" || event.severity === "Extreme") {
                     events.push({
                         "id": event.id,

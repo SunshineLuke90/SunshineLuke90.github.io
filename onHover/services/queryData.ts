@@ -4,15 +4,15 @@ const urbanRuralFields = ["P0020002", "P0020003"]
 const raceFields = ["P0030002", "P0030003", "P0030004", "P0030005", "P0030006", "P0030007", "P0030008"]
 
 
-export default function queryData(attributes) {
+export default function queryData(attributes: Record<string, number>): number[][] {
     //Preparation for using the chart for data display. 
     // First need to optimize dataset to be able to provide data more cleanly.
-    const femaleAgeData = []
-    const maleAgeData = []
-    const urbanRuralData = []
-    const raceData = []
+    const femaleAgeData: number[] = []
+    const maleAgeData: number[] = []
+    const urbanRuralData: number[] = []
+    const raceData: number[] = []
 
-    for (let key in attributes) {
+    for (const key in attributes) {
         if (femaleFields.includes(key)) {
             femaleAgeData.push(attributes[key])
         }

@@ -9,7 +9,7 @@ export default function ExbPage() {
                     <calcite-button
                         href="https://exb.luciuscreamer.com"
                         className="link-button"
-                        round="true"
+                        round
                         kind="neutral"
                         label="Experience builder showcase"
                         scale="m"
@@ -20,7 +20,7 @@ export default function ExbPage() {
                     <calcite-button
                         href="https://github.com/SunshineLuke90/widgets"
                         className="link-button"
-                        round="true"
+                        round
                         kind="neutral"
                         label="Widgets GitHub Repository"
                         scale="m"
@@ -31,7 +31,7 @@ export default function ExbPage() {
                     <calcite-button
                         href="https://github.com/SunshineLuke90/apps"
                         className="link-button"
-                        round="true"
+                        round
                         kind="neutral"
                         label="Apps GitHub Repository"
                         scale="m"

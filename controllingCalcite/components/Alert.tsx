@@ -1,4 +1,12 @@
-export function Alert({ alert, isMuted, onToggleMute }) {
+import type { NWSAlert } from '../services/nwsApi';
+
+interface AlertProps {
+    alert: NWSAlert;
+    isMuted: boolean;
+    onToggleMute: (id: string) => void;
+}
+
+export function Alert({ alert, isMuted, onToggleMute }: AlertProps) {
     const button = {
         height: '1em',
         padding: '5px',

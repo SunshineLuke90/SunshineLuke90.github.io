@@ -1,11 +1,20 @@
+import { Suspense } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+
 const NAV_ITEMS = [
-    { key: 'home', label: 'Home', icon: 'home' },
-    { key: 'about', label: 'About me', icon: 'information' },
-    { key: 'blog', label: 'Blog', icon: 'blog' },
-    { key: 'contact', label: 'Contact', icon: 'address-book' },
+    { path: '/', label: 'Home', icon: 'home' },
+    { path: '/about', label: 'About me', icon: 'information' },
+    { path: '/blog', label: 'Blog', icon: 'blog' },
+    { path: '/contact', label: 'Contact', icon: 'address-book' },
 ];
 
-export default function Layout ({ navigate, currentPage, children }) {
+export default function Layout () {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    const isActive = (path: string) =>
+        path === '/' ? pathname === '/' : pathname === path || pathname.startsWith(`${path}/`);
+
     return (
         <>
             <div className="header noto-sans-heavy">
@@ -16,21 +25,25 @@ export default function Layout ({ navigate, currentPage, children }) {
                 <div className="action-bar">
                     {NAV_ITEMS.map((item) => (
                         <calcite-button
-                            key={item.key}
+                            key={item.path}
                             className="menu-button"
-                            round="true"
+                            round
                             kind="neutral"
                             label={`Open ${item.label}`}
                             icon-start={item.icon}
                             scale="m"
-                            appearance={currentPage === item.key ? 'solid' : 'transparent'}
+                            appearance={isActive(item.path) ? 'solid' : 'transparent'}
                             title={item.label}
-                            onClick={() => navigate(item.key)}
+                            onClick={() => navigate(item.path)}
                         />
                     ))}
                 </div>
             </div>
-            {children}
+            <Suspense fallback={<main><p>Loading page...</p></main>}>
+                <div key={pathname} className="page-transition">
+                    <Outlet />
+                </div>
+            </Suspense>
             <footer>
                 <p>&copy; 2026 Lucius Creamer. All rights reserved.</p>
             </footer>

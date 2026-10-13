@@ -4,7 +4,7 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, PieControl
 Chart.defaults.color = "#FFFFFF"
 Chart.defaults.font.family = "'Noto Sans', sans-serif"
 
-let pchart, urbanChart, raceChart
+let pchart: Chart | undefined, urbanChart: Chart | undefined, raceChart: Chart | undefined
 
 export function destroyCharts () {
     pchart?.destroy();
@@ -15,12 +15,12 @@ export function destroyCharts () {
     raceChart = undefined;
 }
 
-export default function updateChart (chartData, first, isMobile = false) {
+export default function updateChart (chartData: number[][], first: boolean, isMobile = false) {
     if (!first) {
-        const canvasElementPop = document.getElementById("chart");
-        const canvasElementUrban = document.getElementById("urban-rural-pie")
-        const canvasElementRace = document.getElementById("race-pie")
-        pchart = new Chart(canvasElementPop.getContext("2d"), {
+        const canvasElementPop = document.getElementById("chart") as HTMLCanvasElement;
+        const canvasElementUrban = document.getElementById("urban-rural-pie") as HTMLCanvasElement
+        const canvasElementRace = document.getElementById("race-pie") as HTMLCanvasElement
+        pchart = new Chart(canvasElementPop.getContext("2d")!, {
             type: "bar",
             data: {
                 labels: [
@@ -94,7 +94,7 @@ export default function updateChart (chartData, first, isMobile = false) {
                         },
                         ticks: {
                             display: isMobile ? false : true,
-                            callback: (value) => numberWithCommas(Math.abs(parseInt(value))),
+                            callback: (value) => numberWithCommas(Math.abs(parseInt(String(value)))),
                         }
                     },
                     y: {
@@ -112,7 +112,7 @@ export default function updateChart (chartData, first, isMobile = false) {
             },
         });
 
-        urbanChart = new Chart(canvasElementUrban.getContext("2d"), {
+        urbanChart = new Chart(canvasElementUrban.getContext("2d")!, {
             type: "doughnut",
             data: {
                 labels: [
@@ -144,15 +144,14 @@ export default function updateChart (chartData, first, isMobile = false) {
                             font: {
                                 size: 10
                             }
-                        },
-                        padding: 5
+                        }
                     }
                 }
             }
 
         });
 
-        raceChart = new Chart(canvasElementRace.getContext("2d"), {
+        raceChart = new Chart(canvasElementRace.getContext("2d")!, {
             type: "pie",
             data: {
                 labels: [
@@ -196,25 +195,24 @@ export default function updateChart (chartData, first, isMobile = false) {
                             font: {
                                 size: 10
                             }
-                        },
-                        padding: 5
+                        }
                     }
                 }
             }
 
         });
     } else {
-        pchart.data.datasets[0].data = chartData[0];
-        pchart.data.datasets[1].data = chartData[1];
-        pchart.update();
-        urbanChart.data.datasets[0].data = chartData[2];
-        urbanChart.update();
-        raceChart.data.datasets[0].data = chartData[3];
-        raceChart.update();
+        pchart!.data.datasets[0].data = chartData[0];
+        pchart!.data.datasets[1].data = chartData[1];
+        pchart!.update();
+        urbanChart!.data.datasets[0].data = chartData[2];
+        urbanChart!.update();
+        raceChart!.data.datasets[0].data = chartData[3];
+        raceChart!.update();
     }
     return true
 }
 
-function numberWithCommas (value) {
+function numberWithCommas (value: number) {
     return (value || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
