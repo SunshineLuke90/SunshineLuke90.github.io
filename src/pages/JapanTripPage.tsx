@@ -80,7 +80,23 @@ export default function JapanTripPage () {
         </calcite-link>
       </div>
       <JapanBlogs />
-      <div>Video goes here.</div>
+      <h3 className="header-text">Keep in touch!</h3>
+      <div style={{ display: "flex", justifyContent: "Center", gap: "1rem" }}>
+        <calcite-button href="https://line.me/ti/p/aWfh_g38U-" iconStart="plus-circle">
+          Line
+        </calcite-button>
+        <calcite-button id="whatsapp-button">
+          WhatsApp
+        </calcite-button>
+        <calcite-tooltip
+          referenceElement="whatsapp-button"
+          placement="top"
+        >
+          Add me at<br />
+          @sunshinelucius
+        </calcite-tooltip>
+      </div>
+      <iframe style={{ margin: "auto" }} width="560" height="315" src="https://www.youtube.com/embed/jEdBT50TJ4A?si=mJey1hvj-JG-gWEC" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
     </section>
   );
 }
