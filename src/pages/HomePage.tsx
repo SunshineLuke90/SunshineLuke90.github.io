@@ -19,8 +19,8 @@ export default function HomePage () {
                         <calcite-card className="card" thumbnail-position="inline-start">
                             <img
                                 slot="thumbnail"
-                                src="https://placebear.com/302/254"
-                                alt="A bear in its natural habitat."
+                                src="/blog/images/BikeOverlook.JPG"
+                                alt="A picture of a white Triumph Speed 400 near a scenic overlook."
                                 style={{ objectFit: 'cover' }}
                             />
                             <span slot="heading">My Trip to Japan</span>
